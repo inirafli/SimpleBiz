@@ -45,7 +45,16 @@ h1, h2, h3, h4, a {
     display: flex;
     list-style-type: none;
     align-items: center;
-    gap: 2.5rem;
+    gap: 1rem 2.5rem;
+}
+
+.menu-icon {
+    display: none;
+    padding: 4px 6px 0;
+    border-radius: 8px;
+    margin-left: auto;
+    cursor: pointer;
+    background-color: var(--primary);
 }
 
 nav a {
@@ -58,7 +67,54 @@ nav a {
 }
 
 #daftar {
-    margin-left: .5rem;
+    margin-left: .75rem;
     background-color: var(--primary);
     color: var(--on-secondary);
+}
+
+@media only screen and (max-width: 928px) {
+    .nav-list {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 120px;
+        right: -100%;
+        padding: 1.5rem;
+        border-radius: 12px 0px 0px 12px;
+        background-color: var(--primary);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+        transition: right 0.3s ease;
+    }
+
+    .nav-list.active {
+        display: flex;
+        right: 0;
+    }
+
+    .nav-item {
+        margin: 0;
+        width: 100%;
+        padding: 14px 0;
+    }
+
+    nav a {
+        min-width: 100%;
+        color: var(--on-secondary);
+        text-align: left;
+    }
+
+    #daftar {
+        margin-left: 0;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 440px) {
+    .material-symbols-store {
+        display: none;
+    }
 }
