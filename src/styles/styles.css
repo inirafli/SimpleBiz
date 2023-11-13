@@ -1,3 +1,64 @@
+:root {
+    /* Colors */
+    --primary: #3d5a80;
+    --sub-primary: #e0fbfc;
+    --secondary: #98c1d9;
+    --on-primary: #000000;
+    --on-secondary: #ffffff;
+}
+
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1, h2, h3, h4, a {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.app-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.25rem 3rem;
+    background-color: var(--on-secondary);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.app-bar__title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.app-title {
+    font-weight: 700;
+    font-size: 36px;
+}
+
+.nav-list {
+    display: flex;
+    list-style-type: none;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+nav a {
+    color: var(--on-primary);
+    padding: 14px 28px;
+    font-weight: 600;
+    border-radius: 8px;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+#daftar {
+    margin-left: .5rem;
+    background-color: var(--primary);
+    color: var(--on-secondary);
 }
