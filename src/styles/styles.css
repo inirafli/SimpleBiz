@@ -17,7 +17,7 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
-h1, h2, h3, h4, a {
+h1, h2, h3, h4, a, button {
     font-family: 'Ubuntu', sans-serif;
 }
 
@@ -25,7 +25,7 @@ h1, h2, h3, h4, a {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2.25rem 3rem;
+    padding: 2rem 3rem;
     background-color: var(--on-secondary);
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
@@ -38,7 +38,7 @@ h1, h2, h3, h4, a {
 
 .app-title {
     font-weight: 700;
-    font-size: 36px;
+    font-size: 2rem;
 }
 
 .nav-list {
@@ -60,9 +60,9 @@ h1, h2, h3, h4, a {
 nav a {
     color: var(--on-primary);
     padding: 14px 28px;
-    font-weight: 600;
-    border-radius: 8px;
-    font-size: 24px;
+    font-weight: 800;
+    border-radius: 12px;
+    font-size: 1.35rem;
     text-decoration: none;
 }
 
@@ -70,6 +70,66 @@ nav a {
     margin-left: .75rem;
     background-color: var(--primary);
     color: var(--on-secondary);
+}
+
+main {
+    margin: 2rem 4rem;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.hero {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6rem;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 840px;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+.hero-desc {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.start-note {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    text-decoration: none;
+    color: var(--on-secondary);
+    background-color: var(--primary);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+
+.start-note:hover {
+    color: var(--primary);
+    background-color: var(--on-secondary);
+    border: 2px solid var(--primary);
+}
+
+.hero-image {
+    max-width: 620px;
+}
+
+.hero-image img {
+    width: 100%;
+    object-fit: cover;
 }
 
 @media only screen and (max-width: 928px) {
@@ -97,7 +157,7 @@ nav a {
         width: 100%;
         padding: 14px 0;
     }
-
+    
     nav a {
         min-width: 100%;
         color: var(--on-secondary);
