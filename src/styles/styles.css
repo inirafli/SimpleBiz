@@ -167,7 +167,7 @@ main {
 }
 
 .feature-icon {
-    margin: 0 auto 1.25rem;
+    margin: 0 auto 2rem;
 }
 
 .feature-content h2 {
@@ -184,6 +184,21 @@ main {
     font-size: 1.25rem;
     height: 110px;
     font-weight: 600;
+}
+
+footer {
+    background-color: var(--primary);
+    color: var(--on-secondary);
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.footer-content {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
 }
 
 @media only screen and (max-width: 928px) {
