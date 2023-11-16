@@ -1,0 +1,213 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu:wght@700&display=swap");
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --first: #3d5a80;
+  --second: #98c1d9;
+  --third: #e0fbfc;
+  --ubuntu: "Ubuntu", sans-serif;
+  --sans: "Open Sans", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  transition: smooth;
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: var(--first);
+  display: flex;
+}
+
+.buttonSection {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--first);
+  align-items: center;
+  width: 10%;
+}
+
+.backButton {
+  background-color: var(--white);
+  margin-top: 5vh;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 3em;
+  height: 3em;
+  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backButton:hover {
+  background-color: var(--third);
+}
+
+.backButton:active {
+  box-shadow: 0px 0px 5px 1px var(--third);
+}
+
+.loginSection {
+  background-color: var(--first);
+  height: 100vh;
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginBox {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white);
+  width: 60vh;
+  height: 80vh;
+  margin: 30px;
+  padding: 25px;
+  border-radius: 20px;
+}
+
+.loginHeader {
+  font-family: var(--ubuntu);
+  text-align: center;
+  font-size: 20px;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+.inputForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+}
+
+.inputForm label {
+  color: var(--black);
+  font-family: var(--sans);
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  margin-left: 5px;
+  align-self: flex-start;
+}
+
+.inputForm input {
+  width: 55vh;
+  border: 0.5px solid var(--black);
+  background-color: var(--gold2);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.loginButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.signUp {
+  display: flex;
+  justify-content: center;
+}
+
+.signUp h1 {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: lighter;
+}
+
+.signUp span {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: lighter;
+  color: var(--first);
+}
+
+.signUp span:hover {
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: var(--first);
+}
+
+.descSection {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--first);
+  width: 30%;
+  gap: 20px;
+  justify-content: center;
+}
+
+.descSection h1 {
+  font-family: var(--ubuntu);
+  font-size: 30px;
+  color: var(--white);
+  margin-right: 70px;
+}
+
+.descSection p {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--white);
+  margin-right: 70px;
+  margin-bottom: 70px;
+}
+
+.mainButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5vh;
+  width: 59vh;
+  border-radius: 5px;
+  border: 0.5px solid var(--second);
+  background: var(--first);
+  color: var(--white);
+  font-family: var(--sans);
+  font-weight: bold;
+  font-size: 15px;
+  z-index: 1;
+  position: relative;
+  transition: all 350ms;
+  overflow: hidden;
+}
+
+.mainButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background-color: var(--white);
+  z-index: -1;
+  transition: all 350ms;
+}
+
+.mainButton:hover {
+  color: var(--first);
+}
+
+.mainButton:hover::before {
+  width: 100%;
+}
+
+.mainButton:active {
+  box-shadow: 0px 0px 5px 1px var(--first);
+}
