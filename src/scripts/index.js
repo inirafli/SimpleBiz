@@ -1,8 +1,7 @@
-import renderLandingPage from './pages/landingPage'
+import renderPage from '../routes/route'
 
 console.log('Hello, SimpleBiz')
 
 document.addEventListener('DOMContentLoaded', () => {
-  const appContainer = document.querySelector('#app')
-  renderLandingPage(appContainer)
+  renderPage()
 })

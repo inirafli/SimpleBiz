@@ -43,6 +43,10 @@ header {
     gap: 1rem;
 }
 
+.app-bar__title img {
+    width: 48px;
+}
+
 .app-title {
     font-weight: 700;
     font-size: 2rem;
@@ -326,7 +330,7 @@ footer {
 }
 
 @media screen and (max-width: 660px) {
-    .material-symbols-store {
+    .app-bar__title img {
         display: none;
     }
 
