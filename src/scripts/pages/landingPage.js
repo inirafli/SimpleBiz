@@ -1,4 +1,6 @@
-/* eslint-disable no-param-reassign */
+import '../../styles/landing.css'
+
+import appIcon from '../../public/icons/simplebiz-icons.png'
 import landingImage from '../../public/images/landing-page-image.png'
 
 const renderLandingPage = (container) => {
@@ -6,24 +8,19 @@ const renderLandingPage = (container) => {
     <header>
         <div class="app-bar">
             <div class="app-bar__title">
-                <svg class="material-symbols-store" width="36" height="36" viewBox="0 0 64 64" fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M10.6667 16V10.6667H53.3333V16H10.6667ZM10.6667 53.3333V37.3333H8V32L10.6667 18.6667H53.3333L56 32V37.3333H53.3333V53.3333H48V37.3333H37.3333V53.3333H10.6667ZM16 48H32V37.3333H16V48Z"
-                        fill="black"></path>
-                </svg>
+                <img src=${appIcon} alt="SimpleBiz Icons">
                 <h1 class="app-title">SimpleBiz</h1>
             </div>
             <div class="menu-icon">
                 <svg class="material-icons" width="36" height="36" viewBox="0 0 24 24">
-                    <path fill="white" d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"></path>
+                    <path fill="#3d5a80" d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"></path>
                 </svg>
             </div>
             <nav id="drawer" class="nav">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="#">Beranda</a></li>
-                    <li class="nav-item"><a href="#">Masuk</a></li>
-                    <li class="nav-item"><a href="#" id="daftar">Daftar</a></li>
+                    <li class="nav-item"><a href="/login">Masuk</a></li>
+                    <li class="nav-item"><a href="/register" id="daftar">Daftar</a></li>
                 </ul>
             </nav>
         </div>

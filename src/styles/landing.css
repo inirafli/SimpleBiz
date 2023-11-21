@@ -43,6 +43,10 @@ header {
     gap: 1rem;
 }
 
+.app-bar__title img {
+    width: 48px;
+}
+
 .app-title {
     font-weight: 700;
     font-size: 2rem;
@@ -61,7 +65,10 @@ header {
     border-radius: 8px;
     margin-left: auto;
     cursor: pointer;
-    background-color: var(--primary);
+}
+
+.menu-icon svg {
+    color: var(--primary);
 }
 
 nav a {
@@ -270,6 +277,14 @@ footer {
         padding: 1.25rem 3rem;
     }
 
+    .app-title {
+        font-size: 1.55rem;
+    }
+
+    .app-bar__title img {
+        width: 30px;
+    }
+
     .nav-list {
         display: flex;
         flex-direction: column;
@@ -326,8 +341,8 @@ footer {
 }
 
 @media screen and (max-width: 660px) {
-    .material-symbols-store {
-        display: none;
+    .app-bar {
+        padding: 1.15rem 1.75rem;
     }
 
     .hero-title {
@@ -376,10 +391,6 @@ footer {
 }
 
 @media screen and (max-width: 440px) {
-    .app-title {
-        font-size: 1.75rem;
-    }
-
     nav a {
         font-size: 1.15rem;
     }
