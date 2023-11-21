@@ -34,11 +34,15 @@ const renderRegisterPage = (container) => {
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" required>
+                        <div class="input-container">
+                            <input type="checkbox" id="showPassword">
+                            <label for="showPassword">Tampilkan Password</label>
+                        </div>
                     </div>
 
                     <button type="submit" class="register-button">Daftar</button>
                 </form>
-                <p class="error-message"></p>
+                <p class="error-message">Ini adalah Warning</p>
                 <p>Sudah punya akun? <a href="#">Masuk Disini!</a></p>
             </div>
             <div class="register-headline">
@@ -50,6 +54,15 @@ const renderRegisterPage = (container) => {
     `
 
   const backButton = document.querySelector('#back')
+  const passwordInput = document.querySelector('#password')
+  const showPasswordCheck = document.querySelector('#showPassword')
+
+  showPasswordCheck.addEventListener('change', () => {
+    const type = showPasswordCheck.checked ? 'text' : 'password'
+    passwordInput.setAttribute('type', type)
+  })
+
+
   backButton.addEventListener('click', () => {
     window.history.replaceState(null, null, '/')
     window.location.href = '/'

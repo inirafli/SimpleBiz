@@ -88,6 +88,21 @@ input:focus {
     border-color: var(--primary);
 }
 
+.input-container {
+    display: relative;
+    margin-top: 1rem;
+    align-self: flex-start;
+}
+
+.input-container label {
+    font-weight: 400;
+}
+
+input[type="checkbox"] {
+    margin: 0 .75rem 0 .25rem;
+    transform: scale(1.75);
+}
+
 .register-button {
     width: 100%;
     margin-top: 1rem;
@@ -124,18 +139,15 @@ input:focus {
 
 .error-message {
     display: none;
+    font-size: 1.15rem;
     padding: .5rem 1rem;
-    border: 1px solid red;
+    border: 1.25px solid red;
     border-radius: .5rem;
     color: red;
     font-weight: 800;
 }
 
 @media screen and (max-width: 1440px) {
-    #register-page {
-        min-height: 100%;
-    }
-
     .register-container {
         gap: 1rem;
     }
@@ -143,15 +155,22 @@ input:focus {
 
 @media screen and (max-width: 1340px) {
     #register-page {
-        grid-template-columns: 0fr auto;
+        display: flex;
+        flex-flow: column nowrap;
         gap: 3rem 0;
     }
 
+    .back-button {
+        order: 1;
+    }
+
     .register-container {
+        order: 3;
         margin: 0 auto;
     }
 
     .register-headline {
+        order: 2;
         width: 100%;
         grid-column: span 2;
         text-align: center;
@@ -166,17 +185,14 @@ input:focus {
     }
 }
 
-@media screen and (max-width: 928px) {
-    #register-page {
-        display: flex;
-        flex-flow: column nowrap;
-    }
-}
-
 @media screen and (max-width: 660px) {
     #register-page {
         margin: 2rem;
-        gap: 2rem;
+        gap: 2.25rem 0;
+    }
+
+    .back-button svg {
+        width: 44px;
     }
 
     .register-container {
@@ -188,12 +204,25 @@ input:focus {
         font-size: 1.25rem;
     }
 
+    #register-form {
+        gap: 1.25rem;
+    }
+
     label {
         font-size: .85rem;
     }
 
     input {
         font-size: .75rem;
+    }
+
+    .input-container {
+        margin: .75rem 0 .5rem -3px;
+    }
+
+    input[type="checkbox"] {
+        margin-right: .5rem;
+        transform: scale(1.25);
     }
 
     .register-button {
