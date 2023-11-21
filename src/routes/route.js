@@ -1,14 +1,22 @@
 import renderLandingPage from '../scripts/pages/landingPage'
 import renderRegisterPage from '../scripts/pages/registerPage'
+import renderLoginPage from '../scripts/pages/loginPage'
 
 const renderPage = () => {
   const appContainer = document.querySelector('#app')
   const path = window.location.pathname
 
-  if (path === '/register') {
-    renderRegisterPage(appContainer)
-  } else {
-    renderLandingPage(appContainer)
+  switch (path) {
+    case '/register':
+      renderRegisterPage(appContainer)
+      break
+
+    case '/login':
+      renderLoginPage(appContainer)
+      break
+
+    default:
+      renderLandingPage(appContainer)
   }
 }
 

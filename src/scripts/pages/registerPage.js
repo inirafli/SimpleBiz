@@ -43,7 +43,7 @@ const renderRegisterPage = (container) => {
                     <button type="submit" class="register-button">Daftar</button>
                 </form>
                 <p class="error-message">Ini adalah Warning</p>
-                <p>Sudah punya akun? <a href="#">Masuk Disini!</a></p>
+                <p>Sudah punya akun? <a href="/login">Masuk Disini!</a></p>
             </div>
             <div class="register-headline">
                 <h1>Bergabunglah dengan SimpleBiz</h1>
@@ -61,7 +61,6 @@ const renderRegisterPage = (container) => {
     const type = showPasswordCheck.checked ? 'text' : 'password'
     passwordInput.setAttribute('type', type)
   })
-
 
   backButton.addEventListener('click', () => {
     window.history.replaceState(null, null, '/')
