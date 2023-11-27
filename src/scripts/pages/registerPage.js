@@ -1,8 +1,3 @@
-/* eslint-disable comma-dangle */
-/* eslint-disable quotes */
-/* eslint-disable no-alert */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-use-before-define */
 // Firebase configuration
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
@@ -10,12 +5,7 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 import "../../styles/register.css";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD-257W-Nx6uUc5DaYy4BcO-IpYi5U-Si0",
-  authDomain: "simplebiz-app.firebaseapp.com",
-  projectId: "simplebiz-app",
-  storageBucket: "simplebiz-app.appspot.com",
-  messagingSenderId: "118223900259",
-  appId: "1:118223900259:web:692ae3f4162a406953f256",
+  //   apiKey:
 };
 
 // Initialize Firebase
