@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Beranda</title>
+    <link rel="stylesheet" href="/assets/dashboard.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav class="mainHeader">
+        <div class="titleHeader">
+          <img src="assets/img/logo.jpg" alt="logo" />
+          <p>SimpleBiz</p>
+        </div>
+        <div class="buttonHeader">
+          <button class="navButton" id="productPage">Produk</button>
+          <button class="navButton" id="reportsPage">Transaksi</button>
+          <button class="navButton" id="showCart">Keranjang</button>
+        </div>
+        <div class="accountHeader">
+          <img src="assets/img/user.svg" alt="" />
+          <p>Nama Akun</p>
+        </div>
+      </nav>
+    </header>
+
+    <section class="resourceSection">
+      <div class="subInput" id="dateInput">
+        <p>Tanggal</p>
+        <input class="inputForm" type="date" id="transactionDate" />
+      </div>
+      <div class="buttonResource">
+        <button class="mainButton" id="applyResource">Simpan</button>
+        <button class="mainButton" id="resetResource">Hapus</button>
+      </div>
+    </section>
+
+    <div class="mainSearch">
+      <input
+        class="inputForm"
+        type="text"
+        id="nameInput"
+        placeholder="Cari Produk" />
+      <button class="mainButton" id="searchProduct">Cari</button>
+    </div>
+
+    <section class="productSection">
+      <div class="mainProduct">
+        <div class="subProduct">
+          <div class="productImage">
+            <img src="assets/img/produk.jpg" alt="" />
+          </div>
+          <div class="productDescription">
+            <h1 id="productName">Nama Produk</h1>
+            <h2 id="productPrice">Rp.5000</h2>
+          </div>
+          <div class="buttonProduct">
+            <button class="mainButton" id="addProduct">Tambah</button>
+            <button class="mainButton" id="removeProduct">Hapus</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cartSection" class="cartSection">
+      <div class="cartHeader">
+        <p>Keranjang Belanja</p>
+        <img id="closeCart" src="assets/img/close.svg" alt="" />
+      </div>
+
+      <div class="cartList">
+        <div class="cartItem">
+          <img src="assets/img/produk.jpg" alt="" />
+          <div class="detailItem">
+            <p id="productName">Nama Produk</p>
+            <p id="productPrice">Rp. 5000</p>
+          </div>
+          <div class="quantityItem">
+            <p>
+              Total :
+              <span id="quantityItem">1</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cartFooter">
+        <div class="totalFooter">
+          <p>
+            Total Harga :
+            <span class="totalNumber" id="totalPrice">Rp 0</span>
+          </p>
+          <p>
+            Total Produk :
+            <span class="totalNumber" id="totalProduct">Rp 0</span>
+          </p>
+        </div>
+        <div class="paymentFooter">
+          <p>Nominal Pembayaran</p>
+          <input
+            class="inputForm"
+            type="text"
+            id="totalCash"
+            placeholder="Total Pembayaran" />
+        </div>
+        <div class="paymentFooter">
+          <p>
+            Kembalian :
+            <span class="totalNumber" id="totalCharge">Rp 0</span>
+          </p>
+        </div>
+        <div class="buttonFooter">
+          <button class="mainButton" id="checkoutCart">Konfirmasi</button>
+          <button class="mainButton" id="resetCart">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <footer></footer>
+
+    <script src="/assets/dashboard.js"></script>
+  </body>
+</html>
