@@ -91,27 +91,27 @@ const renderRegisterPage = (container) => {
     const password = document.getElementById("password").value;
 
     try {
-      // Create user in Firebase Authentication
+      // Membuat akun pada autentikasi Firebase
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
 
-      // Create user profile in Firestore
+      // Membuat profil user di database Firestore
       await setDoc(doc(firestore, "users", userCredential.user.uid), {
         name,
         umkm,
       });
 
-      // Additional actions after successful registration, if needed
-      console.log("User registered successfully:", userCredential);
+      // Console log menampilkan pendaftaran berhasil
+      console.log("Akun berhasil didaftarkan :", userCredential);
 
       handleSignupSuccess(userCredential);
     } catch (error) {
-      // Handle registration errors
-      console.error("Registration failed:", error.message);
-      // Display an error message to the user
+      // Penanganan kesalahan pada registrasi
+      console.error("Pendaftaran gagal dilakukan :", error.message);
+      // Console log menampilkan error
       const errorMessage = document.querySelector(".error-message");
       errorMessage.textContent = error.message;
       handleSignupError(error);
@@ -125,7 +125,7 @@ const renderRegisterPage = (container) => {
 
   function handleSignupError(error) {
     console.log(error.message);
-    alert("Sign up failed. Please try again.");
+    alert("Pendaftaran gagal. Silakan coba lagi.");
   }
 
   function redirectToLogin() {
