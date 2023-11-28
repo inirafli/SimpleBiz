@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produk</title>
+    <link rel="stylesheet" href="/assets/product.css" />
+  </head>
+  <body>
+    <header>
+      <nav class="mainHeader">
+        <div class="titleHeader">
+          <img src="assets/img/logo.jpg" alt="logo" />
+          <p>SimpleBiz</p>
+        </div>
+        <div class="buttonHeader">
+          <button class="navButton" id="productPage">Produk</button>
+          <button class="navButton" id="reportsPage">Transaksi</button>
+          <button class="navButton" id="showCart">Keranjang</button>
+        </div>
+        <div class="accountHeader">
+          <img src="assets/img/user.svg" alt="" />
+          <p>Nama Akun</p>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="productManagement">
+        <div class="inputProduct" id="addProduct">
+          <div class="titleManagement">
+            <p>Tambahkan Produk</p>
+          </div>
+          <div class="inputManagement">
+            <p>Nama Produk</p>
+            <input class="inputForm" type="text" id="productName" required />
+          </div>
+          <div class="inputManagement">
+            <p>Harga Produk</p>
+            <input class="inputForm" type="text" id="productPrice" required />
+          </div>
+          <div class="inputManagement">
+            <p>Foto Produk</p>
+            <label for="productImage" class="custom-file-input">
+              <span class="custom-file-input-label">Pilih Foto</span>
+              <input
+                class="inputForm"
+                type="file"
+                id="productImage"
+                accept="image/*" />
+            </label>
+          </div>
+          <div class="inputButton">
+            <button class="mainButton" id="addProduct">Tambah</button>
+          </div>
+        </div>
+
+        <div class="inputProduct" id="editProduct">
+          <div class="titleManagement">
+            <p>Perbarui Produk</p>
+          </div>
+          <div class="inputManagement">
+            <p>Nama Produk</p>
+            <input class="inputForm" type="text" id="updateName" required />
+          </div>
+          <div class="inputManagement">
+            <p>Harga Produk</p>
+            <input class="inputForm" type="text" id="updatePrice" required />
+          </div>
+          <div class="inputManagement">
+            <p>Foto Produk</p>
+            <label for="productImage" class="custom-file-input">
+              <span class="custom-file-input-label">Pilih Foto</span>
+              <input
+                class="inputForm"
+                type="file"
+                id="updateImage"
+                accept="image/*" />
+            </label>
+          </div>
+          <div class="inputButton">
+            <button class="mainButton" id="updateProduct">Perbarui</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="listProduct" id="listProduct">
+        <div class="mainSearch">
+          <input
+            class="inputForm"
+            type="text"
+            id="nameInput"
+            placeholder="Cari Produk" />
+          <button class="mainButton" id="searchProduct">Cari</button>
+        </div>
+
+        <div class="productPage">
+          <div class="mainProduct">
+            <div class="subProduct">
+              <div class="productImage">
+                <img src="assets/img/produk.jpg" alt="" />
+              </div>
+              <div class="productDescription">
+                <h1 id="productName">Nama Produk</h1>
+                <h2 id="productPrice">Rp.5000</h2>
+              </div>
+              <div class="buttonProduct">
+                <button class="mainButton" id="deleteProduct">Hapus</button>
+                <button class="mainButton" id="editProduct">Edit</button>
+              </div>
+            </div>
+
+            <div class="subProduct">
+              <div class="productImage">
+                <img src="assets/img/produk.jpg" alt="" />
+              </div>
+              <div class="productDescription">
+                <h1 id="productName">Nama Produk</h1>
+                <h2 id="productPrice">Rp.5000</h2>
+              </div>
+              <div class="buttonProduct">
+                <button class="mainButton" id="deleteProduct">Hapus</button>
+                <button class="mainButton" id="editProduct">Edit</button>
+              </div>
+            </div>
+
+            <div class="subProduct">
+              <div class="productImage">
+                <img src="assets/img/produk.jpg" alt="" />
+              </div>
+              <div class="productDescription">
+                <h1 id="productName">Nama Produk</h1>
+                <h2 id="productPrice">Rp.5000</h2>
+              </div>
+              <div class="buttonProduct">
+                <button class="mainButton" id="deleteProduct">Hapus</button>
+                <button class="mainButton" id="editProduct">Edit</button>
+              </div>
+            </div>
+
+            <div class="subProduct">
+              <div class="productImage">
+                <img src="assets/img/produk.jpg" alt="" />
+              </div>
+              <div class="productDescription">
+                <h1 id="productName">Nama Produk</h1>
+                <h2 id="productPrice">Rp.5000</h2>
+              </div>
+              <div class="buttonProduct">
+                <button class="mainButton" id="deleteProduct">Hapus</button>
+                <button class="mainButton" id="editProduct">Edit</button>
+              </div>
+            </div>
+
+            <div class="subProduct">
+              <div class="productImage">
+                <img src="assets/img/produk.jpg" alt="" />
+              </div>
+              <div class="productDescription">
+                <h1 id="productName">Nama Produk</h1>
+                <h2 id="productPrice">Rp.5000</h2>
+              </div>
+              <div class="buttonProduct">
+                <button class="mainButton" id="deleteProduct">Hapus</button>
+                <button class="mainButton" id="editProduct">Edit</button>
+              </div>
+            </div>
+
+            <div class="subProduct">
+              <div class="productImage">
+                <img src="assets/img/produk.jpg" alt="" />
+              </div>
+              <div class="productDescription">
+                <h1 id="productName">Nama Produk</h1>
+                <h2 id="productPrice">Rp.5000</h2>
+              </div>
+              <div class="buttonProduct">
+                <button class="mainButton" id="deleteProduct">Hapus</button>
+                <button class="mainButton" id="editProduct">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

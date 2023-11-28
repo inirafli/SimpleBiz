@@ -1,0 +1,328 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap");
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --gray: #6c757d;
+  --first: #3d5a80;
+  --second: #98c1d9;
+  --third: #e0fbfc;
+  --fourth: #ecf1f3;
+  --ubuntu: "Ubuntu", sans-serif;
+  --sans: "Open Sans", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  transition: smooth;
+}
+
+body,
+html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--fourth);
+}
+
+main {
+  display: flex;
+}
+
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--white);
+  border-bottom: 1px solid var(--first);
+  box-shadow: 0 0.5px 1px var(--first);
+  height: 12vh;
+}
+
+.titleHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.titleHeader p {
+  font-family: var(--ubuntu);
+  color: var(--first);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.titleHeader img {
+  width: 40px;
+  margin: 10px;
+}
+
+.buttonHeader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  gap: 10px;
+}
+
+.navButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 7px;
+  border-radius: 5px;
+  border: none;
+  background: var(--white);
+  color: var(--first);
+  font-family: var(--ubuntu);
+  font-size: 16px;
+  z-index: 1;
+  position: relative;
+  transition: all 350ms;
+  overflow: hidden;
+}
+
+.navButton:hover {
+  font-weight: bold;
+}
+
+.navButton:hover::before {
+  width: 100%;
+}
+
+.accountHeader {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.accountHeader img {
+  width: 25px;
+  border: 2px solid var(--first);
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
+.accountHeader p {
+  font-size: 12px;
+  font-family: var(--sans);
+  color: var(--first);
+}
+
+.productManagement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background-color: var(--fourth);
+  min-height: 100vh;
+  width: 30%;
+}
+
+.inputProduct {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--second);
+  width: 50vh;
+  height: auto;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 20px;
+  box-shadow: 0.5px 0.5px 5px var(--first);
+}
+
+.titleManagement {
+  display: flex;
+  justify-content: center;
+  font-family: var(--ubuntu);
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--first);
+  margin-right: 15px;
+  margin-left: 15px;
+  border-bottom: 1px solid var(--first);
+  padding: 10px;
+}
+
+.inputManagement {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 15px;
+  margin-left: 15px;
+  height: 10vh;
+}
+
+.inputManagement p {
+  font-family: var(--ubuntu);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--first);
+}
+
+.inputForm {
+  width: 25vh;
+  height: 4vh;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid var(--fourth);
+  border-radius: 10px;
+  border: 0.5px solid var(--first);
+  background-color: var(--white);
+  font-family: var(--ubuntu);
+  font-weight: light;
+  font-size: 12px;
+  text-align: center;
+  color: var(--gray);
+}
+
+.inputForm:focus {
+  outline: none;
+}
+
+.inputManagement input[type="file"] {
+  display: none;
+}
+
+.inputManagement .custom-file-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25vh;
+  height: 4vh;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid var(--fourth);
+  border-radius: 10px;
+  border: 0.5px solid var(--first);
+  background-color: var(--white);
+  font-size: 12px;
+  font-weight: bold;
+  font-family: var(--ubuntu);
+  color: var(--first);
+}
+
+.inputManagement .custom-file-input-label-selected {
+  color: var(--second);
+}
+
+.inputButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid var(--first);
+  padding: 10px;
+}
+
+.listProduct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--fourth);
+  min-height: 100vh;
+  width: 70%;
+}
+
+.mainSearch {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  width: 100%;
+  margin: 20px;
+}
+
+.mainProduct {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  grid-column-gap: 20px;
+  grid-row-gap: 6px;
+}
+
+.subProduct {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  width: 25vh;
+  height: 33vh;
+  background-color: var(--white);
+  border-radius: 15px;
+  padding: 15px;
+  margin: 10px;
+  box-shadow: 0.5px 0.5px 5px var(--black);
+}
+
+.productImage {
+  display: flex;
+  justify-content: center;
+}
+
+.productImage img {
+  width: 17vh;
+  height: 15vh;
+  object-fit: fill;
+  border-radius: 10px;
+}
+
+.productDescription h1 {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: var(--ubuntu);
+  color: var(--first);
+}
+
+.productDescription h2 {
+  text-align: center;
+  font-size: 12px;
+  font-family: var(--sans);
+  color: var(--gray);
+  margin: 5px;
+}
+
+.buttonProduct {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.mainButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 15vh;
+  height: 5vh;
+  border-radius: 5px;
+  border: 0.5px solid var(--first);
+  background: var(--first);
+  color: var(--white);
+  font-family: var(--ubuntu);
+  font-weight: bold;
+  font-size: 14px;
+  position: relative;
+  transition: all 350ms;
+  overflow: hidden;
+}
+
+.mainButton:active,
+.navButton:active {
+  transform: scale(0.9);
+}
+
+#deleteProduct {
+  background: var(--white);
+  color: var(--first);
+}
+
+#deleteProduct:hover {
+  background: #e5383b;
+  color: var(--white);
+}
