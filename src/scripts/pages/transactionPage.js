@@ -4,6 +4,44 @@ import userIcon from '../../public/icons/profile-icon.png'
 import appIcon from '../../public/icons/simplebiz-icons.png'
 
 const renderTransactionPage = (container) => {
+  // Mockup data
+  const transactionData = [
+    {
+      id: 1, date: '01/01/2023', transactionId: '#WS00281', quantity: 5, totalPrice: 'Rp. 35,000',
+    },
+    {
+      id: 2, date: '01/01/2023', transactionId: '#WS00282', quantity: 5, totalPrice: 'Rp. 100,000',
+    },
+    {
+      id: 3, date: '01/01/2023', transactionId: '#WS00283', quantity: 5, totalPrice: 'Rp. 25,000',
+    },
+    {
+      id: 4, date: '01/01/2023', transactionId: '#WS00284', quantity: 5, totalPrice: 'Rp. 31,000',
+    },
+  ]
+
+  const evaluationData = {
+    highestSales: [
+      {
+        id: 1, productName: 'Biosol', quantity: 5, totalPrice: 'Rp. 35,000',
+      },
+      {
+        id: 2, productName: 'Biosol', quantity: 10, totalPrice: 'Rp. 100,000',
+      },
+    ],
+    lowestSales: [
+      {
+        id: 1, productName: 'Biosol', quantity: 5, totalPrice: 'Rp. 35,000',
+      },
+      {
+        id: 2, productName: 'Biosol', quantity: 10, totalPrice: 'Rp. 100,000',
+      },
+    ],
+    topProduct: [
+      { type: 'Penjualan Tertinggi', productName: 'Biosol', totalPrice: 'Rp. 200,000' },
+    ],
+  }
+
   container.innerHTML = `
     <header id="main-header">
         <div class="main-app-bar">
@@ -55,34 +93,15 @@ const renderTransactionPage = (container) => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>01/01/2023</td>
-                        <td>#WS00281</td>
-                        <td>5</td>
-                        <td>Rp. 35,000</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>01/01/2023</td>
-                        <td>#WS00282</td>
-                        <td>5</td>
-                        <td>Rp. 100,000</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>01/01/2023</td>
-                        <td>#WS00283</td>
-                        <td>5</td>
-                        <td>Rp. 25,000</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>01/01/2023</td>
-                        <td>#WS00284</td>
-                        <td>5</td>
-                        <td>Rp. 31,000</td>
-                    </tr>
+                    ${transactionData.map((data) => `
+                        <tr>
+                            <td>${data.id}</td>
+                            <td>${data.date}</td>
+                            <td>${data.transactionId}</td>
+                            <td>${data.quantity}</td>
+                            <td>${data.totalPrice}</td>
+                        </tr>
+                    `).join('')}
                 </tbody>
             </table>
         </div>
@@ -103,41 +122,35 @@ const renderTransactionPage = (container) => {
                     <tr class="special-row">
                         <td colspan="4">Penjualan Tertinggi</td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Biosol</td>
-                        <td>5</td>
-                        <td>Rp. 35,000</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Biosol</td>
-                        <td>10</td>
-                        <td>Rp. 100,000</td>
-                    </tr>
+                    ${evaluationData.highestSales.map((data) => `
+                        <tr>
+                            <td>${data.id}</td>
+                            <td>${data.productName}</td>
+                            <td>${data.quantity}</td>
+                            <td>${data.totalPrice}</td>
+                        </tr>
+                    `).join('')}
                     <tr class="special-row">
                         <td colspan="4">Penjualan Terendah</td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Biosol</td>
-                        <td>5</td>
-                        <td>Rp. 35,000</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Biosol</td>
-                        <td>10</td>
-                        <td>Rp. 100,000</td>
-                    </tr>
+                    ${evaluationData.lowestSales.map((data) => `
+                        <tr>
+                            <td>${data.id}</td>
+                            <td>${data.productName}</td>
+                            <td>${data.quantity}</td>
+                            <td>${data.totalPrice}</td>
+                        </tr>
+                    `).join('')}
                     <tr class="special-row">
                         <td colspan="4">Produk Teratas</td>
                     </tr>
-                    <tr class="summary">
-                        <td class="special-td" colspan="2">Penjualan Tertinggi</td>
-                        <td>Biosol</td>
-                        <td>Rp. 200,000</td>
-                    </tr>
+                    ${evaluationData.topProduct.map((data) => `
+                        <tr class="summary">
+                            <td class="special-td" colspan="2">${data.type}</td>
+                            <td>${data.productName}</td>
+                            <td>${data.totalPrice}</td>
+                        </tr>
+                    `).join('')}
                 </tbody>
             </table>
         </div>
@@ -148,6 +161,26 @@ const renderTransactionPage = (container) => {
         </div>
     </footer>
     `
+
+  const menuIcon = container.querySelector('.main-menu-icon')
+  const navList = container.querySelector('.main-nav-list')
+  const mainContent = container.querySelector('.transac-main')
+
+  const navItems = container.querySelectorAll('.nav-item a')
+
+  mainContent.addEventListener('click', () => {
+    navList.classList.remove('active')
+  })
+
+  navItems.forEach((navItem) => {
+    navItem.addEventListener('click', () => {
+      navList.classList.remove('active')
+    })
+  })
+
+  menuIcon.addEventListener('click', () => {
+    navList.classList.toggle('active')
+  })
 }
 
 export default renderTransactionPage

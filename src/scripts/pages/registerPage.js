@@ -1,17 +1,17 @@
 // Firebase configuration
 import '../../styles/register.css';
-// import { initializeApp } from 'firebase/app';
-// import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-// import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
-// const firebaseConfig = {
-//   //   apiKey:
-// };
+const firebaseConfig = {
+  //   apiKey:
+};
 
-// // Initialize Firebase
-// const firebaseApp = initializeApp(firebaseConfig);
-// const auth = getAuth(firebaseApp);
-// const firestore = getFirestore(firebaseApp);
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const firestore = getFirestore(firebaseApp);
 
 const renderRegisterPage = (container) => {
   document.body.style.backgroundColor = '#3d5a80';
@@ -80,59 +80,59 @@ const renderRegisterPage = (container) => {
     window.location.href = '/';
   });
 
-  // const registerForm = document.querySelector('#register-form');
-  // const errorMessage = document.querySelector('.error-message');
+  const registerForm = document.querySelector('#register-form');
+  const errorMessage = document.querySelector('.error-message');
 
-  // registerForm.addEventListener('submit', async (event) => {
-  //   event.preventDefault();
+  registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-  //   const name = document.getElementById('name').value;
-  //   const umkm = document.getElementById('umkm').value;
-  //   const email = document.getElementById('email').value;
-  //   const password = document.getElementById('password').value;
+    const name = document.getElementById('name').value;
+    const umkm = document.getElementById('umkm').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-  //   try {
-  //     // Membuat akun pada autentikasi Firebase
-  //     const userCredential = await createUserWithEmailAndPassword(
-  //       auth,
-  //       email,
-  //       password,
-  //     );
+    try {
+      // Membuat akun pada autentikasi Firebase
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
 
-  //     // Membuat profil user di database Firestore
-  //     await setDoc(doc(firestore, 'users', userCredential.user.uid), {
-  //       name,
-  //       umkm,
-  //     });
+      // Membuat profil user di database Firestore
+      await setDoc(doc(firestore, 'users', userCredential.user.uid), {
+        name,
+        umkm,
+      });
 
-  //     // Console log menampilkan pendaftaran berhasil
-  //     console.log('Akun berhasil didaftarkan :', userCredential);
-  //     errorMessage.style.display = 'none';
+      // Console log menampilkan pendaftaran berhasil
+      console.log('Akun berhasil didaftarkan :', userCredential);
+      errorMessage.style.display = 'none';
 
-  //     handleSignupSuccess(userCredential);
-  //   } catch (error) {
-  //     // Penanganan kesalahan pada registrasi
-  //     console.error('Pendaftaran gagal dilakukan :', error.message);
-  //     // Console log menampilkan error
-  //     errorMessage.style.display = 'block';
-  //     errorMessage.textContent = error.message;
-  //     handleSignupError(error);
-  //   }
-  // });
+      handleSignupSuccess(userCredential);
+    } catch (error) {
+      // Penanganan kesalahan pada registrasi
+      console.error('Pendaftaran gagal dilakukan :', error.message);
+      // Console log menampilkan error
+      errorMessage.style.display = 'block';
+      errorMessage.textContent = error.message;
+      handleSignupError(error);
+    }
+  });
 
-  // function handleSignupSuccess(userCredential) {
-  //   const { user } = userCredential;
-  //   redirectToLogin();
-  // }
+  function handleSignupSuccess(userCredential) {
+    const { user } = userCredential;
+    redirectToLogin();
+  }
 
-  // function handleSignupError(error) {
-  //   console.log(error.message);
-  //   alert('Pendaftaran gagal. Silakan coba lagi.');
-  // }
+  function handleSignupError(error) {
+    console.log(error.message);
+    alert('Pendaftaran gagal. Silakan coba lagi.');
+  }
 
-  // function redirectToLogin() {
-  //   window.location.href = '/login';
-  // }
+  function redirectToLogin() {
+    window.location.href = '/login';
+  }
 };
 
 export default renderRegisterPage;
