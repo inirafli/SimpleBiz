@@ -2,6 +2,7 @@ import renderLandingPage from '../scripts/pages/landingPage'
 import renderRegisterPage from '../scripts/pages/registerPage'
 import renderLoginPage from '../scripts/pages/loginPage'
 import renderTransactionPage from '../scripts/pages/transactionPage'
+import renderDashboardPage from '../scripts/pages/dashboardPage'
 
 const renderPage = () => {
   const appContainer = document.querySelector('#app')
@@ -18,6 +19,10 @@ const renderPage = () => {
 
     case '/transaction':
       renderTransactionPage(appContainer)
+      break
+
+    case '/dashboard':
+      renderDashboardPage(appContainer)
       break
 
     default:
