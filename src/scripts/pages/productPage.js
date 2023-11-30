@@ -15,33 +15,32 @@ const renderProductPage = (container) => {
   ]
 
   container.innerHTML = `
-  <header class="prod-header">
-  <div class="prod-app-bar">
-      <div class="prod-app-bar-title">
-          <img src="${appIcon}" alt="SimpleBiz Icons">
-          <h1 class="prod-app-title">SimpleBiz</h1>
-      </div>
-      <div class="prod-menu-icon">
-          <svg class="material-icons" width="36" height="36" viewBox="0 0 24 24">
-              <path fill="#3d5a80" d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"></path>
-          </svg>
-      </div>
-      <nav id="productDrawer" class="prod-nav">
-          <ul class="prod-nav-list">
-              <li class="nav-item"><a href="/product">Produk</a></li>
-              <li class="nav-item"><a href="/cart">Keranjang</a></li>
-              <li class="nav-item"><a href="/transaction">Transaksi</a></li>
-              <li class="nav-item prod-user-button">
-                  <button>
-                      <img src="${userIcon}" alt="User Profile">
-                      <span>Nama User</span>
-                  </button>
-              </li>
-          </ul>
-      </nav>
-  </div>
-</header>
-
+        <header class="prod-header">
+            <div class="prod-app-bar">
+                <div class="prod-app-bar-title">
+                    <img src="${appIcon}" alt="SimpleBiz Icons">
+                    <h1 class="prod-app-title">SimpleBiz</h1>
+                </div>
+                <div class="prod-menu-icon">
+                    <svg class="material-icons" width="36" height="36" viewBox="0 0 24 24">
+                        <path fill="#3d5a80" d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"></path>
+                    </svg>
+                </div>
+                <nav id="productDrawer" class="prod-nav">
+                    <ul class="prod-nav-list">
+                        <li class="nav-item"><a href="/product">Produk</a></li>
+                        <li class="nav-item"><a href="/cart">Keranjang</a></li>
+                        <li class="nav-item"><a href="/transaction">Transaksi</a></li>
+                        <li class="nav-item prod-user-button">
+                            <button>
+                                <img src="${userIcon}" alt="User Profile">
+                                <span>Nama User</span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
         <main class="prod-main">
             <div class="prod-side-form">
                 <div class="prod-form-container" id="addForm">
@@ -122,6 +121,26 @@ const renderProductPage = (container) => {
             </div>
         </footer>
   `
+
+  const menuIcon = container.querySelector('.prod-menu-icon')
+  const navList = container.querySelector('.prod-nav-list')
+  const mainContent = container.querySelector('.prod-main')
+
+  const navItems = container.querySelectorAll('.nav-item a')
+
+  mainContent.addEventListener('click', () => {
+    navList.classList.remove('active')
+  })
+
+  navItems.forEach((navItem) => {
+    navItem.addEventListener('click', () => {
+      navList.classList.remove('active')
+    })
+  })
+
+  menuIcon.addEventListener('click', () => {
+    navList.classList.toggle('active')
+  })
 }
 
 export default renderProductPage

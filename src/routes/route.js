@@ -22,8 +22,12 @@ const renderPage = () => {
       renderTransactionPage(appContainer)
       break
 
-    case '/production':
+    case '/product':
       renderProductPage(appContainer)
+      break
+
+    case '/dashboard':
+      renderDashboardPage(appContainer)
       break
 
     default:

@@ -2,37 +2,37 @@ import '../../styles/dashboard.css'
 
 import appIcon from '../../public/icons/simplebiz-icons.png'
 import userIcon from '../../public/icons/user.svg'
-import productImage from '../../public/icons/produk.jpg'
+import productImage from '../../public/images/produk.jpg'
 import closeIcon from '../../public/icons/close.svg'
 
 const renderDashboardPage = (container) => {
   container.innerHTML = `
-    <header>
-        <div class="app-bar">
-            <div class="app-bar__title">
-                <img src=${appIcon} alt="SimpleBiz Icons">
-                <h1 class="app-title">SimpleBiz</h1>
-            </div>
-            <div class="menu-icon">
-                <svg class="material-icons" width="36" height="36" viewBox="0 0 24 24">
-                    <path fill="#3d5a80" d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"></path>
-                </svg>
-            </div>
-            <nav id="drawer" class="nav">
-                <ul class="nav-list">
-                    <li class="nav-item" id="productPage">Produk</li>
-                    <li class="nav-item" id="reportsPage">Transaksi</li>
-                    <li class="nav-item" id="showCart">Keranjang</li>
-                </ul>
-            </nav>
-            <div class="accountHeader">
+    <header class="dash-header">
+    <div class="dash-app-bar">
+        <div class="dash-app-bar__title">
+            <img src=${appIcon} alt="SimpleBiz Icons">
+            <h1 class="dash-app-title">SimpleBiz</h1>
+        </div>
+        <div class="dash-menu-icon">
+            <svg class="material-icons" width="36" height="36" viewBox="0 0 24 24">
+                <path fill="#3d5a80" d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"></path>
+            </svg>
+        </div>
+        <nav id="dash-drawer" class="dash-nav">
+            <ul class="dash-nav-list">
+                <li class="dash-nav-item" id="dash-productPage">Produk</li>
+                <li class="dash-nav-item" id="dash-reportsPage">Transaksi</li>
+                <li class="dash-nav-item" id="dash-showCart">Keranjang</li>
+            </ul>
+        </nav>
+        <div class="dash-accountHeader">
             <img src=${userIcon} alt="" />
             <p>Nama Akun</p>
-            </div>
         </div>
+    </div>
     </header>
     
-    <main>
+    <main class="dash-main">
     <div class="resourceSection">
       <div class="subInput" id="dateInput">
         <p>Tanggal</p>
@@ -118,16 +118,16 @@ const renderDashboardPage = (container) => {
     </section>
   </main>
     <footer>
-        <div class="footer-content">
+        <div class="dash-footer-content">
             <p>&copy; 2023 Capstone C523-PS036's SimpleBiz Application. All rights reserved.</p>
         </div>
     </footer>
     `
 
   // Fungsionalitas Keranjang
-  const showCartButton = document.getElementById('showCart'); // Tombol Keranjang
-  const cartSection = document.getElementById('cartSection'); // Seluruh Cart
-  const closeCartButton = document.getElementById('closeCart'); // Menutup Cart
+  const showCartButton = document.getElementById('dash-showCart'); // Tombol Keranjang
+  const cartSection = document.getElementById('dash-cartSection'); // Seluruh Cart
+  const closeCartButton = document.getElementById('dash-closeCart'); // Menutup Cart
 
   function openCart() {
     cartSection.classList.add('show');

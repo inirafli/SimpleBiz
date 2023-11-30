@@ -1,6 +1,6 @@
 import '../../styles/transaction.css'
 
-import userIcon from '../../public/icons/profile-icon.png'
+import userIcon from '../../public/icons/user.svg'
 import appIcon from '../../public/icons/simplebiz-icons.png'
 
 const renderTransactionPage = (container) => {

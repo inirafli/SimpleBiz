@@ -355,8 +355,8 @@ footer {
         margin-bottom: 2rem;
     }
 
-    main {
-        margin: 2rem;
+    main.landing-main {
+        margin: 2rem 1.25rem;
     }
 
     .feature-title h2 {
