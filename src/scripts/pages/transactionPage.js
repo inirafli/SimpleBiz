@@ -4,6 +4,7 @@ import userIcon from '../../public/icons/profile-icon.png'
 import appIcon from '../../public/icons/simplebiz-icons.png'
 
 const renderTransactionPage = (container) => {
+  document.body.style.backgroundColor = '#F1F1FF'
   // Mockup data
   const transactionData = [
     {
@@ -42,8 +43,10 @@ const renderTransactionPage = (container) => {
     ],
   }
 
+  document.body.style.backgroundColor = '#F1F1FF'
+
   container.innerHTML = `
-    <header id="main-header">
+    <header id="mainHeader">
         <div class="main-app-bar">
             <div class="main-app-bar-title">
                 <img src=${appIcon} alt="SimpleBiz Icons">
@@ -56,9 +59,9 @@ const renderTransactionPage = (container) => {
             </div>
             <nav id="mainDrawer" class="main-nav">
                 <ul class="main-nav-list">
-                    <li class="nav-item"><a href="#">Produk</a></li>
-                    <li class="nav-item"><a href="#">Keranjang</a></li>
-                    <li class="nav-item"><a href="#">Transaksi</a></li>
+                    <li class="nav-item"><a href="/product">Produk</a></li>
+                    <li class="nav-item"><a href="/cart">Keranjang</a></li>
+                    <li class="nav-item"><a href="/transaction">Transaksi</a></li>
                     <li class="nav-item user-button">
                         <button>
                             <img src=${userIcon} alt="User Profile">

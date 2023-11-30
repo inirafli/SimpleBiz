@@ -5,7 +5,7 @@ import landingImage from '../../public/images/landing-page-image.png'
 
 const renderLandingPage = (container) => {
   container.innerHTML = `
-    <header>
+    <header class="landing-header">
         <div class="app-bar">
             <div class="app-bar__title">
                 <img src=${appIcon} alt="SimpleBiz Icons">
@@ -25,7 +25,7 @@ const renderLandingPage = (container) => {
             </nav>
         </div>
     </header>
-    <main>
+    <main class="landing-main">
         <div class="hero">
             <div class="hero-content">
                 <h1 class="hero-title">Pencatatan Digital untuk UMKM Indonesia</h1>

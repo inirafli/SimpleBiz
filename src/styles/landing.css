@@ -21,7 +21,7 @@ h1, h2, h3, h4, a, button {
     font-family: 'Ubuntu', sans-serif;
 }
 
-header {
+.landing-header {
     position: sticky;
     top: 0;
     background-color: var(--on-secondary);
@@ -86,7 +86,7 @@ nav a {
     color: var(--on-secondary);
 }
 
-main {
+.landing-main {
     margin: 2rem 4rem;
     display: flex;
     flex-flow: column nowrap;

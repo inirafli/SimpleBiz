@@ -21,7 +21,7 @@ h1, h2, h3, h4, a, button {
     font-family: 'Ubuntu', sans-serif;
 }
 
-#main-header {
+#mainHeader {
     position: sticky;
     top: 0;
     background-color: var(--on-secondary);
