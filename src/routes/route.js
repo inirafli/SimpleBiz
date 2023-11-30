@@ -3,6 +3,7 @@ import renderLandingPage from '../scripts/pages/landingPage'
 import renderLoginPage from '../scripts/pages/loginPage'
 import renderTransactionPage from '../scripts/pages/transactionPage'
 import renderProductPage from '../scripts/pages/productPage'
+import renderDashboardPage from '../scripts/pages/dashboardPage'
 
 const renderPage = () => {
   const appContainer = document.querySelector('#app')
