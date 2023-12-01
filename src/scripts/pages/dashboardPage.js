@@ -20,18 +20,19 @@ const renderDashboardPage = (container) => {
         </div>
         <nav id="dash-drawer" class="dash-nav">
             <ul class="dash-nav-list">
-                <li class="dash-nav-item" id="dash-productPage">Produk</li>
-                <li class="dash-nav-item" id="dash-reportsPage">Transaksi</li>
-                <li class="dash-nav-item" id="dash-showCart">Keranjang</li>
+                <li class="dash-nav-item" id="dash-productPage"><a href="/product">Produk</a></li>
+                <li class="dash-nav-item" id="dash-showCart"><a href="/cart">Keranjang</a></li>
+                <li class="dash-nav-item" id="dash-reportsPage"><a href="/transaction">Transaksi</a></li>
+                <li class="dash-nav-item dash-user-button">
+                <button>
+                    <img src="${userIcon}" alt="User Profile">
+                    <span>Nama User</span>
+                </button>
+                </li>
             </ul>
         </nav>
-        <div class="dash-accountHeader">
-            <img src=${userIcon} alt="" />
-            <p>Nama Akun</p>
-        </div>
     </div>
     </header>
-    
     <main class="dash-main">
     <div class="resourceSection">
       <div class="subInput" id="dateInput">
@@ -141,9 +142,9 @@ const renderDashboardPage = (container) => {
   showCartButton.addEventListener('click', openCart);
   closeCartButton.addEventListener('click', hideCart);
 
-  const menuIcon = container.querySelector('.menu-icon')
-  const navList = container.querySelector('.nav-list')
-  const mainContent = container.querySelector('main')
+  const menuIcon = container.querySelector('.dash-menu-icon')
+  const navList = container.querySelector('.dash-nav-list')
+  const mainContent = container.querySelector('dash-main')
 
   const navItems = container.querySelectorAll('.nav-item a')
 
