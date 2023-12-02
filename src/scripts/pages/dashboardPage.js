@@ -21,7 +21,7 @@ const renderDashboardPage = (container) => {
         <nav id="dash-drawer" class="dash-nav">
             <ul class="dash-nav-list">
                 <li class="dash-nav-item" id="dash-productPage"><a href="/product">Produk</a></li>
-                <li class="dash-nav-item" id="dash-showCart"><a href="/cart">Keranjang</a></li>
+                <li class="dash-nav-item" id="dash-showCart">Keranjang</li>
                 <li class="dash-nav-item" id="dash-reportsPage"><a href="/transaction">Transaksi</a></li>
                 <li class="dash-nav-item dash-user-button">
                 <button>
@@ -68,14 +68,14 @@ const renderDashboardPage = (container) => {
       </div>
     </div>
 
-    <section id="cartSection" class="cartSection">
-      <div class="cartHeader">
+    <section id="dash-cartSection" class="dash-cartSection">
+      <div class="dash-cartHeader">
         <p>Keranjang Belanja</p>
-        <img id="closeCart" src=${closeIcon} alt="" />
+        <img id="dash-closeCart" src=${closeIcon} alt="" />
       </div>
 
-      <div class="cartList">
-        <div class="cartItem">
+      <div class="dash-cartList">
+        <div class="dash-cartItem">
           <img src=${productImage} alt="" />
           <div class="detailItem">
             <p id="productName">Nama Produk</p>
@@ -90,7 +90,7 @@ const renderDashboardPage = (container) => {
         </div>
       </div>
 
-      <div class="cartFooter">
+      <div class="dash-cartFooter">
         <div class="totalFooter">
           <p>
             Total Harga :
@@ -144,9 +144,9 @@ const renderDashboardPage = (container) => {
 
   const menuIcon = container.querySelector('.dash-menu-icon')
   const navList = container.querySelector('.dash-nav-list')
-  const mainContent = container.querySelector('dash-main')
+  const mainContent = container.querySelector('.dash-main')
 
-  const navItems = container.querySelectorAll('.nav-item a')
+  const navItems = container.querySelectorAll('.dash-nav-item a')
 
   mainContent.addEventListener('click', () => {
     navList.classList.remove('active')
