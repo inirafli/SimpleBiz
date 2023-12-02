@@ -5,6 +5,8 @@
   --secondary: #98c1d9;
   --on-primary: #000000;
   --on-secondary: #ffffff;
+  --on-third: #6c757d;
+  --on-fourth: #ecf1f3;
 }
 
 * {
@@ -30,7 +32,7 @@ button {
   position: sticky;
   top: 0;
   background-color: var(--on-secondary);
-  z-index: 1000;
+  z-index: 1;
 }
 
 .dash-app-bar {
@@ -119,7 +121,7 @@ button {
 .resourceSection {
   display: flex;
   align-items: center;
-  background-color: var(--first);
+  background-color: var(--primary);
   margin: 20px;
   height: 15vh;
   border-radius: 10px;
@@ -134,7 +136,7 @@ button {
 }
 
 .subInput p {
-  color: var(--white);
+  color: var(--on-secondary);
   margin: 10px;
   font-family: var(--ubuntu);
   font-weight: lighter;
@@ -146,15 +148,15 @@ button {
   height: 4vh;
   padding: 5px;
   margin: 5px;
-  border: 1px solid var(--fourth);
+  border: 1px solid var(--on-fourth);
   border-radius: 10px;
-  border: 0.5px solid var(--first);
-  background-color: var(--white);
+  border: 0.5px solid var(--primary);
+  background-color: var(--on-secondary);
   font-family: var(--ubuntu);
   font-weight: light;
   font-size: 13px;
   text-align: center;
-  color: var(--gray);
+  color: var(--on-third);
   transition: background-color 0.3s; /* Add transition for a smooth effect */
 }
 
@@ -178,9 +180,9 @@ button {
   width: 15vh;
   height: 5vh;
   border-radius: 5px;
-  border: 0.5px solid var(--first);
-  background: var(--white);
-  color: var(--first);
+  border: 0.5px solid var(--primary);
+  background: var(--on-secondary);
+  color: var(--primary);
   font-family: var(--ubuntu);
   font-weight: bold;
   font-size: 15px;
@@ -197,15 +199,15 @@ button {
 #addProduct,
 #searchProduct,
 #checkoutCart {
-  background-color: var(--first);
-  color: var(--white);
+  background-color: var(--primary);
+  color: var(--on-secondary);
 }
 
 #removeProduct:hover,
 #resetCart:hover,
 #resetResource:hover {
   background-color: #e5383b;
-  color: var(--white);
+  color: var(--on-secondary);
   border: none;
 }
 
@@ -236,11 +238,11 @@ button {
   height: auto;
   gap: 15px;
   justify-content: center;
-  background-color: var(--white);
+  background-color: var(--on-secondary);
   border-radius: 15px;
   padding: 15px;
   margin: 10px;
-  box-shadow: 0.5px 0.5px 5px var(--black);
+  box-shadow: 0.5px 0.5px 5px var(--on-primary);
 }
 
 .productImage {
@@ -260,14 +262,14 @@ button {
   font-size: 16px;
   font-weight: bold;
   font-family: var(--ubuntu);
-  color: var(--first);
+  color: var(--primary);
 }
 
 .productDescription h2 {
   text-align: center;
   font-size: 12px;
   font-family: var(--sans);
-  color: var(--gray);
+  color: var(--on-third);
   margin: 5px;
 }
 
@@ -278,7 +280,7 @@ button {
   gap: 10px;
 }
 
-.cartSection {
+.dash-cartSection {
   position: fixed;
   top: 0;
   right: 0;
@@ -292,62 +294,62 @@ button {
   border-radius: 0px 0px 0px 15px;
   -webkit-border-radius: 0px 0px 0px 15px;
   -moz-border-radius: 0px 0px 0px 15px;
-  border: 1.5px ridge var(--first);
+  border: 1.5px ridge var(--primary);
   border-top: none;
   border-right: none;
   transform: translateX(100%);
 }
 
-.cartSection.show {
+.dash-cartSection.show {
   display: block;
   transform: translateX(0%);
 }
 
-.cartHeader {
+.dash-cartHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--second);
+  background-color: var(--secondary);
   height: 7vh;
-  border-bottom: 1.5px solid var(--first);
+  border-bottom: 1.5px solid var(--primary);
 }
 
-.cartHeader p {
-  color: var(--first);
+.dash-cartHeader p {
+  color: var(--primary);
   font-size: 15px;
   font-family: var(--ubuntu);
   font-weight: bold;
   margin-left: 10px;
 }
 
-.cartHeader img {
+.dash-cartHeader img {
   width: 20px;
-  border: 1.4px solid var(--first);
+  border: 1.4px solid var(--primary);
   border-radius: 50%;
   margin-right: 10px;
-  background-color: var(--white);
+  background-color: var(--on-secondary);
 }
 
-.cartHeader img:active {
+.dash-cartHeader img:active {
   transition: all 350ms;
   transform: scale(0.8);
 }
 
-.cartList {
+.dash-cartList {
   max-height: 40%;
   overflow-y: auto;
 }
 
-.cartItem {
+.dash-cartItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--white);
+  background-color: var(--on-secondary);
   height: 10vh;
-  border-bottom: 1px solid var(--first);
+  border-bottom: 1px solid var(--primary);
 }
 
-.cartItem img {
+.dash-cartItem img {
   width: 7vh;
   height: 7vh;
   object-fit: fill;
@@ -362,7 +364,7 @@ button {
   font-size: 14px;
   font-family: var(--ubuntu);
   font-weight: bold;
-  color: var(--first);
+  color: var(--primary);
   width: 50%;
 }
 
@@ -370,7 +372,7 @@ button {
   font-size: 12px;
   font-family: var(--sans);
   font-weight: bold;
-  color: var(--gray);
+  color: var(--on-third);
 }
 
 .quantityItem {
@@ -379,15 +381,15 @@ button {
   font-size: 14px;
   font-family: var(--ubuntu);
   font-weight: bold;
-  color: var(--first);
+  color: var(--primary);
   width: 20%;
 }
 
-.cartFooter {
+.dash-cartFooter {
   display: flex;
   flex-direction: column;
-  background-color: var(--second);
-  border-top: 1.5px solid var(--first);
+  background-color: var(--secondary);
+  border-top: 1.5px solid var(--primary);
   height: 50%;
   border-radius: 0px 0px 0px 15px;
   -webkit-border-radius: 0px 0px 0px 15px;
@@ -399,13 +401,13 @@ button {
   justify-content: space-around;
   align-items: center;
   padding: 10px;
-  color: var(--first);
+  color: var(--primary);
   font-size: 15px;
   font-family: var(--ubuntu);
   font-weight: bold;
   margin-left: 10px;
   margin-right: 10px;
-  border-bottom: 1px solid var(--first);
+  border-bottom: 1px solid var(--primary);
 }
 
 .paymentFooter {
@@ -413,13 +415,13 @@ button {
   justify-content: space-evenly;
   align-items: center;
   padding: 10px;
-  color: var(--first);
+  color: var(--primary);
   font-size: 15px;
   font-family: var(--ubuntu);
   font-weight: bold;
   margin-left: 10px;
   margin-right: 10px;
-  border-bottom: 1px solid var(--first);
+  border-bottom: 1px solid var(--primary);
 }
 
 .buttonFooter {
@@ -526,7 +528,7 @@ button {
     display: grid;
   }
 
-  .cartSection {
+  .dash-cartSection {
     width: 90%;
   }
 }
