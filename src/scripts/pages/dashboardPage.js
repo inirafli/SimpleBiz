@@ -21,7 +21,7 @@ const renderDashboardPage = (container) => {
         <nav id="dash-drawer" class="dash-nav">
             <ul class="dash-nav-list">
                 <li class="dash-nav-item" id="dash-productPage"><a href="/product">Produk</a></li>
-                <li class="dash-nav-item" id="dash-showCart">Keranjang</li>
+                <li class="dash-nav-item" id="dash-showCart"><a href="#">Keranjang</a></li>
                 <li class="dash-nav-item" id="dash-reportsPage"><a href="/transaction">Transaksi</a></li>
                 <li class="dash-nav-item dash-user-button">
                 <button>
