@@ -78,8 +78,7 @@ button {
   color: var(--primary);
 }
 
-.dash-nav a,
-#dash-showCart {
+.dash-nav a {
   color: var(--on-primary);
   padding: 14px 28px;
   font-weight: 500;
@@ -88,11 +87,6 @@ button {
   text-decoration: none;
   cursor: pointer;
 }
-
-/* #dash-showCart {
-  font-weight: bold;
-} */
-
 .dash-nav-list .dash-user-button {
   display: flex;
   align-items: center;
@@ -472,8 +466,7 @@ button {
     padding: 14px 0;
   }
 
-  nav a,
-  #dash-showCart {
+  nav a {
     width: 100%;
     text-align: left;
   }
@@ -501,13 +494,15 @@ button {
     margin: 4rem 2rem;
   }
 
+  .dash-cartSection {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 980px) {
   .resourceSection {
     display: flex;
     flex-direction: column;
-  }
-
-  .dash-cartSection {
-    width: 70%;
   }
 
   .buttonResource {
@@ -576,8 +571,7 @@ button {
   }
 
   .dash-nav a,
-  .dash-nav .user-button button,
-  #dash-showCart {
+  .dash-nav .user-button button {
     font-size: 1rem;
   }
 
