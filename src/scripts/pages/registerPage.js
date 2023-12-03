@@ -1,30 +1,35 @@
-/* eslint-disable comma-dangle */
-/* eslint-disable quotes */
-/* eslint-disable no-alert */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-use-before-define */
 // Firebase configuration
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import "../../styles/register.css";
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import '../../styles/register.css';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD-257W-Nx6uUc5DaYy4BcO-IpYi5U-Si0",
-  authDomain: "simplebiz-app.firebaseapp.com",
-  projectId: "simplebiz-app",
-  storageBucket: "simplebiz-app.appspot.com",
-  messagingSenderId: "118223900259",
-  appId: "1:118223900259:web:692ae3f4162a406953f256",
+  //   apiKey:
 };
 
-// Initialize Firebase
+// Inisialikasi Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const firestore = getFirestore(firebaseApp);
 
 const renderRegisterPage = (container) => {
-  document.body.style.backgroundColor = "#3d5a80";
+  // Function declarations to hoist the functions
+  function handleSignupSuccess(userCredential) {
+    const { user } = userCredential;
+    redirectToLogin();
+  }
+
+  function handleSignupError(error) {
+    console.error('Pendaftaran gagal dilakukan :', error.message);
+    alert('Pendaftaran gagal. Silakan coba lagi.');
+  }
+
+  function redirectToLogin() {
+    window.location.href = '/login';
+  }
+
+  document.body.style.backgroundColor = '#3d5a80';
 
   container.innerHTML = `
     <main id="register-page">
@@ -76,71 +81,59 @@ const renderRegisterPage = (container) => {
     </main>
   `;
 
-  const backButton = document.querySelector("#back");
-  const showPasswordCheck = document.querySelector("#showPassword");
+  const backButton = document.querySelector('#back');
+  const showPasswordCheck = document.querySelector('#showPassword');
 
-  showPasswordCheck.addEventListener("change", () => {
-    const passwordInput = document.getElementById("password");
-    const type = showPasswordCheck.checked ? "text" : "password";
-    passwordInput.setAttribute("type", type);
+  showPasswordCheck.addEventListener('change', () => {
+    const passwordInput = document.getElementById('password');
+    const type = showPasswordCheck.checked ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
   });
 
-  backButton.addEventListener("click", () => {
-    window.history.replaceState(null, null, "/");
-    window.location.href = "/";
+  backButton.addEventListener('click', () => {
+    window.history.replaceState(null, null, '/');
+    window.location.href = '/';
   });
 
-  const registerForm = document.querySelector("#register-form");
+  const registerForm = document.querySelector('#register-form');
 
-  registerForm.addEventListener("submit", async (event) => {
+  registerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const umkm = document.getElementById("umkm").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const name = document.getElementById('name').value;
+    const umkm = document.getElementById('umkm').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
     try {
-      // Create user in Firebase Authentication
+      // Membuat akun pada autentikasi Firebase
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
 
-      // Create user profile in Firestore
-      await setDoc(doc(firestore, "users", userCredential.user.uid), {
+      // Membuat profil user di database Firestore
+      await setDoc(doc(firestore, 'users', userCredential.user.uid), {
         name,
         umkm,
       });
 
-      // Additional actions after successful registration, if needed
-      console.log("User registered successfully:", userCredential);
+      // Console log menampilkan pendaftaran berhasil
+      console.log('Akun berhasil didaftarkan :', userCredential);
 
       handleSignupSuccess(userCredential);
     } catch (error) {
-      // Handle registration errors
-      console.error("Registration failed:", error.message);
-      // Display an error message to the user
-      const errorMessage = document.querySelector(".error-message");
+      // Penanganan kesalahan pada registrasi
+      console.error('Pendaftaran gagal dilakukan :', error.message);
+
+      // Console log menampilkan error
+      const errorMessage = document.querySelector('.error-message');
       errorMessage.textContent = error.message;
+
       handleSignupError(error);
     }
   });
-
-  function handleSignupSuccess(userCredential) {
-    const { user } = userCredential;
-    redirectToLogin();
-  }
-
-  function handleSignupError(error) {
-    console.log(error.message);
-    alert("Sign up failed. Please try again.");
-  }
-
-  function redirectToLogin() {
-    window.location.href = "/login";
-  }
 };
 
 export default renderRegisterPage;
