@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 
 const firebaseConfig = {
-  //   apiKey:
+  // apiKey: 
 };
 
 // Initialize Firebase

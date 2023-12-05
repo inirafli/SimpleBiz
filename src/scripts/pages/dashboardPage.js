@@ -1,9 +1,56 @@
-import '../../styles/dashboard.css'
+import "../../styles/dashboard.css";
 
-import appIcon from '../../public/icons/simplebiz-icons.png'
-import userIcon from '../../public/icons/user.svg'
-import productImage from '../../public/images/produk.jpg'
-import closeIcon from '../../public/icons/close.svg'
+import appIcon from "../../public/icons/simplebiz-icons.png";
+import userIcon from "../../public/icons/user.svg";
+import productImage from "../../public/images/produk.jpg";
+import closeIcon from "../../public/icons/close.svg";
+
+// Import necessary functions from the Firestore module
+import {
+  getFirestore,
+  collection,
+  query,
+  getDocs,
+} from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+const firebaseConfig = {
+  // apiKey: 
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp);
+
+// Define fetchUserProducts outside of renderDashboardPage
+const fetchUserProducts = async (userId) => {
+  console.log("Fetching products for user:", userId);
+  try {
+    const productsRef = collection(db, "users", userId, "products");
+    const q = query(productsRef);
+
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach((doc) => {
+      const productData = doc.data();
+      // console.log("Product Data:", productData);
+    });
+  } catch (error) {
+    console.error("Error fetching user products:", error.message);
+  }
+};
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is signed in:", user.uid);
+    fetchUserProducts(user.uid);
+  } else {
+    console.log("User is signed out");
+    // Handle signed-out state
+  }
+});
 
 const renderDashboardPage = (container) => {
   container.innerHTML = `
@@ -123,44 +170,54 @@ const renderDashboardPage = (container) => {
             <p>&copy; 2023 Capstone C523-PS036's SimpleBiz Application. All rights reserved.</p>
         </div>
     </footer>
-    `
+    `;
+
+  // Check if the user is authenticated
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      fetchUserProducts(user.uid);
+    } else {
+      // User is signed out. You may want to handle this case.
+      console.error("User not authenticated");
+    }
+  });
 
   // Fungsionalitas Keranjang
-  const showCartButton = document.getElementById('dash-showCart'); // Tombol Keranjang
-  const cartSection = document.getElementById('dash-cartSection'); // Seluruh Cart
-  const closeCartButton = document.getElementById('dash-closeCart'); // Menutup Cart
+  const showCartButton = document.getElementById("dash-showCart"); // Tombol Keranjang
+  const cartSection = document.getElementById("dash-cartSection"); // Seluruh Cart
+  const closeCartButton = document.getElementById("dash-closeCart"); // Menutup Cart
 
   function openCart() {
-    cartSection.classList.add('show');
+    cartSection.classList.add("show");
   }
 
   function hideCart() {
-    cartSection.classList.remove('show');
+    cartSection.classList.remove("show");
   }
 
   // Membuka dan Menutup Cart
-  showCartButton.addEventListener('click', openCart);
-  closeCartButton.addEventListener('click', hideCart);
+  showCartButton.addEventListener("click", openCart);
+  closeCartButton.addEventListener("click", hideCart);
 
-  const menuIcon = container.querySelector('.dash-menu-icon')
-  const navList = container.querySelector('.dash-nav-list')
-  const mainContent = container.querySelector('.dash-main')
+  const menuIcon = container.querySelector(".dash-menu-icon");
+  const navList = container.querySelector(".dash-nav-list");
+  const mainContent = container.querySelector(".dash-main");
 
-  const navItems = container.querySelectorAll('.dash-nav-item a')
+  const navItems = container.querySelectorAll(".dash-nav-item a");
 
-  mainContent.addEventListener('click', () => {
-    navList.classList.remove('active')
-  })
+  mainContent.addEventListener("click", () => {
+    navList.classList.remove("active");
+  });
 
   navItems.forEach((navItem) => {
-    navItem.addEventListener('click', () => {
-      navList.classList.remove('active')
-    })
-  })
+    navItem.addEventListener("click", () => {
+      navList.classList.remove("active");
+    });
+  });
 
-  menuIcon.addEventListener('click', () => {
-    navList.classList.toggle('active');
-  })
-}
+  menuIcon.addEventListener("click", () => {
+    navList.classList.toggle("active");
+  });
+};
 
-export default renderDashboardPage
+export default renderDashboardPage;
