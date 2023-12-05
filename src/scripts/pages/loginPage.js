@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import "../../styles/login.css";
 
+// Firebase configuration
 const firebaseConfig = {
   // apiKey:
 };

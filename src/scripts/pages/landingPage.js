@@ -1,7 +1,7 @@
-import '../../styles/landing.css'
+import "../../styles/landing.css";
 
-import appIcon from '../../public/icons/simplebiz-icons.png'
-import landingImage from '../../public/images/landing-page-image.png'
+import appIcon from "../../public/icons/simplebiz-icons.png";
+import landingImage from "../../public/images/landing-page-image.png";
 
 const renderLandingPage = (container) => {
   container.innerHTML = `
@@ -95,27 +95,27 @@ const renderLandingPage = (container) => {
             <p>&copy; 2023 Capstone C523-PS036's SimpleBiz Application. All rights reserved.</p>
         </div>
     </footer>
-    `
+    `;
 
-  const menuIcon = container.querySelector('.menu-icon')
-  const navList = container.querySelector('.nav-list')
-  const mainContent = container.querySelector('main')
+  const menuIcon = container.querySelector(".menu-icon");
+  const navList = container.querySelector(".nav-list");
+  const mainContent = container.querySelector("main");
 
-  const navItems = container.querySelectorAll('.nav-item a')
+  const navItems = container.querySelectorAll(".nav-item a");
 
-  mainContent.addEventListener('click', () => {
-    navList.classList.remove('active')
-  })
+  mainContent.addEventListener("click", () => {
+    navList.classList.remove("active");
+  });
 
   navItems.forEach((navItem) => {
-    navItem.addEventListener('click', () => {
-      navList.classList.remove('active')
-    })
-  })
+    navItem.addEventListener("click", () => {
+      navList.classList.remove("active");
+    });
+  });
 
-  menuIcon.addEventListener('click', () => {
-    navList.classList.toggle('active');
-  })
-}
+  menuIcon.addEventListener("click", () => {
+    navList.classList.toggle("active");
+  });
+};
 
-export default renderLandingPage
+export default renderLandingPage;

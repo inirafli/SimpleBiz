@@ -6,18 +6,14 @@ import productImage from "../../public/images/produk.jpg";
 import closeIcon from "../../public/icons/close.svg";
 
 // Import necessary functions from the Firestore module
-import {
-  getFirestore,
-  collection,
-  query,
-  getDocs,
-} from "firebase/firestore";
+import { getFirestore, collection, query, getDocs } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
+//Firebase configuration
 const firebaseConfig = {
-  // apiKey: 
+  // apiKey:
 };
 
 const firebaseApp = initializeApp(firebaseConfig);

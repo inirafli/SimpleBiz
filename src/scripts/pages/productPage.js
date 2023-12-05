@@ -1,5 +1,5 @@
 // Import necessary modules and styles
-import '../../styles/product.css';
+import "../../styles/product.css";
 import {
   getFirestore,
   doc,
@@ -10,20 +10,18 @@ import {
   getDoc,
   collection,
   query,
-} from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-import {
-  getStorage, ref, uploadBytes, getDownloadURL,
-} from 'firebase/storage';
+} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 // Import images
-import appIcon from '../../public/icons/simplebiz-icons.png';
-import userIcon from '../../public/icons/user.svg';
+import appIcon from "../../public/icons/simplebiz-icons.png";
+import userIcon from "../../public/icons/user.svg";
 
-// Firebase configuration
+//Firebase configuration
 const firebaseConfig = {
-  // apiKey: 
+  // apiKey:
 };
 
 // Initialize Firebase
@@ -33,7 +31,7 @@ const auth = getAuth(firebaseApp);
 
 // Define function to fetch user's products
 const fetchUserProducts = async (userId) => {
-  console.log('Fetching products for user:', userId);
+  console.log("Fetching products for user:", userId);
   try {
     const productsRef = collection(db, `users/${userId}/products`);
     const q = query(productsRef);
@@ -45,11 +43,11 @@ const fetchUserProducts = async (userId) => {
     // Sort products alphabetically by name
     products.sort((a, b) => a.name.localeCompare(b.name));
 
-    console.log('User products:', products);
+    console.log("User products:", products);
 
     return products;
   } catch (error) {
-    console.error('Error fetching user products:', error);
+    console.error("Error fetching user products:", error);
     return [];
   }
 };
@@ -61,7 +59,7 @@ let productPageRendered = false;
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
-      console.log('User is signed in:', user.uid);
+      console.log("User is signed in:", user.uid);
 
       // Render the product page only if it hasn't been rendered before
       if (!productPageRendered) {
@@ -70,32 +68,33 @@ onAuthStateChanged(auth, async (user) => {
         productPageRendered = true; // Set the flag to true
       }
     } catch (error) {
-      console.error('Error fetching user products:', error.message);
+      console.error("Error fetching user products:", error.message);
     }
   } else {
-    console.log('User is signed out');
+    console.log("User is signed out");
     // Handle signed-out state
   }
 });
 
 // Function to generate a unique ID for the product
-const generateProductId = () => Math.random().toString(36).substring(2, 15)
-  + Math.random().toString(36).substring(2, 15);
+const generateProductId = () =>
+  Math.random().toString(36).substring(2, 15) +
+  Math.random().toString(36).substring(2, 15);
 
 // Function to add a new product to Firestore
 const addProductToFirestoreOnClick = async () => {
   try {
     // Get the form elements
-    const productNameInput = document.querySelector('#productName');
-    const productPriceInput = document.querySelector('#productPrice');
-    const productImageInput = document.querySelector('#productImage');
+    const productNameInput = document.querySelector("#productName");
+    const productPriceInput = document.querySelector("#productPrice");
+    const productImageInput = document.querySelector("#productImage");
 
     // Get the current user
     const user = auth.currentUser;
 
     // Check if user is authenticated
     if (!user || !user.uid) {
-      console.error('User not authenticated.');
+      console.error("User not authenticated.");
       return;
     }
 
@@ -126,29 +125,44 @@ const addProductToFirestoreOnClick = async () => {
     // Set the document with the new product data
     await setDoc(doc(productsRef, productId), newProductData);
 
-    console.log('Product added successfully!');
+    console.log("Product added successfully!");
 
     // Clear the form fields
-    productNameInput.value = '';
-    productPriceInput.value = '';
-    productImageInput.value = ''; // Clearing file input is a bit tricky due to security reasons
+    productNameInput.value = "";
+    productPriceInput.value = "";
+    productImageInput.value = ""; // Clearing file input is a bit tricky due to security reasons
     const fileInputPlaceholder = document.querySelector(
-      '.file-input-placeholder',
+      ".file-input-placeholder"
     );
-    fileInputPlaceholder.innerHTML = '<p>Masukan Foto</p>';
+    fileInputPlaceholder.innerHTML = "<p>Masukan Foto</p>";
   } catch (error) {
-    console.error('Error adding product  to Firestore:', error);
+    console.error("Error adding product  to Firestore:", error);
   }
 };
 
 // Function to handle addButton click
 const handleAddButtonClick = async () => {
-  await addProductToFirestoreOnClick();
+  try {
+    // Wait for authentication to complete
+    const user = await waitForAuthentication();
 
-  // Fetch and render updated products
-  const updatedProducts = await fetchUserProducts();
-  const prodList = document.querySelector('#prodlist');
-  renderProducts(updatedProducts, prodList);
+    // Check if the user is authenticated
+    if (!user || !user.uid) {
+      console.error("User not authenticated.");
+      return;
+    }
+
+    // Add a user parameter when adding a product
+    await addProductToFirestoreOnClick();
+
+    // Fetch and render updated products
+    const updatedProducts = await fetchUserProducts(user.uid);
+    const prodList = document.querySelector("#prodlist");
+    // Render updated products
+    renderProducts(updatedProducts, prodList);
+  } catch (error) {
+    console.error("Error handling add button click:", error);
+  }
 };
 
 // Function to delete a product from Firestore
@@ -158,9 +172,9 @@ const deleteProductFromFirestore = async (user, productId) => {
     const productRef = doc(db, `users/${userId}/products/${productId}`);
     await deleteDoc(productRef);
 
-    console.log('Product deleted successfully!');
+    console.log("Product deleted successfully!");
   } catch (error) {
-    console.error('Error deleting product from Firestore:', error);
+    console.error("Error deleting product from Firestore:", error);
   }
 };
 
@@ -169,14 +183,14 @@ const updateProductInFirestore = async (
   productId,
   updateProductName,
   updateProductPrice,
-  updateProductImageFile,
+  updateProductImageFile
 ) => {
   try {
     const user = auth.currentUser;
 
     // Check if user is authenticated
     if (!user || !user.uid) {
-      console.error('User not authenticated.');
+      console.error("User not authenticated.");
       return;
     }
 
@@ -198,14 +212,14 @@ const updateProductInFirestore = async (
 
       await updateDoc(productRef, updatedProductData);
 
-      console.log('Product updated successfully!');
+      console.log("Product updated successfully!");
     } else {
       console.error(
-        'Product not found. Check the product ID and Firestore path.',
+        "Product not found. Check the product ID and Firestore path."
       );
     }
   } catch (error) {
-    console.error('Error updating product in Firestore:', error);
+    console.error("Error updating product in Firestore:", error);
   }
 };
 
@@ -217,7 +231,7 @@ const getProductsFromFirestore = async () => {
 
     // Check if the user is authenticated and their UID is available
     if (!user || !user.uid) {
-      console.error('User not authenticated or UID not available.');
+      console.error("User not authenticated or UID not available.");
       // You may want to redirect the user to the login page or take appropriate action
       return [];
     }
@@ -246,23 +260,23 @@ const getProductsFromFirestore = async () => {
       return 0;
     });
 
-    console.log('Products from Firestore:', products);
+    console.log("Products from Firestore:", products);
 
     return products;
   } catch (error) {
-    console.error('Error getting products from Firestore:', error);
+    console.error("Error getting products from Firestore:", error);
     return [];
   }
 };
 
 // Function to render products on the page
 const renderProducts = (products, container) => {
-  container.innerHTML = '';
+  container.innerHTML = "";
 
   // Iterate through products and create HTML elements for each
   products.forEach((product) => {
-    const productCard = document.createElement('div');
-    productCard.classList.add('prod-card');
+    const productCard = document.createElement("div");
+    productCard.classList.add("prod-card");
 
     // Populate product card with product information
     productCard.innerHTML = `
@@ -278,33 +292,34 @@ const renderProducts = (products, container) => {
     container.appendChild(productCard);
 
     // Add event listeners for delete and update buttons if needed
-    const deleteButton = productCard.querySelector('#deleteProduct');
-    const updateProduct = productCard.querySelector('#updateProduct');
+    const deleteButton = productCard.querySelector("#deleteProduct");
+    const updateProduct = productCard.querySelector("#updateProduct");
 
     // Capture user information and define prodList before use
     const user = auth.currentUser;
-    const prodList = document.querySelector('#prodlist');
+    const prodList = document.querySelector("#prodlist");
 
     // Event listener for delete button
-    deleteButton.addEventListener('click', async () => {
+    deleteButton.addEventListener("click", async () => {
       await deleteProductFromFirestore(user, product.id);
       const updatedProducts = await getProductsFromFirestore();
       renderProducts(updatedProducts, prodList);
     });
 
     // Event listener for update button
-    updateProduct.addEventListener('click', () => {
-      const updateForm = document.querySelector('#updateForm');
-      const updateProductNameInput = updateForm.querySelector('#updateProductName');
+    updateProduct.addEventListener("click", () => {
+      const updateForm = document.querySelector("#updateForm");
+      const updateProductNameInput =
+        updateForm.querySelector("#updateProductName");
       const updateProductPriceInput = updateForm.querySelector(
-        '#updateProductPrice',
+        "#updateProductPrice"
       );
 
       // Update the product ID retrieval to use dataset
       const productIdToUpdate = updateProduct.dataset.id;
 
       if (!productIdToUpdate) {
-        console.error('Product ID not available for update.');
+        console.error("Product ID not available for update.");
         return;
       }
 
@@ -318,22 +333,23 @@ const renderProducts = (products, container) => {
 };
 
 // Function to wait for user authentication to complete
-const waitForAuthentication = () => new Promise((resolve) => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    unsubscribe();
-    resolve(user);
+const waitForAuthentication = () =>
+  new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
   });
-});
 
 // Function to render the product page
 const renderProductPage = async (container, user) => {
-  document.body.style.backgroundColor = '#F1F1F1';
+  document.body.style.backgroundColor = "#F1F1F1";
 
   // Wait for authentication to complete
   const authenticatedUser = await waitForAuthentication();
 
   if (!authenticatedUser) {
-    console.error('User not authenticated.');
+    console.error("User not authenticated.");
     // You may want to redirect the user to the login page or take appropriate action
     return;
   }
@@ -428,13 +444,13 @@ const renderProductPage = async (container, user) => {
     </footer>
   `;
 
-  const prodList = document.querySelector('#prodlist');
-  const addForm = document.querySelector('#addForm');
-  const addButton = addForm.querySelector('#addButton');
-  const updateForm = document.querySelector('#updateForm');
-  const updateButton = updateForm.querySelector('#updateButton');
-  const searchInput = document.querySelector('#searchInput');
-  const searchButton = document.querySelector('#searchButton');
+  const prodList = document.querySelector("#prodlist");
+  const addForm = document.querySelector("#addForm");
+  const addButton = addForm.querySelector("#addButton");
+  const updateForm = document.querySelector("#updateForm");
+  const updateButton = updateForm.querySelector("#updateButton");
+  const searchInput = document.querySelector("#searchInput");
+  const searchButton = document.querySelector("#searchButton");
 
   // Fetch products from Firestore
   const products = await getProductsFromFirestore(user);
@@ -443,31 +459,34 @@ const renderProductPage = async (container, user) => {
   await renderProducts(products, prodList);
 
   // Event listener for the "Tambah" (Add) button
-  addButton.addEventListener('click', handleAddButtonClick);
+  addButton.addEventListener("click", handleAddButtonClick);
 
   // Event listener for the "Cari" (Search) button
-  searchButton.addEventListener('click', async () => {
+  searchButton.addEventListener("click", async () => {
     const searchTerm = searchInput.value;
     const products = await getProductsFromFirestore();
 
     // Filter products based on the search term
-    const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredProducts = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     // Render the filtered products
     renderProducts(filteredProducts, prodList);
   });
 
   // Event listener for the update form submission
-  updateForm.addEventListener('submit', async (event) => {
+  updateForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     // Retrieve values from the update form
-    const updateProductName = updateForm.querySelector('#updateProductName').value;
+    const updateProductName =
+      updateForm.querySelector("#updateProductName").value;
     const updateProductPrice = updateForm.querySelector(
-      '#updateProductPrice',
+      "#updateProductPrice"
     ).value;
     const updateProductImageInput = updateForm.querySelector(
-      '#updateProductImage',
+      "#updateProductImage"
     );
     const updateProductImageFile = updateProductImageInput.files[0];
     const productIdToUpdate = updateForm.dataset.productId;
@@ -477,7 +496,7 @@ const renderProductPage = async (container, user) => {
       productIdToUpdate,
       updateProductName,
       updateProductPrice,
-      updateProductImageFile,
+      updateProductImageFile
     );
 
     // Fetch and render updated products
@@ -485,15 +504,15 @@ const renderProductPage = async (container, user) => {
     renderProducts(updatedProducts, prodList);
 
     // Clear the update form fields
-    updateForm.querySelector('#updateProductName').value = '';
-    updateForm.querySelector('#updateProductPrice').value = '';
-    updateForm.querySelector('#updateProductImage').value = '';
+    updateForm.querySelector("#updateProductName").value = "";
+    updateForm.querySelector("#updateProductPrice").value = "";
+    updateForm.querySelector("#updateProductImage").value = "";
 
     // Clear the file input placeholder for security reasons
     const updateFileInputPlaceholder = document.querySelector(
-      '.file-input-placeholder',
+      ".file-input-placeholder"
     );
-    updateFileInputPlaceholder.innerHTML = '<p>Masukan Foto</p>';
+    updateFileInputPlaceholder.innerHTML = "<p>Masukan Foto</p>";
   });
 };
 
