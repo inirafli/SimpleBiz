@@ -1,10 +1,4 @@
-import "../../styles/dashboard.css";
-import appIcon from "../../public/icons/simplebiz-icons.png";
-import userIcon from "../../public/icons/user.svg";
-import productImage from "../../public/images/produk.jpg";
-import closeIcon from "../../public/icons/close.svg";
-
-// Import necessary functions from the Firestore module
+import '../../styles/dashboard.css';
 import {
   getFirestore,
   doc,
@@ -15,22 +9,38 @@ import {
   getDoc,
   collection,
   query,
+  addDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { initializeApp } from 'firebase/app';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import {
+  getStorage, ref, uploadBytes, getDownloadURL,
+} from 'firebase/storage';
+import appIcon from '../../public/icons/simplebiz-icons.png';
+import userIcon from '../../public/icons/user.svg';
+import productImage from '../../public/images/produk.jpg';
+import closeIcon from '../../public/icons/close.svg';
 
+// Import necessary functions from the Firestore module
 
+const firebaseConfig = {
+  apiKey: 'AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E',
+  authDomain: 'simple-biz-app.firebaseapp.com',
+  projectId: 'simple-biz-app',
+  storageBucket: 'simple-biz-app.appspot.com',
+  messagingSenderId: '168574264567',
+  appId: '1:168574264567:web:c3d1105732948875dd5ff2',
+};
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-// Define fetchUserProducts outside of renderDashboardPage
 const fetchUserProducts = async (userId) => {
-  console.log("Fetching products for user:", userId);
+  console.log('Fetching products for user:', userId);
   try {
-    const productsRef = collection(db, "users", userId, "products");
+    const productsRef = collection(db, 'users', userId, 'products');
     const q = query(productsRef);
 
     const querySnapshot = await getDocs(q);
@@ -38,14 +48,36 @@ const fetchUserProducts = async (userId) => {
     const userProducts = [];
     querySnapshot.forEach((doc) => {
       const productData = doc.data();
-      userProducts.push(productData);
+      const productWithDate = {
+        ...productData,
+        createdAt: productData.createdAt.toDate(), // Assuming createdAt is a Firestore Timestamp field
+      };
+      userProducts.push(productWithDate);
     });
 
     // Return the fetched userProducts without rendering the dashboard
     return userProducts;
   } catch (error) {
-    console.error("Error fetching user products:", error.message);
+    console.error('Error fetching user products:', error.message);
     // Return an empty array or handle the error accordingly
+    return [];
+  }
+};
+
+const filterByDate = async (userId, selectedDate) => {
+  try {
+    // Fetch user products with date information
+    const userProducts = await fetchUserProducts(userId);
+
+    // Filter products based on the selected date
+    const filteredProducts = userProducts.filter((product) => (
+      product.createdAt.toDateString() === new Date(selectedDate).toDateString()
+    ));
+
+    return filteredProducts;
+  } catch (error) {
+    console.error('Error filtering products by date:', error.message);
+    // Handle the error accordingly
     return [];
   }
 };
@@ -56,14 +88,14 @@ let productPageRendered = false;
 // Use a single onAuthStateChanged callback
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    console.log("User is signed in:", user.uid);
+    console.log('User is signed in:', user.uid);
 
     try {
       // Fetch user products without rendering the dashboard
       const userProducts = await fetchUserProducts(user.uid);
 
       // Check if the current page is the dashboard before rendering
-      const isDashboardPage = window.location.pathname === "/dashboard"; // Adjust the path accordingly
+      const isDashboardPage = window.location.pathname === '/dashboard'; // Adjust the path accordingly
 
       if (isDashboardPage && !productPageRendered) {
         // Render the dashboard with the fetched userProducts
@@ -71,11 +103,11 @@ onAuthStateChanged(auth, async (user) => {
         productPageRendered = true;
       }
     } catch (error) {
-      console.error("Error fetching user products:", error.message);
+      console.error('Error fetching user products:', error.message);
       // Handle the error accordingly
     }
   } else {
-    console.log("User is signed out");
+    console.log('User is signed out');
     // Handle signed-out state
   }
 });
@@ -83,7 +115,7 @@ onAuthStateChanged(auth, async (user) => {
 const cartItems = [];
 const addToCart = (product) => {
   // Cek apakah produk sudah ada di keranjang
-  const existingCartItem = cartItems.find(item => item.product.id === product.id);
+  const existingCartItem = cartItems.find((item) => item.product.id === product.id);
 
   if (existingCartItem) {
     // Jika produk sudah ada, tambahkan jumlahnya
@@ -91,7 +123,7 @@ const addToCart = (product) => {
   } else {
     // Jika produk belum ada, tambahkan produk baru ke keranjang
     cartItems.push({
-      product: product,
+      product,
       quantity: 1,
     });
   }
@@ -100,6 +132,8 @@ const addToCart = (product) => {
   updateCartUI(cartItems);
 };
 
+let totalPrice = 0;
+
 // Function to update the cart UI based on the current cart items
 const updateCartUI = (cartItems) => {
   // Logika untuk mengupdate UI berdasarkan cartItems
@@ -107,8 +141,10 @@ const updateCartUI = (cartItems) => {
   dashCartList.innerHTML = '';
 
   // Variable untuk menyimpan total harga dan total produk
-  let totalPrice = 0;
-  let totalProduct = 0;
+let totalProduct = 0;
+
+  // Update the totalPrice variable
+  totalPrice = cartItems.reduce((total, cartItem) => total + cartItem.product.price * cartItem.quantity, 0);
 
   cartItems.forEach((cartItem) => {
     const cartItemDiv = document.createElement('div');
@@ -118,24 +154,24 @@ const updateCartUI = (cartItems) => {
     const itemPrice = cartItem.product.price * cartItem.quantity;
     totalPrice += itemPrice;
     totalProduct += cartItem.quantity;
-      // Mengupdate total harga dan total produk pada UI
-  const totalPriceElement = document.getElementById("totalPrice");
-  const totalProductElement = document.getElementById("totalProduct");
+    // Mengupdate total harga dan total produk pada UI
+    const totalPriceElement = document.getElementById('totalPrice');
+    const totalProductElement = document.getElementById('totalProduct');
 
-  totalPriceElement.textContent = `Rp ${totalPrice}`;
-  totalProductElement.textContent = `Rp ${totalProduct}`;
+    totalPriceElement.textContent = `Rp ${totalPrice}`;
+    totalProductElement.textContent = `Rp ${totalProduct}`;
 
-  // Mengupdate nominal pembayaran dan kembalian pada UI
-  const totalCashInput = document.getElementById("totalCash");
-  const totalChargeElement = document.getElementById("totalCharge");
+    // Mengupdate nominal pembayaran dan kembalian pada UI
+    const totalCashInput = document.getElementById('totalCash');
+    const totalChargeElement = document.getElementById('totalCharge');
 
-  // Event listener untuk menghitung kembalian saat mengubah nominal pembayaran
-  totalCashInput.addEventListener("input", () => {
-    const totalCashValue = parseFloat(totalCashInput.value) || 0;
-    const totalChargeValue = totalCashValue - totalPrice;
+    // Event listener untuk menghitung kembalian saat mengubah nominal pembayaran
+    totalCashInput.addEventListener('input', () => {
+      const totalCashValue = parseFloat(totalCashInput.value) || 0;
+      const totalChargeValue = totalCashValue - totalPrice;
 
-    totalChargeElement.textContent = `Rp ${Math.max(0, totalChargeValue)}`;
-  });
+      totalChargeElement.textContent = `Rp ${Math.max(0, totalChargeValue)}`;
+    });
 
     // Populate cart item container with product information
     cartItemDiv.innerHTML = `
@@ -156,8 +192,8 @@ const updateCartUI = (cartItems) => {
   });
 
   // Mengupdate total harga dan total produk pada UI
-  const totalPriceElement = document.getElementById("totalPrice");
-  const totalProductElement = document.getElementById("totalProduct");
+  const totalPriceElement = document.getElementById('totalPrice');
+  const totalProductElement = document.getElementById('totalProduct');
 
   totalPriceElement.textContent = `Rp ${totalPrice}`;
   totalProductElement.textContent = `Rp ${totalProduct}`;
@@ -165,34 +201,83 @@ const updateCartUI = (cartItems) => {
   // Additional logic to update other UI elements if needed
 };
 
+const decreaseCartItemQuantity = (productId) => {
+  // Find the cart item with the given productId
+  const cartItem = cartItems.find((item) => item.product.id === productId);
 
+  // If the cart item is found and the quantity is greater than 1, decrease the quantity
+  if (cartItem && cartItem.quantity > 1) {
+    cartItem.quantity -= 1;
+  } else {
+    // If the quantity is 1 or the cart item is not found, remove the item from the cart
+    const index = cartItems.findIndex((item) => item.product.id === productId);
+    if (index !== -1) {
+      cartItems.splice(index, 1);
+    }
+  }
+
+  // Update UI to reflect the changes in the cart
+  updateCartUI(cartItems);
+};
 
 const removeProduct = async (productId) => {
   try {
-    const productRef = doc(db, "users", auth.currentUser.uid, "products", productId);
-    await deleteDoc(productRef);
-    console.log("Product successfully removed from the database");
+    // Call the new function to decrease the quantity or remove the item from the cart
+    decreaseCartItemQuantity(productId);
 
-    // Reload the page after successful removal
-    location.reload();
+    console.log('Product quantity decreased in the cart');
+
+    // Additional logic if needed
   } catch (error) {
-    console.error("Error removing product from the database:", error.message);
+    console.error('Error handling product removal:', error.message);
     // Handle the error accordingly
   }
 };
 
+const addTransactionToFirestore = async (userId, cartItems, totalCashValue, totalChargeValue) => {
+  try {
+    const transactionsRef = collection(db, 'users', userId, 'transactions');
+    const date = new Date().toLocaleDateString('en-US');
+    const transactionId = `#WS${Math.floor(100000 + Math.random() * 900000)}`; // Auto-incremented transactionId
+
+    const newTransaction = {
+      date,
+      transactionId,
+      products: cartItems.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+        totalPrice: item.product.price * item.quantity,
+      })),
+      totalQuantity: cartItems.reduce((total, item) => total + item.quantity, 0),
+      totalPayment: totalCashValue,
+      totalCharge: totalChargeValue,
+      timestamp: serverTimestamp(),
+    };
+
+    await addDoc(transactionsRef, newTransaction);
+
+    console.log('Transaction added to Firestore:', newTransaction);
+
+    // Additional logic if needed
+  } catch (error) {
+    console.error('Error adding transaction to Firestore:', error.code, error.message);
+    console.error('Additional details:', error);
+  }
+  
+};
+
 // Function to render products on the dashboard
 const renderDashboardProducts = (products) => {
-  const productSection = document.querySelector(".productSection");
-  const productContainer = productSection.querySelector(".mainProduct");
+  const productSection = document.querySelector('.productSection');
+  const productContainer = productSection.querySelector('.mainProduct');
 
   // Clear previous products
-  productContainer.innerHTML = "";
+  productContainer.innerHTML = '';
 
   // Render each product in the container
   products.forEach((product) => {
-    const productDiv = document.createElement("div");
-    productDiv.classList.add("subProduct");
+    const productDiv = document.createElement('div');
+    productDiv.classList.add('subProduct');
 
     // Populate product container with product information
     productDiv.innerHTML = `
@@ -212,30 +297,30 @@ const renderDashboardProducts = (products) => {
     productContainer.appendChild(productDiv);
 
     // Add event listeners for add and remove buttons if needed
-    const addProductButton = productDiv.querySelector("#addProduct");
-    const removeProductButton = productDiv.querySelector("#removeProduct");
+    const addProductButton = productDiv.querySelector('#addProduct');
+    const removeProductButton = productDiv.querySelector('#removeProduct');
 
     // Add event listener for add product button
-    addProductButton.addEventListener("click", () => {
+    addProductButton.addEventListener('click', () => {
       addToCart(product);
 
       // Check if the cart is not already open, then open it
-      const cartSection = document.getElementById("dash-cartSection");
-      if (!cartSection.classList.contains("show")) {
-      openCart();
+      const cartSection = document.getElementById('dash-cartSection');
+      if (!cartSection.classList.contains('show')) {
+        openCart();
       }
     });
 
     // Add event listener for remove product button
-    removeProductButton.addEventListener("click", () => {
+    removeProductButton.addEventListener('click', () => {
       removeProduct(product.id);
     });
   });
 };
 
 function openCart() {
-  const cartSection = document.getElementById("dash-cartSection");
-  cartSection.classList.add("show");
+  const cartSection = document.getElementById('dash-cartSection');
+  cartSection.classList.add('show');
 }
 const renderDashboardPage = async (container, userProducts) => {
   container.innerHTML = `
@@ -329,113 +414,147 @@ const renderDashboardPage = async (container, userProducts) => {
       </div>
     </footer>
   `;
-  const checkoutCartButton = document.getElementById("checkoutCart");
-  checkoutCartButton.addEventListener("click", () => {
-    const totalCashInput = document.getElementById("totalCash");
+  const checkoutCart = () => {
+    const totalCashInput = document.getElementById('totalCash');
     const totalCashValue = parseFloat(totalCashInput.value) || 0;
-  
+
     // Introduce a slight delay to ensure UI updates are complete
     setTimeout(() => {
-      const totalChargeElement = document.getElementById("totalCharge");
-      const totalChargeValue = parseFloat(totalChargeElement.textContent.replace("Rp ", "")) || 0;
-  
-      // Hanya lanjutkan jika nominal pembayaran cukup
+      const totalChargeElement = document.getElementById('totalCharge');
+      const totalChargeValue = parseFloat(
+        totalChargeElement.textContent.replace('Rp ', ''),
+      ) || 0;
+
+      // Only proceed if the payment amount is sufficient
       if (totalCashValue >= totalPrice) {
-        // Lakukan sesuatu dengan totalCashValue dan totalChargeValue, misalnya simpan ke database atau tampilkan pesan sukses
-        console.log("Pembayaran berhasil!");
-        console.log("Nominal Pembayaran: Rp", totalCashValue);
-        console.log("Kembalian: Rp", totalChargeValue);
-  
-        // Reset keranjang dan UI setelah pembayaran berhasil
+        // Add a new transaction to Firestore
+        addTransactionToFirestore(
+          auth.currentUser.uid,
+          cartItems,
+          totalCashValue,
+          totalChargeValue,
+        );
+
+        // Perform some action with totalCashValue and totalChargeValue
+        console.log('Payment successful!');
+        console.log('Payment Amount: Rp', totalCashValue);
+        console.log('Change: Rp', totalChargeValue);
+
+        // Reset the cart and UI after successful payment
         resetCart();
       } else {
-        // Tampilkan pesan bahwa nominal pembayaran tidak cukup
-        console.log("Nominal Pembayaran tidak cukup!");
+        // Display a message that the payment amount is insufficient
+        console.log('Insufficient Payment Amount!');
       }
     }, 100); // You can adjust the delay as needed
+  };
+
+  const applyResourceButton = document.getElementById('applyResource');
+  const resetResourceButton = document.getElementById('resetResource');
+  const transactionDateInput = document.getElementById('transactionDate');
+
+  applyResourceButton.addEventListener('click', async () => {
+    const selectedDate = transactionDateInput.value;
+
+    try {
+      // Filter products based on the selected date
+      const filteredProducts = await filterByDate(auth.currentUser.uid, selectedDate);
+
+      // Render the dashboard with the filtered products
+      renderDashboardPage(container, filteredProducts);
+    } catch (error) {
+      console.error('Error applying resource filter:', error.message);
+      // Handle the error accordingly
+    }
   });
-  
+
+  resetResourceButton.addEventListener('click', () => {
+    // Reset the resource filter and render all products
+    renderDashboardPage(container, userProducts);
+  });
+
+  // Locate the "Konfirmasi" button
+  const checkoutCartButton = document.getElementById('checkoutCart');
+
+  // Add an event listener to call the checkoutCart function on button click
+  checkoutCartButton.addEventListener('click', checkoutCart);
 
   renderDashboardProducts(userProducts);
 
   // Fungsionalitas Keranjang
-  const showCartButton = document.getElementById("dash-showCart"); // Tombol Keranjang
-  const cartSection = document.getElementById("dash-cartSection"); // Seluruh Cart
-  const closeCartButton = document.getElementById("dash-closeCart"); // Menutup Cart
-  const resetCartButton = document.getElementById("resetCart"); // Tombol Reset
-  resetCartButton.addEventListener("click", resetCart);
+  const showCartButton = document.getElementById('dash-showCart'); // Tombol Keranjang
+  const cartSection = document.getElementById('dash-cartSection'); // Seluruh Cart
+  const closeCartButton = document.getElementById('dash-closeCart'); // Menutup Cart
+  const resetCartButton = document.getElementById('resetCart'); // Tombol Reset
+  resetCartButton.addEventListener('click', resetCart);
 
   function openCart() {
-    cartSection.classList.add("show");
+    cartSection.classList.add('show');
   }
 
   function hideCart() {
-    cartSection.classList.remove("show");
+    cartSection.classList.remove('show');
   }
 
-// Mengubah isi fungsi resetCart
-function resetCart() {
-  console.log("Resetting cart");
+  // Mengubah isi fungsi resetCart
+  function resetCart() {
+    console.log('Resetting cart');
 
-  // Mengosongkan array cartItems
-  cartItems.length = 0;
+    // Mengosongkan array cartItems
+    cartItems.length = 0;
 
-  // Update UI untuk mencerminkan perubahan di keranjang
-  updateCartUI(cartItems);
+    // Update UI untuk mencerminkan perubahan di keranjang
+    updateCartUI(cartItems);
 
-  // Reset total harga dan total produk pada UI
-  const totalPriceElement = document.getElementById("totalPrice");
-  const totalProductElement = document.getElementById("totalProduct");
+    // Reset total harga dan total produk pada UI
+    const totalPriceElement = document.getElementById('totalPrice');
+    const totalProductElement = document.getElementById('totalProduct');
 
-  totalPriceElement.textContent = `Rp 0`;
-  totalProductElement.textContent = `Rp 0`;
+    totalPriceElement.textContent = 'Rp 0';
+    totalProductElement.textContent = 'Rp 0';
 
-  // Reset nominal pembayaran dan kembalian pada UI
-  const totalCashInput = document.getElementById("totalCash");
-  const totalChargeElement = document.getElementById("totalCharge");
+    // Reset nominal pembayaran dan kembalian pada UI
+    const totalCashInput = document.getElementById('totalCash');
+    const totalChargeElement = document.getElementById('totalCharge');
 
-  totalCashInput.value = ""; // Mengosongkan input nominal pembayaran
-  totalChargeElement.textContent = `Rp 0`;
-}
+    totalCashInput.value = ''; // Mengosongkan input nominal pembayaran
+    totalChargeElement.textContent = 'Rp 0';
+  }
 
   // Membuka dan Menutup Cart
-  showCartButton.addEventListener("click", openCart);
-  closeCartButton.addEventListener("click", hideCart);
+  showCartButton.addEventListener('click', openCart);
+  closeCartButton.addEventListener('click', hideCart);
 
-  const menuIcon = container.querySelector(".dash-menu-icon");
-  const navList = container.querySelector(".dash-nav-list");
-  const mainContent = container.querySelector(".dash-main");
+  const menuIcon = container.querySelector('.dash-menu-icon');
+  const navList = container.querySelector('.dash-nav-list');
+  const mainContent = container.querySelector('.dash-main');
 
-  const navItems = container.querySelectorAll(".dash-nav-item a");
+  const navItems = container.querySelectorAll('.dash-nav-item a');
 
-  mainContent.addEventListener("click", () => {
-    navList.classList.remove("active");
+  mainContent.addEventListener('click', () => {
+    navList.classList.remove('active');
   });
 
   navItems.forEach((navItem) => {
-    navItem.addEventListener("click", () => {
-      navList.classList.remove("active");
+    navItem.addEventListener('click', () => {
+      navList.classList.remove('active');
     });
   });
 
-  menuIcon.addEventListener("click", () => {
-    navList.classList.toggle("active");
+  menuIcon.addEventListener('click', () => {
+    navList.classList.toggle('active');
   });
 
   // Function to filter products based on search input
-  const filterProducts = (products, searchText) => {
-    return products.filter((product) =>
-      product.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-  };
+  const filterProducts = (products, searchText) => products.filter((product) => product.name.toLowerCase().includes(searchText.toLowerCase()));
 
   // Function to handle search button click
   const handleSearch = () => {
-    const nameInput = document.getElementById("nameInput");
-    const searchProductButton = document.getElementById("searchProduct");
+    const nameInput = document.getElementById('nameInput');
+    const searchProductButton = document.getElementById('searchProduct');
 
     // Add event listener for search product button
-    searchProductButton.addEventListener("click", async () => {
+    searchProductButton.addEventListener('click', async () => {
       try {
         const searchText = nameInput.value.trim();
 
@@ -448,7 +567,7 @@ function resetCart() {
         // Render the dashboard with the filtered products
         renderDashboardPage(document.body, filteredProducts);
       } catch (error) {
-        console.error("Error handling search:", error.message);
+        console.error('Error handling search:', error.message);
         // Handle the error accordingly
       }
     });
