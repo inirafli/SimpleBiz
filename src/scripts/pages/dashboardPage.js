@@ -128,7 +128,6 @@ const updateCartUI = (cartItems) => {
 
     // Menghitung total harga dan total produk
     const itemPrice = cartItem.product.price * cartItem.quantity;
-    totalPrice += itemPrice;
     totalProduct += cartItem.quantity;
     // Mengupdate total harga dan total produk pada UI
     const totalPriceElement = document.getElementById('totalPrice');
