@@ -25,12 +25,6 @@ import closeIcon from '../../public/icons/close.svg';
 // Import necessary functions from the Firestore module
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E',
-  authDomain: 'simple-biz-app.firebaseapp.com',
-  projectId: 'simple-biz-app',
-  storageBucket: 'simple-biz-app.appspot.com',
-  messagingSenderId: '168574264567',
-  appId: '1:168574264567:web:c3d1105732948875dd5ff2',
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -236,12 +230,17 @@ const removeProduct = async (productId) => {
 
 const addTransactionToFirestore = async (userId, cartItems, totalCashValue, totalChargeValue) => {
   try {
+    // Generate a unique transaction ID based on date and random letters
+    const transactionId = generateTransactionId();
+
     const transactionsRef = collection(db, 'users', userId, 'transactions');
-    const date = new Date().toLocaleDateString('en-US');
-    const transactionId = `#WS${Math.floor(100000 + Math.random() * 900000)}`; // Auto-incremented transactionId
+    const transactionDocRef = doc(transactionsRef, transactionId);
+
+    // Get the current date in the format 'YYYY-MM-DD' in GMT+7
+    const currentDate = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Jakarta' });
 
     const newTransaction = {
-      date,
+      date: currentDate,
       transactionId,
       products: cartItems.map((item) => ({
         productId: item.product.id,
@@ -254,7 +253,7 @@ const addTransactionToFirestore = async (userId, cartItems, totalCashValue, tota
       timestamp: serverTimestamp(),
     };
 
-    await addDoc(transactionsRef, newTransaction);
+    await setDoc(transactionDocRef, newTransaction);
 
     console.log('Transaction added to Firestore:', newTransaction);
 
@@ -263,7 +262,6 @@ const addTransactionToFirestore = async (userId, cartItems, totalCashValue, tota
     console.error('Error adding transaction to Firestore:', error.code, error.message);
     console.error('Additional details:', error);
   }
-  
 };
 
 // Function to render products on the dashboard
