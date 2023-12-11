@@ -6,36 +6,102 @@ import appIcon from '../../public/icons/simplebiz-icons.png'
 const renderTransactionPage = (container) => {
   document.body.style.backgroundColor = '#F1F1FF'
   // Mockup data
+  const documentData = [
+    {
+      date: '01-01-2023',
+      quantity: 5,
+      totalPrice: 'Rp. 25,000',
+    },
+    {
+      date: '02-01-2023',
+      quantity: 5,
+      totalPrice: 'Rp. 25,000',
+    },
+    {
+      date: '03-01-2023',
+      quantity: 5,
+      totalPrice: 'Rp. 75,000',
+    },
+  ]
+
+  // Calculate totalPrice
+  const totalPriceAllProducts = documentData.reduce((total, data) => total + parseInt(data.totalPrice.replace('Rp. ', '').replace(',', ''), 10), 0);
+  const formattedTotalPrice = `Rp. ${totalPriceAllProducts.toLocaleString()}`;
+
   const transactionData = [
     {
-      id: 1, date: '01/01/2023', transactionId: '#WS00281', quantity: 5, totalPrice: 'Rp. 35,000',
+      date: '01-01-2023',
+      productName: 'Biosol',
+      quantity: 5,
+      pricePerUnit: 'Rp. 35,000',
+      totalPrice: 'Rp. 175,000',
     },
     {
-      id: 2, date: '01/01/2023', transactionId: '#WS00282', quantity: 5, totalPrice: 'Rp. 100,000',
+      date: '01-01-2023',
+      productName: 'Biosol',
+      quantity: 3,
+      pricePerUnit: 'Rp. 50,000',
+      totalPrice: 'Rp. 150,000',
     },
     {
-      id: 3, date: '01/01/2023', transactionId: '#WS00283', quantity: 5, totalPrice: 'Rp. 25,000',
+      date: '01-01-2023',
+      productName: 'Biosol',
+      quantity: 3,
+      pricePerUnit: 'Rp. 50,000',
+      totalPrice: 'Rp. 150,000',
     },
     {
-      id: 4, date: '01/01/2023', transactionId: '#WS00284', quantity: 5, totalPrice: 'Rp. 31,000',
+      date: '02-01-2023',
+      productName: 'Lemonade',
+      quantity: 3,
+      pricePerUnit: 'Rp. 50,000',
+      totalPrice: 'Rp. 150,000',
+    },
+    {
+      date: '02-01-2023',
+      productName: 'Lemonade',
+      quantity: 3,
+      pricePerUnit: 'Rp. 50,000',
+      totalPrice: 'Rp. 150,000',
+    },
+    {
+      date: '02-01-2023',
+      productName: 'Lemonade',
+      quantity: 3,
+      pricePerUnit: 'Rp. 50,000',
+      totalPrice: 'Rp. 150,000',
+    },
+    {
+      date: '03-01-2023',
+      productName: 'Gula Putih',
+      quantity: 3,
+      pricePerUnit: 'Rp. 50,000',
+      totalPrice: 'Rp. 150,000',
+    },
+    {
+      date: '03-01-2023',
+      productName: 'Gula Putih',
+      quantity: 3,
+      pricePerUnit: 'Rp. 50,000',
+      totalPrice: 'Rp. 150,000',
     },
   ]
 
   const evaluationData = {
     highestSales: [
       {
-        id: 1, productName: 'Biosol', quantity: 5, totalPrice: 'Rp. 35,000',
+        productName: 'Biosol', quantity: 5, totalPrice: 'Rp. 35,000',
       },
       {
-        id: 2, productName: 'Biosol', quantity: 10, totalPrice: 'Rp. 100,000',
+        productName: 'Biosol', quantity: 10, totalPrice: 'Rp. 100,000',
       },
     ],
     lowestSales: [
       {
-        id: 1, productName: 'Biosol', quantity: 5, totalPrice: 'Rp. 35,000',
+        productName: 'Biosol', quantity: 5, totalPrice: 'Rp. 35,000',
       },
       {
-        id: 2, productName: 'Biosol', quantity: 10, totalPrice: 'Rp. 100,000',
+        productName: 'Biosol', quantity: 10, totalPrice: 'Rp. 100,000',
       },
     ],
     topProduct: [
@@ -85,26 +151,42 @@ const renderTransactionPage = (container) => {
             <div class="table-title">
                 <h2>Laporan Transaksi</h2>
             </div>
-            <table class="transac-table">
+            <table class="transac-table" id="transacTable">
                 <thead>
                     <tr>
-                        <th>No</th>
                         <th>Tanggal</th>
-                        <th>ID Transaksi</th>
                         <th>Jumlah Barang</th>
                         <th>Total Harga</th>
                     </tr>
                 </thead>
                 <tbody>
-                    ${transactionData.map((data) => `
-                        <tr>
-                            <td>${data.id}</td>
+                    ${documentData.map((data) => `
+                        <tr id="transacRow" class='clickable-row'>
                             <td>${data.date}</td>
-                            <td>${data.transactionId}</td>
                             <td>${data.quantity}</td>
                             <td>${data.totalPrice}</td>
                         </tr>
                     `).join('')}
+                        <tr class="summary">
+                            <td class="special-td" colspan="2">Penjualan Semua Produk</td>
+                            <td>${formattedTotalPrice}</td>
+                        </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="transac-content" id="detailTransaction">
+            <div class="table-title">
+                <h2>Laporan Transaksi Produk</h2>
+            </div>
+            <table class="transac-table" id="detailTransacTable">
+                <thead>
+                    <tr>
+                        <th>Nama Barang</th>
+                        <th>Jumlah Barang</th>
+                        <th>Harga Satuan</th>
+                        <th>Total Harga</th>
+                    </tr>
+                </thead><tbody>
                 </tbody>
             </table>
         </div>
@@ -115,7 +197,6 @@ const renderTransactionPage = (container) => {
             <table class="transac-table">
                 <thead>
                     <tr>
-                        <th>No</th>
                         <th>Nama Barang</th>
                         <th>Total Penjualan</th>
                         <th>Total Harga</th>
@@ -123,33 +204,31 @@ const renderTransactionPage = (container) => {
                 </thead>
                 <tbody>
                     <tr class="special-row">
-                        <td colspan="4">Penjualan Tertinggi</td>
+                        <td colspan="3">Penjualan Tertinggi</td>
                     </tr>
                     ${evaluationData.highestSales.map((data) => `
                         <tr>
-                            <td>${data.id}</td>
                             <td>${data.productName}</td>
                             <td>${data.quantity}</td>
                             <td>${data.totalPrice}</td>
                         </tr>
                     `).join('')}
                     <tr class="special-row">
-                        <td colspan="4">Penjualan Terendah</td>
+                        <td colspan="3">Penjualan Terendah</td>
                     </tr>
                     ${evaluationData.lowestSales.map((data) => `
                         <tr>
-                            <td>${data.id}</td>
                             <td>${data.productName}</td>
                             <td>${data.quantity}</td>
                             <td>${data.totalPrice}</td>
                         </tr>
                     `).join('')}
                     <tr class="special-row">
-                        <td colspan="4">Produk Teratas</td>
+                        <td colspan="3">Produk Teratas</td>
                     </tr>
                     ${evaluationData.topProduct.map((data) => `
                         <tr class="summary">
-                            <td class="special-td" colspan="2">${data.type}</td>
+                            <td class="special-td">${data.type}</td>
                             <td>${data.productName}</td>
                             <td>${data.totalPrice}</td>
                         </tr>
@@ -165,9 +244,13 @@ const renderTransactionPage = (container) => {
     </footer>
     `
 
+  const clickableRows = container.querySelectorAll('.clickable-row')
   const menuIcon = container.querySelector('.main-menu-icon')
   const navList = container.querySelector('.main-nav-list')
   const mainContent = container.querySelector('.transac-main')
+  const detailTransacTable = document.getElementById('detailTransaction')
+
+  let lastClickedRow = null;
 
   const navItems = container.querySelectorAll('.nav-item a')
 
@@ -183,6 +266,32 @@ const renderTransactionPage = (container) => {
 
   menuIcon.addEventListener('click', () => {
     navList.classList.toggle('active')
+  })
+
+  clickableRows.forEach((row) => {
+    row.addEventListener('click', () => {
+      const clickedDate = row.querySelector('td:first-child').textContent
+
+      if (lastClickedRow === row) {
+        detailTransacTable.style.display = 'none';
+        lastClickedRow = null;
+      } else {
+        detailTransacTable.style.display = 'flex';
+        lastClickedRow = row;
+      }
+
+      const filteredTransactionData = transactionData.filter((data) => data.date === clickedDate)
+
+      const detailTransacTableBody = document.getElementById('detailTransacTable').querySelector('tbody')
+      detailTransacTableBody.innerHTML = filteredTransactionData.map((data) => `
+          <tr>
+            <td>${data.productName}</td>
+            <td>${data.quantity}</td>
+            <td>${data.pricePerUnit}</td>
+            <td>${data.totalPrice}</td>
+          </tr>
+        `).join('')
+    })
   })
 }
 

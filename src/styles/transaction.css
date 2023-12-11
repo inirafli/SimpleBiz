@@ -13,7 +13,10 @@
     box-sizing: border-box;
 }
 
-body {
+body, #app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -108,10 +111,10 @@ h1, h2, h3, h4, a, button {
 }
 
 .transac-main {
+    flex: 1;
     margin: 2rem 4rem;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
     gap: 2rem;
 }
 
@@ -163,6 +166,21 @@ h1, h2, h3, h4, a, button {
     flex-flow: column nowrap;
 }
 
+#detailTransaction {
+    display: none;
+}
+
+.clickable-row {
+    transition: all .5s ease;
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background-color: var(--primary);
+    color: var(--on-secondary);
+    font-weight: 700;
+}
+
 .table-title {
     display: flex;
     padding: 1.5rem;
@@ -199,7 +217,7 @@ h1, h2, h3, h4, a, button {
 
 .transac-table td {
     font-size: 1.25rem;
-    font-weight: 400;
+    font-weight: 600;
     padding: 2rem 1.25rem;
 }
 
@@ -222,6 +240,7 @@ h1, h2, h3, h4, a, button {
 }
 
 footer {
+    margin-top: auto;
     background-color: var(--primary);
     color: var(--on-secondary);
     padding: 1rem 0;
@@ -348,39 +367,38 @@ footer {
     }
 
     .filter-title {
-        font-size: 1.15rem;
+        font-size: 1rem;
     }
 
     .filter-container input[type="date"] {
-        padding: .75rem;
-        font-size: 1rem;
+        padding: .85rem;
+        font-size: .75rem;
         width: 100%;
     }
 
     .apply-button {
-        padding: .85rem;
+        padding: .65rem;
         width: 100%;
         font-size: 1rem;
     }
 
     .table-title {
-        font-size: .75rem;
+        font-size: .65rem;
         padding: 1rem;
     }
     
     .transac-table th {
-        padding: .75rem .65rem;
-        font-size: .85rem;
+        padding: .6rem .5rem;
+        font-size: .75rem;
     }
     
     .transac-table td {
-        font-size: .75rem;
-        font-weight: 400;
+        font-size: .65rem;
         padding: 1rem .25rem;
     }
     
     .transac-table .special-row td {
-        font-size: .85rem;
+        font-size: .75rem;
     }
     
     .special-row td {

@@ -1,13 +1,13 @@
-import renderLandingPage from "../scripts/pages/landingPage";
+import { getAuth } from 'firebase/auth';
+import renderLandingPage from '../scripts/pages/landingPage';
 import renderRegisterPage from '../scripts/pages/registerPage';
-import renderLoginPage from "../scripts/pages/loginPage";
-import renderTransactionPage from "../scripts/pages/transactionPage";
-import renderProductPage from "../scripts/pages/productPage";
-import renderDashboardPage from "../scripts/pages/dashboardPage";
-import { getAuth } from "firebase/auth";
+import renderLoginPage from '../scripts/pages/loginPage';
+import renderTransactionPage from '../scripts/pages/transactionPage';
+import renderProductPage from '../scripts/pages/productPage';
+import renderDashboardPage from '../scripts/pages/dashboardPage';
 
 const renderPage = () => {
-  const appContainer = document.querySelector("#app");
+  const appContainer = document.querySelector('#app');
   const path = window.location.pathname;
 
   // Initialize the auth variable
@@ -18,19 +18,19 @@ const renderPage = () => {
       renderRegisterPage(appContainer)
       break
 
-    case "/login":
+    case '/login':
       renderLoginPage(appContainer);
       break;
 
-    case "/transaction":
+    case '/transaction':
       renderTransactionPage(appContainer);
       break;
 
-    case "/product":
+    case '/product':
       renderProductPage(appContainer, auth); // Pass the auth variable
       break;
 
-    case "/dashboard":
+    case '/dashboard':
       renderDashboardPage(appContainer);
       break;
 
