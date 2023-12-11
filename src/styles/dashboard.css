@@ -497,6 +497,11 @@ button {
   .dash-cartSection {
     width: 70%;
   }
+
+  .mainProduct {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
 }
 
 @media screen and (max-width: 980px) {
@@ -542,8 +547,7 @@ button {
   }
 
   .mainProduct {
-    width: 100%;
-    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .dash-cartSection {
