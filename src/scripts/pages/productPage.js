@@ -1,5 +1,5 @@
-// Import necessary modules and styles
-import '../../styles/product.css';
+// Import modul dan style yang diperlukan
+import "../../styles/product.css";
 import {
   getFirestore,
   doc,
@@ -10,189 +10,232 @@ import {
   getDoc,
   collection,
   query,
-} from 'firebase/firestore';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { initializeApp } from 'firebase/app';
-import {
-  getStorage, ref, uploadBytes, getDownloadURL,
-} from 'firebase/storage';
+} from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-// Import images
-import appIcon from '../../public/icons/simplebiz-icons.png';
-import userIcon from '../../public/icons/user.svg';
+// Import gambar
+import appIcon from "../../public/icons/simplebiz-icons.png";
+import userIcon from "../../public/icons/user.svg";
 
-// Firebase configuration
+// Konfigurasi Firebase
 const firebaseConfig = {
+  apiKey: "AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E",
+  authDomain: "simple-biz-app.firebaseapp.com",
+  projectId: "simple-biz-app",
+  storageBucket: "simple-biz-app.appspot.com",
+  messagingSenderId: "168574264567",
+  appId: "1:168574264567:web:c3d1105732948875dd5ff2",
 };
 
-// Initialize Firebase
+// Inisialisasi Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-// Define function to fetch user's products
+// Fungsi untuk mengambil produk pengguna dari Firestore
 const fetchUserProducts = async (userId) => {
-  console.log('Fetching products for user:', userId);
+  console.log("Fetching products for user:", userId);
   try {
     const productsRef = collection(db, `users/${userId}/products`);
     const q = query(productsRef);
 
-    // Query the Firestore database for user's products
+    // Mengeksekusi query pada database Firestore untuk produk pengguna
     const querySnapshot = await getDocs(q);
     const products = querySnapshot.docs.map((doc) => doc.data());
 
-    // Sort products alphabetically by name
+    // Mengurutkan produk dalam alfabet berdasarkan nama
     products.sort((a, b) => a.name.localeCompare(b.name));
 
-    console.log('User products:', products);
+    console.log("User products:", products);
 
     return products;
   } catch (error) {
-    console.error('Error fetching user products:', error);
+    console.error("Error fetching user products:", error);
     return [];
   }
 };
 
-// Flag to check if the product page has been rendered
+// Flag untuk memeriksa apakah halaman produk telah dirender
 let productPageRendered = false;
 
-// Firebase authentication state change listener
+// Listener perubahan status autentikasi Firebase
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
-      console.log('User is signed in:', user.uid);
+      console.log("User is signed in:", user.uid);
 
-      // Render the product page only if it hasn't been rendered before
+      // Merender halaman produk hanya jika belum pernah dirender sebelumnya
       if (!productPageRendered) {
         const products = await fetchUserProducts(user.uid);
-        renderProductPage(products, user); // Pass the authenticated user
-        productPageRendered = true; // Set the flag to true
+        renderProductPage(products, user); // Mengirim pengguna yang terotentikasi
+        productPageRendered = true; // Mengatur flag menjadi true
       }
     } catch (error) {
-      console.error('Error fetching user products:', error.message);
+      console.error("Error fetching user products:", error.message);
     }
   } else {
-    console.log('User is signed out');
-    // Handle signed-out state
+    console.log("User is signed out");
+    // Menangani status keluar
   }
 });
 
-// Function to generate a unique ID for the product
-const generateProductId = () => Math.random().toString(36).substring(2, 15)
-  + Math.random().toString(36).substring(2, 15);
+// Fungsi untuk menunggu proses autentikasi pengguna selesai
+const waitForAuthentication = () =>
+  new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
 
+// Percobaan fungsi nama
+const getUserDataFromFirestore = async (userId) => {
+  try {
+    const userDocRef = doc(db, `users/${userId}`);
+    const userDocSnapshot = await getDoc(userDocRef);
+
+    if (userDocSnapshot.exists()) {
+      const userData = userDocSnapshot.data();
+
+      // Check if the 'umkm' field is present
+      if (userData && userData.umkm != null) {
+        return userData;
+      } else {
+        console.error("UMKM field is missing or null in user data.");
+        return null;
+      }
+    } else {
+      console.error("User document not found in Firestore.");
+      return null;
+    }
+  }
+};
+
+// Fungsi untuk menghasilkan ID unik pada produk
+const generateProductId = () =>
+  Math.random().toString(36).substring(2, 15) +
+  Math.random().toString(36).substring(2, 15);
+
+// Fungsi untuk menambahkan produk ke Firestore
 const addProductToFirestoreOnClick = async () => {
   try {
-    // Get the form elements
-    const productNameInput = document.querySelector('#productName');
-    const productPriceInput = document.querySelector('#productPrice');
-    const productImageInput = document.querySelector('#productImage');
+    // Mendapatkan elemen di form
+    const productNameInput = document.querySelector("#productName");
+    const productPriceInput = document.querySelector("#productPrice");
+    const productImageInput = document.querySelector("#productImage");
 
-    // Get the current user
+    // Mendapatkan data pengguna yang mengakses
     const user = auth.currentUser;
 
-    // Check if user is authenticated
+    // Memeriksa autentikasi pengguna
     if (!user || !user.uid) {
-      console.error('User not authenticated.');
+      console.error("User not authenticated.");
       return;
     }
 
     const userId = user.uid;
     const productId = generateProductId();
 
-    // Get the storage reference
+    // Mengatur referensi penyimpanan
     const storage = getStorage(firebaseApp);
     const imageRef = ref(storage, `users/${userId}/products/${productId}`);
 
-    // Upload the image to storage
+    // Mengunggah gambar ke penyimpanan
     await uploadBytes(imageRef, productImageInput.files[0]);
 
-    // Get the download URL of the uploaded image
+    // Mendapatkan URL gambar
     const downloadURL = await getDownloadURL(imageRef);
 
-    // Create product data
-    const jakartaTimezone = 'Asia/Jakarta';
-    const jakartaDate = new Date().toLocaleString('en-US', { timeZone: jakartaTimezone });
-    const createdAt = new Date(jakartaDate); // Set createdAt as a Date object
+    // Membuat data produk
+    const jakartaTimezone = "Asia/Jakarta";
+    const jakartaDate = new Date().toLocaleString("en-US", {
+      timeZone: jakartaTimezone,
+    });
+
+    const createdAt = new Date(jakartaDate); // Mengatur createdAt sebagai objek Date
 
     const newProductData = {
       id: productId,
       name: productNameInput.value,
       price: productPriceInput.value,
       imageSrc: downloadURL,
-      createdAt, // Set createdAt as a Date object
+      createdAt,
     };
 
-    // Get the reference to the products collection
+    // Mengatur referensi ke collection products
     const productsRef = collection(db, `users/${userId}/products`);
 
-    // Set the document with the new product data
+    // Mengatur dokumen dengan data produk baru
     await setDoc(doc(productsRef, productId), newProductData);
 
-    console.log('Product added successfully!');
+    console.log("Product added successfully!");
 
-    // Clear the form fields
-    productNameInput.value = '';
-    productPriceInput.value = '';
-    productImageInput.value = ''; // Clearing file input is a bit tricky due to security reasons
-    const fileInputPlaceholder = document.querySelector('.file-input-placeholder');
-    fileInputPlaceholder.innerHTML = '<p>Masukan Foto</p>';
+    // Mereset elemen pada formulir
+    productNameInput.value = "";
+    productPriceInput.value = "";
+    productImageInput.value = "";
+    const fileInputPlaceholder = document.querySelector(
+      ".file-input-placeholder"
+    );
+    fileInputPlaceholder.innerHTML = "<p>Masukan Foto</p>";
   } catch (error) {
-    console.error('Error adding product to Firestore:', error);
+    console.error("Error adding product to Firestore:", error);
   }
 };
 
-// Function to handle addButton click
+// Fungsi untuk menambahkan produk dengan addButton
 const handleAddButtonClick = async () => {
   try {
-    // Wait for authentication to complete
+    // Menunggu proses otentikasi selesai
     const user = await waitForAuthentication();
 
-    // Check if the user is authenticated
+    // Memeriksa apakah pengguna terotentikasi
     if (!user || !user.uid) {
-      console.error('User not authenticated.');
+      console.error("User not authenticated.");
       return;
     }
 
-    // Add a user parameter when adding a product
+    // Menambahkan parameter pengguna saat menambahkan produk
     await addProductToFirestoreOnClick();
 
-    // Fetch and render updated products
+    // Mengambil dan merender produk yang diperbarui
     const updatedProducts = await fetchUserProducts(user.uid);
-    const prodList = document.querySelector('#prodlist');
-    // Render updated products
+    const prodList = document.querySelector("#prodlist");
+    // Render produk yang diperbarui
     renderProducts(updatedProducts, prodList);
   } catch (error) {
-    console.error('Error handling add button click:', error);
+    console.error("Error handling add button click:", error);
   }
 };
 
-// Function to delete a product from Firestore
+// Fungsi untuk menghapus produk dari Firestore
 const deleteProductFromFirestore = async (user, productId) => {
   try {
     const userId = user.uid;
     const productRef = doc(db, `users/${userId}/products/${productId}`);
     await deleteDoc(productRef);
 
-    console.log('Product deleted successfully!');
+    console.log("Product deleted successfully!");
   } catch (error) {
-    console.error('Error deleting product from Firestore:', error);
+    console.error("Error deleting product from Firestore:", error);
   }
 };
 
-// Function to update a product in Firestore
+// Fungsi untuk memperbarui produk di Firestore
 const updateProductInFirestore = async (
   productId,
   updateProductName,
   updateProductPrice,
-  updateProductImageFile,
+  updateProductImageFile
 ) => {
   try {
     const user = auth.currentUser;
 
-    // Check if user is authenticated
+    // Memeriksa apakah pengguna terotentikasi
     if (!user || !user.uid) {
-      console.error('User not authenticated.');
+      console.error("User not authenticated.");
       return;
     }
 
@@ -214,27 +257,26 @@ const updateProductInFirestore = async (
 
       await updateDoc(productRef, updatedProductData);
 
-      console.log('Product updated successfully!');
+      console.log("Product updated successfully!");
     } else {
       console.error(
-        'Product not found. Check the product ID and Firestore path.',
+        "Product not found. Check the product ID and Firestore path."
       );
     }
   } catch (error) {
-    console.error('Error updating product in Firestore:', error);
+    console.error("Error updating product in Firestore:", error);
   }
 };
 
-// Function to retrieve all products from Firestore and sort them alphabetically
+// Fungsi untuk mengambil semua produk dari Firestore dan menyortirnya secara alfabet
 const getProductsFromFirestore = async () => {
   try {
-    // Obtain the current authenticated user
+    // Mendapatkan pengguna terotentikasi saat ini
     const user = auth.currentUser;
 
-    // Check if the user is authenticated and their UID is available
+    // Memeriksa autentikasi berdasarkan UID pengguna
     if (!user || !user.uid) {
-      console.error('User not authenticated or UID not available.');
-      // You may want to redirect the user to the login page or take appropriate action
+      console.error("User not authenticated or UID not available.");
       return [];
     }
 
@@ -244,12 +286,12 @@ const getProductsFromFirestore = async () => {
 
     const products = [];
 
-    // Iterate through Firestore documents and extract product data
+    // Iterasi melalui dokumen Firestore dan ekstrak data produk
     productsSnapshot.forEach((doc) => {
       products.push(doc.data());
     });
 
-    // Sort products alphabetically by name
+    // Menyortir produk secara alfabetis berdasarkan nama
     products.sort((a, b) => {
       const productNameA = a.name.toUpperCase();
       const productNameB = b.name.toUpperCase();
@@ -262,25 +304,25 @@ const getProductsFromFirestore = async () => {
       return 0;
     });
 
-    console.log('Products from Firestore:', products);
+    console.log("Products from Firestore:", products);
 
     return products;
   } catch (error) {
-    console.error('Error getting products from Firestore:', error);
+    console.error("Error getting products from Firestore:", error);
     return [];
   }
 };
 
-// Function to render products on the page
+// Fungsi untuk merender produk di halaman
 const renderProducts = (products, container) => {
-  container.innerHTML = '';
+  container.innerHTML = "";
 
-  // Iterate through products and create HTML elements for each
+  // Membuat elemen HTML untuk masing-masing produk
   products.forEach((product) => {
-    const productCard = document.createElement('div');
-    productCard.classList.add('prod-card');
+    const productCard = document.createElement("div");
+    productCard.classList.add("prod-card");
 
-    // Populate product card with product information
+    // Isi kartu produk dengan informasi produk
     productCard.innerHTML = `
       <img src="${product.imageSrc}" alt="${product.name}">
       <h2 class="prod-name">${product.name}</h2>
@@ -293,64 +335,56 @@ const renderProducts = (products, container) => {
 
     container.appendChild(productCard);
 
-    // Add event listeners for delete and update buttons if needed
-    const deleteButton = productCard.querySelector('#deleteProduct');
-    const updateProduct = productCard.querySelector('#updateProduct');
+    // Menambahkan eventListener untuk tombol hapus dan perbarui
+    const deleteButton = productCard.querySelector("#deleteProduct");
+    const updateProduct = productCard.querySelector("#updateProduct");
 
-    // Capture user information and define prodList before use
+    // Menangkap informasi pengguna dan menentukan prodList sebelum digunakan
     const user = auth.currentUser;
-    const prodList = document.querySelector('#prodlist');
+    const prodList = document.querySelector("#prodlist");
 
-    // Event listener for delete button
-    deleteButton.addEventListener('click', async () => {
+    // Event Listener untuk tombol hapus
+    deleteButton.addEventListener("click", async () => {
       await deleteProductFromFirestore(user, product.id);
       const updatedProducts = await getProductsFromFirestore();
       renderProducts(updatedProducts, prodList);
     });
 
-    // Event listener for update button
-    updateProduct.addEventListener('click', () => {
-      const updateForm = document.querySelector('#updateForm');
-      const updateProductNameInput = updateForm.querySelector('#updateProductName');
+    // Event Listener untuk tombol perbarui
+    updateProduct.addEventListener("click", () => {
+      const updateForm = document.querySelector("#updateForm");
+      const updateProductNameInput =
+        updateForm.querySelector("#updateProductName");
       const updateProductPriceInput = updateForm.querySelector(
-        '#updateProductPrice',
+        "#updateProductPrice"
       );
 
-      // Update the product ID retrieval to use dataset
+      // Mengambil ID produk untuk menggunakan dataset
       const productIdToUpdate = updateProduct.dataset.id;
 
       if (!productIdToUpdate) {
-        console.error('Product ID not available for update.');
+        console.error("Product ID not available for update.");
         return;
       }
 
       updateProductNameInput.value = product.name;
       updateProductPriceInput.value = product.price;
 
-      // Add product ID to the update form dataset
+      // Menambahkan ID produk ke formulir pembaruan
       updateForm.dataset.productId = productIdToUpdate;
     });
   });
 };
 
-// Function to wait for user authentication to complete
-const waitForAuthentication = () => new Promise((resolve) => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    unsubscribe();
-    resolve(user);
-  });
-});
-
-// Function to render the product page
+// Fungsi untuk merender halaman produk
 const renderProductPage = async (container, user) => {
-  document.body.style.backgroundColor = '#F1F1F1';
+  document.body.style.backgroundColor = "#F1F1F1";
 
-  // Wait for authentication to complete
+  // Menunggu proses autentikasi selesai
   const authenticatedUser = await waitForAuthentication();
 
   if (!authenticatedUser) {
-    console.error('User not authenticated.');
-    // You may want to redirect the user to the login page or take appropriate action
+    console.error("User not authenticated.");
     return;
   }
 
@@ -367,16 +401,16 @@ const renderProductPage = async (container, user) => {
           </svg>
         </div>
         <nav id="productDrawer" class="prod-nav">
-          <ul class="prod-nav-list">
-            <li class="nav-item"><a href="/dashboard">Dashboard</a></li>
-            <li class="nav-item"><a href="/transaction">Transaksi</a></li>
-            <li class="nav-item prod-user-button">
-              <button>
+        <ul class="prod-nav-list">
+        <li class="nav-item"><a href="/dashboard" class="nav-link">Dashboard</a></li>
+        <li class="nav-item"><a href="/transaction" class="nav-link">Transaksi</a></li>
+        <li class="nav-item prod-user-button">
+            <button>
                 <img src="${userIcon}" alt="User Profile">
                 <span>Nama User</span>
-              </button>
-            </li>
-          </ul>
+            </button>
+        </li>
+    </ul>
         </nav>
       </div>
     </header>
@@ -429,6 +463,7 @@ const renderProductPage = async (container, user) => {
           </form>
         </div>
       </div>
+
       <div class="prod-content">
         <div class="search-bar">
           <input type="text" id="searchInput" placeholder="Cari produk...">
@@ -436,6 +471,7 @@ const renderProductPage = async (container, user) => {
         </div>
         <div class="prod-list" id="prodlist"></div>
       </div>
+      
     </main>
     <footer>
       <div class="prod-footer-content">
@@ -444,74 +480,89 @@ const renderProductPage = async (container, user) => {
     </footer>
   `;
 
-  const prodList = document.querySelector('#prodlist');
-  const addForm = document.querySelector('#addForm');
-  const addButton = addForm.querySelector('#addButton');
-  const updateForm = document.querySelector('#updateForm');
-  const updateButton = updateForm.querySelector('#updateButton');
-  const searchInput = document.querySelector('#searchInput');
-  const searchButton = document.querySelector('#searchButton');
+  // Elemen-elemen DOM yang diperlukan dari halaman
+  const prodList = document.querySelector("#prodlist");
+  const addForm = document.querySelector("#addForm");
+  const addButton = addForm.querySelector("#addButton");
+  const updateForm = document.querySelector("#updateForm");
+  const updateButton = updateForm.querySelector("#updateButton");
+  const searchInput = document.querySelector("#searchInput");
+  const searchButton = document.querySelector("#searchButton");
 
-  // Fetch products from Firestore
+  // Mengambil produk dari Firestore
   const products = await getProductsFromFirestore(user);
 
-  // Render products on the page
+  // Merender produk pada halaman
   await renderProducts(products, prodList);
 
-  // Event listener for the "Tambah" (Add) button
-  addButton.addEventListener('click', handleAddButtonClick);
+  // Mendapatkan data pengguna (termasuk nama dari field "umkm")
+  const userData = await getUserDataFromFirestore(user.uid);
 
-  // Event listener for the "Cari" (Search) button
-  searchButton.addEventListener('click', async () => {
+  if (userData) {
+    // Menampilkan nama pengguna di elemen "Nama User"
+    const userNameElement = document.querySelector(".prod-user-button span");
+    userNameElement.textContent = userData.umkm;
+  } else {
+    console.error("Failed to get user data.");
+    return;
+  }
+
+  // Event listener untuk tombol "Tambah"
+  addButton.addEventListener("click", handleAddButtonClick);
+
+  // Event listener untuk tombol "Cari"
+  searchButton.addEventListener("click", async () => {
     const searchTerm = searchInput.value;
     const products = await getProductsFromFirestore();
 
-    // Filter products based on the search term
-    const filteredProducts = products.filter((product) => product.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    // Filter produk berdasarkan kata kunci pencarian
+    const filteredProducts = products.filter((product) =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-    // Render the filtered products
+    // Merender produk yang sudah difilter
     renderProducts(filteredProducts, prodList);
   });
 
-  // Event listener for the update form submission
-  updateForm.addEventListener('submit', async (event) => {
+  // Event listener untuk formulir pembaruan
+  updateForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    // Retrieve values from the update form
-    const updateProductName = updateForm.querySelector('#updateProductName').value;
+    // Dapatkan nilai dari formulir pembaruan
+    const updateProductName =
+      updateForm.querySelector("#updateProductName").value;
     const updateProductPrice = updateForm.querySelector(
-      '#updateProductPrice',
+      "#updateProductPrice"
     ).value;
     const updateProductImageInput = updateForm.querySelector(
-      '#updateProductImage',
+      "#updateProductImage"
     );
     const updateProductImageFile = updateProductImageInput.files[0];
     const productIdToUpdate = updateForm.dataset.productId;
 
-    // Update the product in Firestore
+    // Memperbarui produk di Firestore
     await updateProductInFirestore(
       productIdToUpdate,
       updateProductName,
       updateProductPrice,
-      updateProductImageFile,
+      updateProductImageFile
     );
 
-    // Fetch and render updated products
+    // Ambil dan render produk yang sudah diperbarui
     const updatedProducts = await getProductsFromFirestore(user);
     renderProducts(updatedProducts, prodList);
 
-    // Clear the update form fields
-    updateForm.querySelector('#updateProductName').value = '';
-    updateForm.querySelector('#updateProductPrice').value = '';
-    updateForm.querySelector('#updateProductImage').value = '';
+    // Membersihkan elemen di formulir pembaruan
+    updateForm.querySelector("#updateProductName").value = "";
+    updateForm.querySelector("#updateProductPrice").value = "";
+    updateForm.querySelector("#updateProductImage").value = "";
 
-    // Clear the file input placeholder for security reasons
     const updateFileInputPlaceholder = document.querySelector(
-      '.file-input-placeholder',
+      ".file-input-placeholder"
     );
-    updateFileInputPlaceholder.innerHTML = '<p>Masukan Foto</p>';
+    updateFileInputPlaceholder.innerHTML = "<p>Masukan Foto</p>";
   });
 };
 
-// Export the renderProductPage function as the default export
+// Mengatur fungsi renderProductPage sebagai ekspor default
 export default renderProductPage;
