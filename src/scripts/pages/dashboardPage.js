@@ -25,6 +25,12 @@ import closeIcon from '../../public/icons/close.svg';
 // Import necessary functions from the Firestore module
 
 const firebaseConfig = {
+  apiKey: 'AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E',
+  authDomain: 'simple-biz-app.firebaseapp.com',
+  projectId: 'simple-biz-app',
+  storageBucket: 'simple-biz-app.appspot.com',
+  messagingSenderId: '168574264567',
+  appId: '1:168574264567:web:c3d1105732948875dd5ff2',
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -54,24 +60,6 @@ const fetchUserProducts = async (userId) => {
   } catch (error) {
     console.error('Error fetching user products:', error.message);
     // Return an empty array or handle the error accordingly
-    return [];
-  }
-};
-
-const filterByDate = async (userId, selectedDate) => {
-  try {
-    // Fetch user products with date information
-    const userProducts = await fetchUserProducts(userId);
-
-    // Filter products based on the selected date
-    const filteredProducts = userProducts.filter((product) => (
-      product.createdAt.toDateString() === new Date(selectedDate).toDateString()
-    ));
-
-    return filteredProducts;
-  } catch (error) {
-    console.error('Error filtering products by date:', error.message);
-    // Handle the error accordingly
     return [];
   }
 };
@@ -135,7 +123,7 @@ const updateCartUI = (cartItems) => {
   dashCartList.innerHTML = '';
 
   // Variable untuk menyimpan total harga dan total produk
-let totalProduct = 0;
+  let totalProduct = 0;
 
   // Update the totalPrice variable
   totalPrice = cartItems.reduce((total, cartItem) => total + cartItem.product.price * cartItem.quantity, 0);
@@ -228,32 +216,46 @@ const removeProduct = async (productId) => {
   }
 };
 
-const addTransactionToFirestore = async (userId, cartItems, totalCashValue, totalChargeValue) => {
+const addTransactionToFirestore = async (userId, cartItems, totalCashValue, totalChargeValue, transactionDate) => {
   try {
-    // Generate a unique transaction ID based on date and random letters
-    const transactionId = generateTransactionId();
+    // Generate a unique document ID based on date
+    const documentId = generateDocumentId(transactionDate);
 
     const transactionsRef = collection(db, 'users', userId, 'transactions');
-    const transactionDocRef = doc(transactionsRef, transactionId);
+    const transactionDocRef = doc(transactionsRef, documentId);
 
-    // Get the current date in the format 'YYYY-MM-DD' in GMT+7
-    const currentDate = new Date().toLocaleDateString('en-US', { timeZone: 'Asia/Jakarta' });
+    // Generate a unique transaction ID with 2 random letters
+    const transactionId = generateTransactionId(transactionDate);
 
     const newTransaction = {
-      date: currentDate,
-      transactionId,
       products: cartItems.map((item) => ({
-        productId: item.product.id,
+        productName: item.product.name,
+        price: item.product.price,
         quantity: item.quantity,
         totalPrice: item.product.price * item.quantity,
       })),
-      totalQuantity: cartItems.reduce((total, item) => total + item.quantity, 0),
-      totalPayment: totalCashValue,
-      totalCharge: totalChargeValue,
-      timestamp: serverTimestamp(),
     };
 
-    await setDoc(transactionDocRef, newTransaction);
+    // Retrieve the existing document
+    const existingDoc = await getDoc(transactionDocRef);
+
+    if (existingDoc.exists()) {
+      let updatedTransactions;
+
+      if (existingDoc.data() && existingDoc.data().transactions) {
+        // If the document has a 'transactions' field, update the array with the new transaction
+        updatedTransactions = [...existingDoc.data().transactions, newTransaction];
+      } else {
+        // If the document does not have a 'transactions' field, create a new array
+        updatedTransactions = [newTransaction];
+      }
+
+      // Set the updated data back to Firestore
+      await setDoc(transactionDocRef, { transactions: updatedTransactions });
+    } else {
+      // If the document does not exist, create a new one with the 'transactions' field
+      await setDoc(transactionDocRef, { transactions: [newTransaction] });
+    }
 
     console.log('Transaction added to Firestore:', newTransaction);
 
@@ -263,6 +265,14 @@ const addTransactionToFirestore = async (userId, cartItems, totalCashValue, tota
     console.error('Additional details:', error);
   }
 };
+
+const generateDocumentId = (transactionDate) =>
+  // Use the transactionDate as the document ID
+  transactionDate;
+const generateTransactionId = (transactionDate) =>
+  // Append 2 random letters to the transactionDate
+  `${transactionDate}-${generateRandomLetters(2)}`;
+const generateRandomLetters = (length) => Math.random().toString(36).substring(2, 2 + length);
 
 // Function to render products on the dashboard
 const renderDashboardProducts = (products) => {
@@ -423,14 +433,17 @@ const renderDashboardPage = async (container, userProducts) => {
         totalChargeElement.textContent.replace('Rp ', ''),
       ) || 0;
 
+      console.log('Cart Items:', cartItems);
+
       // Only proceed if the payment amount is sufficient
       if (totalCashValue >= totalPrice) {
-        // Add a new transaction to Firestore
+        // Pass the transactionDate to addTransactionToFirestore
         addTransactionToFirestore(
           auth.currentUser.uid,
           cartItems,
           totalCashValue,
           totalChargeValue,
+          transactionDateInput.value, // Use the value from the transactionDate input field
         );
 
         // Perform some action with totalCashValue and totalChargeValue
@@ -451,20 +464,15 @@ const renderDashboardPage = async (container, userProducts) => {
   const resetResourceButton = document.getElementById('resetResource');
   const transactionDateInput = document.getElementById('transactionDate');
 
-  applyResourceButton.addEventListener('click', async () => {
-    const selectedDate = transactionDateInput.value;
+  // Set the default date to today
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = currentDate.getDate().toString().padStart(2, '0');
+  const formattedDate = `${year}-${month}-${day}`;
 
-    try {
-      // Filter products based on the selected date
-      const filteredProducts = await filterByDate(auth.currentUser.uid, selectedDate);
-
-      // Render the dashboard with the filtered products
-      renderDashboardPage(container, filteredProducts);
-    } catch (error) {
-      console.error('Error applying resource filter:', error.message);
-      // Handle the error accordingly
-    }
-  });
+  // Set the default date in the input field
+  transactionDateInput.value = formattedDate;
 
   resetResourceButton.addEventListener('click', () => {
     // Reset the resource filter and render all products
