@@ -67,6 +67,7 @@ button {
   align-self: center;
   font-size: 1.75rem;
   font-weight: 800;
+  color: var(--on-secondary);
 }
 
 #login-form {

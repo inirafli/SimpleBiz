@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Ubuntu:wght@300&display=swap");
 
 :root {
   /* Colors */
@@ -92,7 +92,7 @@ button {
   font-family: var(--sans);
   font-size: 1rem;
   padding: 14px 28px;
-  font-weight: bold;
+  font-weight: 600;
   border-radius: 12px;
   border: 1px solid var(--primary);
   color: var(--primary);
@@ -114,7 +114,7 @@ button {
 .main-nav a {
   color: var(--on-primary);
   padding: 14px 28px;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 12px;
   font-size: 1.35rem;
   text-align: center;
@@ -136,7 +136,7 @@ button {
   gap: 4px;
   cursor: pointer;
   color: var(--on-primary);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.25rem;
   text-decoration: none;
 }
@@ -170,6 +170,8 @@ button {
 .filter-title {
   font-size: 1.45rem;
   color: var(--on-secondary);
+  font-weight: 600;
+
 }
 
 .filter-container input[type="date"] {
@@ -201,6 +203,7 @@ button {
   font-family: var(--sans);
   font-weight: bold;
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .apply-button:active {
@@ -225,7 +228,6 @@ button {
 .clickable-row:hover {
   background-color: var(--primary);
   color: var(--on-secondary);
-  font-weight: 700;
 }
 
 .table-title {
@@ -259,7 +261,7 @@ button {
   background-color: var(--sub-primary);
   padding: 1.25rem;
   font-family: var(--sans);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.35rem;
 }
 
@@ -276,7 +278,7 @@ button {
 
 .transac-table .special-row td {
   font-family: var(--sans);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .special-row td {
@@ -294,7 +296,7 @@ footer {
   padding: 1rem 0;
   text-align: center;
   font-size: 1.25rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .footer-content {

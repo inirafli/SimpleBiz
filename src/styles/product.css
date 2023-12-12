@@ -88,13 +88,14 @@ button {
   font-family: var(--sans);
   font-size: 1rem;
   padding: 14px 28px;
-  font-weight: bold;
   border-radius: 12px;
   border: 1px solid var(--primary);
   color: var(--primary);
   cursor: pointer;
   transition: background-color 300ms, transform 300ms;
   display: block;
+  font-family: var(--sans);
+  font-weight: 600;
 }
 
 .prod-nav-list .nav-item a.nav-link:hover {
@@ -122,7 +123,7 @@ button {
   gap: 4px;
   cursor: pointer;
   color: var(--on-primary);
-  font-weight: 500;
+  font-weight: 600;
   font-size: 1.25rem;
   text-decoration: none;
   font-family: var(--sans);
@@ -370,7 +371,7 @@ footer p {
   text-align: center;
   font-size: 1.2rem;
   font-family: var(--sans);
-  font-weight: lighter;
+  font-weight: 600;
 }
 
 .prod-footer-content {
@@ -503,7 +504,7 @@ footer p {
   }
 }
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 600px) {
   .prod-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
