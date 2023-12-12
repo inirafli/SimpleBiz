@@ -65,8 +65,11 @@ const fetchUserProducts = async (userId) => {
 // Flag to check if the product page has been rendered
 let productPageRendered = false;
 
-// Use a single onAuthStateChanged callback
-onAuthStateChanged(auth, async (user) => {
+let user; // Define user variable in a global scope
+
+onAuthStateChanged(auth, async (authUser) => {
+  user = authUser; // Store the user in the global variable
+
   if (user) {
     console.log("User is signed in:", user.uid);
 
@@ -91,6 +94,7 @@ onAuthStateChanged(auth, async (user) => {
     // Handle signed-out state
   }
 });
+
 
 
 const cartItems = [];
@@ -364,13 +368,15 @@ const renderDashboardPage = async (container, userProducts) => {
         </div>
         <nav id="dash-drawer" class="dash-nav">
           <ul class="dash-nav-list">
-          <li class="nav-item"><a href="/product" class="nav-link">Produk</a></li>
-          <li class="nav-item"><a href="/transaction" class="nav-link">Transaksi</a></li>
-          <li class="nav-item" id="dash-showCart"><a href="#" class="nav-link">Keranjang</a></li>
-             <button>
-                <img src="${userIcon}" alt="User Profile">
-                <span>Nama User</span>
-            </button>
+            <li class="nav-item"><a href="/product" class="nav-link">Produk</a></li>
+            <li class="nav-item"><a href="/transaction" class="nav-link">Transaksi</a></li>
+            <li class="nav-item" id="dash-showCart"><a href="#" class="nav-link">Keranjang</a></li>
+            <li class="nav-item dash-user-button">
+              <button>
+                  <img src="${userIcon}" alt="User Profile">
+                  <span>Nama User</span>
+              </button>
+            </li>
             </li>
           </ul>
         </nav>
@@ -480,6 +486,36 @@ const renderDashboardPage = async (container, userProducts) => {
   const applyResourceButton = document.getElementById("applyResource");
   const resetResourceButton = document.getElementById("resetResource");
   const transactionDateInput = document.getElementById("transactionDate");
+  
+  const getUserDataFromFirestore = async (userId) => {
+    try {
+      const userDocRef = doc(db, `users/${userId}`);
+      const userDocSnapshot = await getDoc(userDocRef);
+  
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+  
+        // Check if the 'umkm' field is present
+        if (userData && userData.umkm != null) {
+          return userData;
+        }
+      }
+  
+      return null;
+    } catch (error) {
+      return null;
+    }
+  };
+  // Mendapatkan data pengguna (termasuk nama dari field "umkm")
+  const userData = await getUserDataFromFirestore(user.uid);
+
+  if (userData) {
+    // Menampilkan nama pengguna di elemen "Nama User"
+    const userNameElement = document.querySelector(".dash-user-button span");
+    userNameElement.textContent = userData.umkm;
+  } else {
+    return;
+  }
 
   // Set the default date to today
   const currentDate = new Date();
