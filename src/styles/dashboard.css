@@ -78,15 +78,33 @@ button {
   color: var(--primary);
 }
 
-.dash-nav a {
-  color: var(--on-primary);
-  padding: 14px 28px;
-  font-weight: 500;
-  border-radius: 12px;
-  font-size: 1.35rem;
-  text-decoration: none;
-  cursor: pointer;
+.dash-nav-list .nav-item {
+  position: relative;
 }
+
+.dash-nav-list .nav-item a.nav-link {
+  font-family: var(--sans);
+  font-size: 1rem;
+  padding: 14px 28px;
+  font-weight: bold;
+  border-radius: 12px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  cursor: pointer;
+  transition: background-color 300ms, transform 300ms;
+  display: block;
+}
+
+.dash-nav-list .nav-item a.nav-link:hover {
+  background-color: var(--primary);
+  color: var(--on-secondary);
+}
+
+.dash-nav-list .nav-item:active {
+  transform: scale(0.9);
+  transition: background-color 300ms, transform 300ms;
+}
+
 .dash-nav-list .dash-user-button {
   display: flex;
   align-items: center;

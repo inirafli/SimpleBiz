@@ -102,16 +102,15 @@ const getUserDataFromFirestore = async (userId) => {
       // Check if the 'umkm' field is present
       if (userData && userData.umkm != null) {
         return userData;
-      } else {
-        console.error("UMKM field is missing or null in user data.");
-        return null;
       }
-    } else {
-      console.error("User document not found in Firestore.");
-      return null;
     }
+    
+    return null;
+  } catch (error) {
+    return null;
   }
 };
+
 
 // Fungsi untuk menghasilkan ID unik pada produk
 const generateProductId = () =>
