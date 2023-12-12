@@ -200,6 +200,8 @@ main.prod-main {
   width: 50%;
   font-size: 1.25rem;
   font-weight: 600;
+  color: var(--primary);
+
 }
 
 .prod-form-group input,

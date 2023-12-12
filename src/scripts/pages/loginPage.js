@@ -40,8 +40,6 @@ const redirectToDashboard = () => {
 };
 
 const renderLoginPage = (container) => {
-  document.body.style.backgroundColor = "#3d5a80";
-
   container.innerHTML = `
     <main id="login-page">
         <button id="back" class="back-button" type="button">

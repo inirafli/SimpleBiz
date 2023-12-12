@@ -28,7 +28,6 @@ h4,
 a,
 button {
   font-family: var(--ubuntu);
-  color: var(--on-secondary);
 }
 
 #login-page {
