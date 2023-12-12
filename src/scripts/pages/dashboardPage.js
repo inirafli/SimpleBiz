@@ -476,6 +476,8 @@ const renderDashboardPage = async (container, userProducts) => {
   
         // Reset the cart and UI after successful payment
         resetCart();
+        // Hide cart
+        hideCart();
       } else {
         // Display a message based on the conditions
         if (cartItems.length === 0) {
