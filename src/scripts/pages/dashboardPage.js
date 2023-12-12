@@ -449,17 +449,17 @@ const renderDashboardPage = async (container, userProducts) => {
   const checkoutCart = () => {
     const totalCashInput = document.getElementById("totalCash");
     const totalCashValue = parseFloat(totalCashInput.value) || 0;
-
+  
     // Introduce a slight delay to ensure UI updates are complete
     setTimeout(() => {
       const totalChargeElement = document.getElementById("totalCharge");
       const totalChargeValue =
         parseFloat(totalChargeElement.textContent.replace("Rp ", "")) || 0;
-
+  
       console.log("Cart Items:", cartItems);
-
+  
       // Only proceed if the payment amount is sufficient
-      if (totalCashValue >= totalPrice) {
+      if (totalCashValue >= totalPrice && cartItems.length > 0) {
         // Pass the transactionDate to addTransactionToFirestore
         addTransactionToFirestore(
           auth.currentUser.uid,
@@ -468,17 +468,24 @@ const renderDashboardPage = async (container, userProducts) => {
           totalChargeValue,
           transactionDateInput.value // Use the value from the transactionDate input field
         );
-
+  
         // Perform some action with totalCashValue and totalChargeValue
         console.log("Payment successful!");
         console.log("Payment Amount: Rp", totalCashValue);
         console.log("Change: Rp", totalChargeValue);
-
+  
         // Reset the cart and UI after successful payment
         resetCart();
       } else {
-        // Display a message that the payment amount is insufficient
-        console.log("Insufficient Payment Amount!");
+        // Display a message based on the conditions
+        if (cartItems.length === 0) {
+          console.log("Error: Cart is empty. Add products to the cart before proceeding.");
+        } else if (totalCashValue < totalPrice) {
+          console.log("Error: Insufficient Payment Amount! Please provide sufficient cash.");
+        } else {
+          // Handle other conditions if needed
+          console.log("Error: Payment could not be processed. Check the cart and payment amount.");
+        }
       }
     }, 100); // You can adjust the delay as needed
   };
