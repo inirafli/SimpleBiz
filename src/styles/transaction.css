@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap");
+
 :root {
   /* Colors */
   --primary: #3d5a80;
@@ -5,6 +7,8 @@
   --secondary: #98c1d9;
   --on-primary: #000000;
   --on-secondary: #ffffff;
+  --ubuntu: "Ubuntu", sans-serif;
+  --sans: "Open Sans", sans-serif;
 }
 
 * {
@@ -18,7 +22,7 @@ body,
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--sans);
 }
 
 h1,
@@ -27,7 +31,7 @@ h3,
 h4,
 a,
 button {
-  font-family: "Ubuntu", sans-serif;
+  font-family: var(--ubuntu);
 }
 
 #mainHeader {
@@ -113,7 +117,7 @@ button {
   font-weight: 500;
   border-radius: 12px;
   font-size: 1.35rem;
-    text-align: center;
+  text-align: center;
   text-decoration: none;
 }
 
@@ -155,6 +159,7 @@ button {
 .filter-container {
   display: flex;
   align-items: center;
+  justify-content: left;
   background-color: var(--primary);
   padding: 2rem;
   gap: 2rem;
@@ -172,27 +177,35 @@ button {
   border: 1px solid var(--on-primary);
   border-radius: 6px;
   background-color: var(--on-secondary);
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--sans);
   font-size: 1.15rem;
   width: 260px;
 }
 
 .filter-container span {
   font-size: 3rem;
-  font-family: "Ubuntu", sans-serif;
+  font-family: var(--ubuntu);
   font-weight: 800;
   color: var(--on-secondary);
 }
 
 .apply-button {
   padding: 12px 24px;
+  margin-top: auto;
+  margin-bottom: auto;
   background-color: var(--on-secondary);
   color: var(--primary);
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-family: var(--sans);
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.apply-button:active {
+  transform: scale(0.9);
+  transition: transform 300ms;
 }
 
 .transac-content {
@@ -245,7 +258,7 @@ button {
 .transac-table th {
   background-color: var(--sub-primary);
   padding: 1.25rem;
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--sans);
   font-weight: 700;
   font-size: 1.35rem;
 }
@@ -262,7 +275,7 @@ button {
 }
 
 .transac-table .special-row td {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--sans);
   font-weight: 700;
 }
 
@@ -271,7 +284,7 @@ button {
 }
 
 .transac-table .summary td {
-  font-family: "Ubuntu", sans-serif;
+  font-family: var(--sans);
 }
 
 footer {
@@ -401,7 +414,6 @@ footer {
   .main-nav .user-button button {
     font-size: 1rem;
     text-align: center;
-
   }
 
   .filter-title {
@@ -409,15 +421,14 @@ footer {
   }
 
   .filter-container input[type="date"] {
-    padding: 0.85rem;
-    font-size: 0.75rem;
+    padding: 10px;
+    font-size: 12px;
     width: 100%;
   }
 
   .apply-button {
-    padding: 0.65rem;
     width: 100%;
-    font-size: 1rem;
+    font-size: 12px;
   }
 
   .table-title {
@@ -444,7 +455,7 @@ footer {
   }
 
   .transac-table .summary td {
-    font-family: "Ubuntu", sans-serif;
+    font-family: var(--sans);
   }
 
   footer {

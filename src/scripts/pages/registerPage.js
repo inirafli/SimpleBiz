@@ -75,6 +75,18 @@ const renderRegisterPage = (container) => {
   const backButton = document.querySelector("#back");
   const showPasswordCheck = document.querySelector("#showPassword");
 
+  const createUserProfile = async (userId, name, umkm) => {
+    try {
+      // Membuat profil user di database Firestore
+      await setDoc(doc(firestore, "users", userId), {
+        name,
+        umkm,
+      });
+    } catch (error) {
+      console.error("Error creating user profile:", error);
+      throw error;
+    }
+  };
   showPasswordCheck.addEventListener("change", () => {
     const passwordInput = document.getElementById("password");
     const type = showPasswordCheck.checked ? "text" : "password";
@@ -106,10 +118,7 @@ const renderRegisterPage = (container) => {
       );
 
       // Membuat profil user di database Firestore
-      await setDoc(doc(firestore, "users", userCredential.user.uid), {
-        name,
-        umkm,
-      });
+      await createUserProfile(userCredential.user.uid, name, umkm);
 
       // Console log menampilkan pendaftaran berhasil
       console.log("Akun berhasil didaftarkan :", userCredential);

@@ -12,7 +12,7 @@ import {
   where,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // Importing icons for the application
 import appIcon from "../../public/icons/simplebiz-icons.png";
@@ -117,22 +117,49 @@ const handleRowClick = async (row) => {
 };
 
 // Helper function to render detailed transaction rows in the detail table
-const renderDetailTransactionRows = (transactionData) => {
+const renderDetailTransactionRows = (transactions) => {
   const detailTbody = document.querySelector("#detailTransacTable tbody");
   detailTbody.innerHTML = "";
 
-  transactionData.forEach((data) => {
-    data.products.forEach((product) => {
-      const detailRow = document.createElement("tr");
-      detailRow.innerHTML = `
-              <td>${product.productName}</td>
-              <td>${product.quantity}</td>
-              <td>${product.price.toLocaleString()}</td>
-              <td>${product.totalPrice.toLocaleString()}</td>
-          `;
+  // Create a map to store aggregated data for each product on a specific date
+  const productMap = new Map();
 
-      detailTbody.appendChild(detailRow);
+  transactions.forEach((data) => {
+    data.products.forEach((product) => {
+      const productName = product.productName;
+      const quantity = product.quantity || 0;
+      const price = product.price || 0;
+      const totalPrice = product.totalPrice || 0;
+
+      // Create a unique key for each product on a specific date
+      const key = `${data.date}-${productName}`;
+
+      if (!productMap.has(key)) {
+        productMap.set(key, {
+          productName,
+          totalQuantity: quantity,
+          totalPrice,
+          price,
+        });
+      } else {
+        // If the product on the same date already exists, update the quantities and prices
+        productMap.get(key).totalQuantity += quantity;
+        productMap.get(key).totalPrice += totalPrice;
+      }
     });
+  });
+
+  // Iterate through the aggregated data and render the rows
+  productMap.forEach((product) => {
+    const detailRow = document.createElement("tr");
+    detailRow.innerHTML = `
+        <td>${product.productName}</td>
+        <td>${product.totalQuantity}</td>
+        <td>${product.price.toLocaleString()}</td>
+        <td>${product.totalPrice.toLocaleString()}</td>
+    `;
+
+    detailTbody.appendChild(detailRow);
   });
 };
 
@@ -198,6 +225,45 @@ const renderTransactionPage = (container) => {
   // Setting the background color of the body
   document.body.style.backgroundColor = "#F1F1FF";
 
+  // Set up an Auth state listener
+  const authStateListener = onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // If the user is authenticated, fetch and update user data
+      initializePage(user.uid);
+    } else {
+      console.warn("User is not authenticated.");
+    }
+  });
+
+  // Call initializePage when the page loads
+  document.addEventListener("DOMContentLoaded", () => {
+    authStateListener(); // Trigger the listener when the page loads
+  });
+
+  // Helper function to fetch user data and update the UI
+  const initializePage = async (userId) => {
+    try {
+      // Fetching user profile data to get UMKM name
+      const userDoc = await getDoc(doc(db, "users", userId));
+      const umkmName = userDoc.data().umkm;
+
+      // Update the user profile name in the UI
+      updateUserName(umkmName);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  // Call initializePage when the page loads
+  initializePage();
+
+  // Helper function to update the user name in the UI
+  const updateUserName = (umkmName) => {
+    console.log("Updating user name:", umkmName);
+    const userNameElement = document.querySelector(".user-button span");
+    userNameElement.textContent = umkmName;
+  };
+
   // Event handler for the "Terapkan" (Apply) button
   const handleApplyButtonClick = async () => {
     const startDate = document.getElementById("start").value;
@@ -240,75 +306,77 @@ const renderTransactionPage = (container) => {
       transaction.transactionData.flatMap((data) => data.products)
     );
 
-    // Sort products by quantity and transactionTotalPrice in descending order
-    const sortedProducts = allProducts.slice().sort((a, b) => {
-      const aQuantity = a.quantity || 0;
-      const bQuantity = b.quantity || 0;
-      const aTotalPrice = a.totalPrice || 0;
-      const bTotalPrice = b.totalPrice || 0;
+    // Create a map to store aggregated data for each product
+    const productMap = new Map();
 
-      // Sort by quantity in descending order first
-      if (aQuantity !== bQuantity) {
-        return bQuantity - aQuantity;
+    // Iterate through each product and update the aggregated data
+    allProducts.forEach((product) => {
+      const productName = product.productName;
+      const quantity = product.quantity || 0;
+      const totalPrice = product.totalPrice || 0;
+
+      if (!productMap.has(productName)) {
+        productMap.set(productName, { totalQuantity: 0, totalPrice: 0 });
       }
 
-      // If quantity is the same, then sort by transactionTotalPrice in descending order
-      return bTotalPrice - aTotalPrice;
+      productMap.get(productName).totalQuantity += quantity;
+      productMap.get(productName).totalPrice += totalPrice;
     });
 
-    // Take the top 3-5 products
-    const topProducts = sortedProducts.slice(
-      0,
-      Math.min(sortedProducts.length, 5)
+    // Convert the map values to an array for rendering
+    const highestSales = Array.from(productMap.entries()).map(
+      ([productName, data]) => ({
+        productName,
+        totalQuantity: data.totalQuantity,
+        totalPrice: data.totalPrice,
+      })
     );
 
-    // Map products to a format suitable for rendering
-    const highestSales = topProducts.map((product) => ({
-      productName: product.productName,
-      totalQuantity: product.quantity || 0,
-      totalPrice: product.totalPrice || 0,
-    }));
+    // Sort the products by totalQuantity in descending order
+    const sortedProducts = highestSales.sort(
+      (a, b) => b.totalQuantity - a.totalQuantity
+    );
 
-    return highestSales;
+    return sortedProducts;
   };
 
   // Helper function to calculate lowest sales
   const calculateLowestSales = (transactions) => {
-    // Flatten the array of transactions and products
+    // Use the same approach as calculateHighestSales but sort in ascending order
     const allProducts = transactions.flatMap((transaction) =>
       transaction.transactionData.flatMap((data) => data.products)
     );
 
-    // Sort products by quantity and transactionTotalPrice in ascending order
-    const sortedProducts = allProducts.slice().sort((a, b) => {
-      const aQuantity = a.quantity || 0;
-      const bQuantity = b.quantity || 0;
-      const aTotalPrice = a.totalPrice || 0;
-      const bTotalPrice = b.totalPrice || 0;
+    const productMap = new Map();
 
-      // Sort by quantity in ascending order first
-      if (aQuantity !== bQuantity) {
-        return aQuantity - bQuantity;
+    allProducts.forEach((product) => {
+      const productName = product.productName;
+      const quantity = product.quantity || 0;
+      const totalPrice = product.totalPrice || 0;
+
+      if (!productMap.has(productName)) {
+        productMap.set(productName, { totalQuantity: 0, totalPrice: 0 });
       }
 
-      // If quantity is the same, then sort by transactionTotalPrice in ascending order
-      return aTotalPrice - bTotalPrice;
+      productMap.get(productName).totalQuantity += quantity;
+      productMap.get(productName).totalPrice += totalPrice;
     });
 
-    // Take the bottom 3-5 products
-    const bottomProducts = sortedProducts.slice(
-      0,
-      Math.min(sortedProducts.length, 5)
+    // Convert the map values to an array for rendering
+    const lowestSales = Array.from(productMap.entries()).map(
+      ([productName, data]) => ({
+        productName,
+        totalQuantity: data.totalQuantity,
+        totalPrice: data.totalPrice,
+      })
     );
 
-    // Map products to a format suitable for rendering
-    const lowestSales = bottomProducts.map((product) => ({
-      productName: product.productName,
-      totalQuantity: product.quantity || 0,
-      totalPrice: product.totalPrice || 0,
-    }));
+    // Sort the products by totalQuantity in ascending order
+    const sortedProducts = lowestSales.sort(
+      (a, b) => a.totalQuantity - b.totalQuantity
+    );
 
-    return lowestSales;
+    return sortedProducts;
   };
 
   // Populating the container with HTML content
@@ -334,9 +402,9 @@ const renderTransactionPage = (container) => {
                     <li class="nav-item user-button">
                         <!-- User profile button -->
                         <button>
-                            <img src=${userIcon} alt="User Profile">
-                            <span>Nama User</span>
-                        </button>
+                <img src="${userIcon}" alt="User Profile">
+                <span>Nama User</span>
+            </button>
                     </li>
                 </ul>
             </nav>
@@ -376,7 +444,7 @@ const renderTransactionPage = (container) => {
         <!-- Detailed transaction table section -->
         <div class="transac-content" id="detailTransaction">
             <div class="table-title">
-                <h2>Laporan Transaksi Produk</h2>
+                <h2>Detail Transaksi</h2>
             </div>
             <!-- Detailed transaction table structure -->
             <table class="transac-table" id="detailTransacTable">
@@ -396,7 +464,7 @@ const renderTransactionPage = (container) => {
         <!-- Evaluation report section -->
         <div class="transac-content">
             <div class="table-title">
-                <h2>Laporan Evaluasi</h2>
+                <h2>Evaluasi</h2>
             </div>
             <!-- Table structure for evaluation report -->
             <table class="transac-table" id="evaluation-report">
