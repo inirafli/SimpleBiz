@@ -31,7 +31,6 @@ const renderLandingPage = (container) => {
                 <h1 class="hero-title">Pencatatan Digital untuk UMKM Indonesia</h1>
                 <p class="hero-desc">Sederhana. Cepat. Akurat. SimpleBiz adalah solusi pencatatan digital yang mendukung
                     UMKM di Indonesia.</p>
-                <button class="start-note">Mulai Mencatat</button>
             </div>
             <div class="hero-image">
                 <img src=${landingImage} alt="Hero Image">

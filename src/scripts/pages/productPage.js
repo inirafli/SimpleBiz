@@ -104,13 +104,12 @@ const getUserDataFromFirestore = async (userId) => {
         return userData;
       }
     }
-    
+
     return null;
   } catch (error) {
     return null;
   }
 };
-
 
 // Fungsi untuk menghasilkan ID unik pada produk
 const generateProductId = () =>
@@ -201,7 +200,6 @@ const handleAddButtonClick = async () => {
 
     // Mengambil dan merender produk yang diperbarui
     const updatedProducts = await fetchUserProducts(user.uid);
-    const prodList = document.querySelector("#prodlist");
     // Render produk yang diperbarui
     renderProducts(updatedProducts, prodList);
   } catch (error) {
@@ -340,7 +338,6 @@ const renderProducts = (products, container) => {
 
     // Menangkap informasi pengguna dan menentukan prodList sebelum digunakan
     const user = auth.currentUser;
-    const prodList = document.querySelector("#prodlist");
 
     // Event Listener untuk tombol hapus
     deleteButton.addEventListener("click", async () => {
@@ -482,9 +479,9 @@ const renderProductPage = async (container, user) => {
   // Elemen-elemen DOM yang diperlukan dari halaman
   const prodList = document.querySelector("#prodlist");
   const addForm = document.querySelector("#addForm");
-  const addButton = addForm.querySelector("#addButton");
+  const addButton = document.querySelector("#addButton");
   const updateForm = document.querySelector("#updateForm");
-  const updateButton = updateForm.querySelector("#updateButton");
+  const updateButton = document.querySelector("#updateButton");
   const searchInput = document.querySelector("#searchInput");
   const searchButton = document.querySelector("#searchButton");
 
@@ -502,7 +499,6 @@ const renderProductPage = async (container, user) => {
     const userNameElement = document.querySelector(".prod-user-button span");
     userNameElement.textContent = userData.umkm;
   } else {
-    console.error("Failed to get user data.");
     return;
   }
 

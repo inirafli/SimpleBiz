@@ -366,7 +366,7 @@ footer {
 
 footer p {
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-family: var(--sans);
   font-weight: lighter;
 }
@@ -464,6 +464,7 @@ footer p {
   }
 
   .prod-card img {
+  border-radius: 6px;
     height: 180px;
   }
 
@@ -495,7 +496,7 @@ footer p {
     margin: 2rem 1.5rem;
   }
 
-  footer {
+  footer p {
     font-size: 1rem;
   }
 }
@@ -619,7 +620,7 @@ footer p {
 
   .prod-card {
     display: flex;
-    height: 50vh;
+    height: 40vh;
     width: auto;
     flex-flow: column;
     background-color: var(--on-secondary);
@@ -630,8 +631,9 @@ footer p {
 
   .prod-name,
   .prod-price {
-    font-size: 14px;
+    font-size: 12px;
     font-family: var(--sans);
+    margin: 0;
   }
 
   .prod-card img {
@@ -644,6 +646,7 @@ footer p {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0;
   }
 
   .action-button button {
@@ -659,7 +662,7 @@ footer p {
     padding: 5px;
   }
 
-  footer {
-    font-size: 0.75rem;
+  footer p {
+    font-size: 12px;
   }
 }
