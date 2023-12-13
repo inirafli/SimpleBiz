@@ -1,9 +1,9 @@
 // Firebase configuration
-import "../../styles/register.css";
-import { initializeApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-import firebaseConfig from "../common/config";
+import '../../styles/register.css';
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import firebaseConfig from '../common/config';
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -11,7 +11,7 @@ const auth = getAuth(firebaseApp);
 const firestore = getFirestore(firebaseApp);
 
 const renderRegisterPage = (container) => {
-  document.body.style.backgroundColor = "#3d5a80";
+  document.body.style.backgroundColor = '#3d5a80';
 
   container.innerHTML = `
     <main id="register-page">
@@ -63,64 +63,64 @@ const renderRegisterPage = (container) => {
     </main>
   `;
 
-  const backButton = document.querySelector("#back");
-  const showPasswordCheck = document.querySelector("#showPassword");
+  const backButton = document.querySelector('#back');
+  const showPasswordCheck = document.querySelector('#showPassword');
 
   const createUserProfile = async (userId, name, umkm) => {
     try {
       // Membuat profil user di database Firestore
-      await setDoc(doc(firestore, "users", userId), {
+      await setDoc(doc(firestore, 'users', userId), {
         name,
         umkm,
       });
     } catch (error) {
-      console.error("Error creating user profile:", error);
+      console.error('Error creating user profile:', error);
       throw error;
     }
   };
-  showPasswordCheck.addEventListener("change", () => {
-    const passwordInput = document.getElementById("password");
-    const type = showPasswordCheck.checked ? "text" : "password";
-    passwordInput.setAttribute("type", type);
+  showPasswordCheck.addEventListener('change', () => {
+    const passwordInput = document.getElementById('password');
+    const type = showPasswordCheck.checked ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
   });
 
-  backButton.addEventListener("click", () => {
-    window.history.replaceState(null, null, "/");
-    window.location.href = "/";
+  backButton.addEventListener('click', () => {
+    window.history.replaceState(null, null, '/');
+    window.location.href = '/';
   });
 
-  const registerForm = document.querySelector("#register-form");
-  const errorMessage = document.querySelector(".error-message");
+  const registerForm = document.querySelector('#register-form');
+  const errorMessage = document.querySelector('.error-message');
 
-  registerForm.addEventListener("submit", async (event) => {
+  registerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const name = document.getElementById("name").value;
-    const umkm = document.getElementById("umkm").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const name = document.getElementById('name').value;
+    const umkm = document.getElementById('umkm').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
     try {
       // Membuat akun pada autentikasi Firebase
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
-        password
+        password,
       );
 
       // Membuat profil user di database Firestore
       await createUserProfile(userCredential.user.uid, name, umkm);
 
       // Console log menampilkan pendaftaran berhasil
-      console.log("Akun berhasil didaftarkan :", userCredential);
-      errorMessage.style.display = "none";
+      console.log('Akun berhasil didaftarkan :', userCredential);
+      errorMessage.style.display = 'none';
 
       handleSignupSuccess(userCredential);
     } catch (error) {
       // Penanganan kesalahan pada registrasi
-      console.error("Pendaftaran gagal dilakukan :", error.message);
+      console.error('Pendaftaran gagal dilakukan :', error.message);
       // Console log menampilkan error
-      errorMessage.style.display = "block";
+      errorMessage.style.display = 'block';
       errorMessage.textContent = error.message;
       handleSignupError(error);
     }
@@ -133,11 +133,11 @@ const renderRegisterPage = (container) => {
 
   function handleSignupError(error) {
     console.log(error.message);
-    alert("Pendaftaran gagal. Silakan coba lagi.");
+    alert('Pendaftaran gagal. Silakan coba lagi.');
   }
 
   function redirectToLogin() {
-    window.location.href = "/login";
+    window.location.href = '/login';
   }
 };
 

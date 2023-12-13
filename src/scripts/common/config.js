@@ -1,5 +1,5 @@
 const firebaseConfig = {
-  apiKey: 'API_KEY',
+  apiKey: 'AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E',
   authDomain: 'simple-biz-app.firebaseapp.com',
   projectId: 'simple-biz-app',
   storageBucket: 'simple-biz-app.appspot.com',
