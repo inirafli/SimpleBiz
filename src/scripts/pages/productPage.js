@@ -376,8 +376,6 @@ const renderProducts = (products, container) => {
 
 // Fungsi untuk merender halaman produk
 const renderProductPage = async (container, user) => {
-  document.body.style.backgroundColor = "#F1F1F1";
-
   // Menunggu proses autentikasi selesai
   const authenticatedUser = await waitForAuthentication();
 
@@ -486,6 +484,28 @@ const renderProductPage = async (container, user) => {
   const updateButton = updateForm.querySelector("#updateButton");
   const searchInput = document.querySelector("#searchInput");
   const searchButton = document.querySelector("#searchButton");
+  
+  const menuIcon = document.querySelector('.prod-menu-icon');
+  const navList = document.querySelector('.prod-nav-list');
+  const mainContent = document.querySelector('.prod-main');
+  const navItems = document.querySelectorAll('.nav-item a');
+  
+  mainContent.addEventListener('click', () => {
+    console.log("Main content clicked!");
+    navList.classList.remove('active');
+  });
+  
+  navItems.forEach((navItem) => {
+    navItem.addEventListener('click', () => {
+      console.log("Nav item clicked!");
+      navList.classList.remove('active');
+    });
+  });
+  
+  menuIcon.addEventListener('click', () => {
+    console.log("Menu icon clicked!");
+    navList.classList.toggle('active');
+  });
 
   // Mengambil produk dari Firestore
   const products = await getProductsFromFirestore(user);

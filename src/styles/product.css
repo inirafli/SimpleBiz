@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap");
-
 :root {
   /* Colors */
   --primary: #3d5a80;
@@ -7,8 +5,6 @@
   --secondary: #98c1d9;
   --on-primary: #000000;
   --on-secondary: #ffffff;
-  --ubuntu: "Ubuntu", sans-serif;
-  --sans: "Open Sans", sans-serif;
 }
 
 * {
@@ -18,7 +14,7 @@
 }
 
 body {
-  font-family: var(--sans);
+  font-family: 'Open Sans', sans-serif;
 }
 
 h1,
@@ -27,7 +23,7 @@ h3,
 h4,
 a,
 button {
-  font-family: var(--sans);
+  font-family: 'Ubuntu', sans-serif;
 }
 
 .prod-header {
@@ -179,8 +175,6 @@ main.prod-main {
 .prod-form-container h2 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  font-family: var(--ubuntu);
-  color: var(--primary);
 }
 
 .prod-form-container form {
@@ -197,20 +191,16 @@ main.prod-main {
 }
 
 .prod-form-group label {
-  font-family: var(--sans);
   width: 50%;
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--primary);
-
 }
 
 .prod-form-group input,
 .prod-form-group select,
 .prod-form-group textarea {
   width: 100%;
-  font-family: var(--sans);
-  text-align: center;
+  font-family: 'Open Sans', sans-serif;
   padding: 0.75rem;
   font-size: 1rem;
   border: 1px solid var(--secondary);
@@ -246,6 +236,7 @@ main.prod-main {
   background-color: var(--on-secondary);
   border: 1px solid var(--secondary);
   border-radius: 8px;
+  font-family: 'Open Sans', sans-serif;
   padding: 0.75rem;
   font-size: 1rem;
   color: var(--secondary);
@@ -254,6 +245,7 @@ main.prod-main {
 .prod-input-form button {
   width: 50%;
   padding: 1rem;
+  margin-top: 1.5rem;
   align-self: center;
   font-size: 1.15rem;
   color: var(--on-secondary);
@@ -261,25 +253,28 @@ main.prod-main {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: var(--sans);
 }
+
+/* #updateForm {
+    display: none;
+} */
 
 .search-bar {
   display: flex;
-  align-items: center;
   gap: 1rem;
 }
 
 #searchInput {
   flex: 3;
-  padding: 0.95rem;
-  font-family: var(--sans);
+  padding: .95rem;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1.25rem;
   border: 1px solid var(--primary);
   border-radius: 8px;
 }
 
 #searchButton {
+  flex: 1;
   padding: 1rem;
   font-size: 1.5em;
   color: var(--on-secondary);
@@ -287,8 +282,6 @@ main.prod-main {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: var(--sans);
-  width: 80px;
 }
 
 .prod-list {
@@ -310,7 +303,7 @@ main.prod-main {
 .prod-card img {
   width: 100%;
   height: 240px;
-  object-fit: fill;
+  object-fit: contain;
   padding: 1rem;
 }
 
@@ -320,11 +313,10 @@ main.prod-main {
   -webkit-line-clamp: 1;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: var(--ubuntu);
 }
 
 .prod-price {
-  margin-top: 0.5rem;
+  margin-top: .5rem;
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
@@ -347,7 +339,6 @@ main.prod-main {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: var(--sans);
 }
 
 #deleteProduct {
@@ -363,15 +354,12 @@ main.prod-main {
 }
 
 footer {
-  display: flex;
   background-color: var(--primary);
-}
-
-footer p {
+  color: var(--on-secondary);
+  padding: 1rem 0;
   text-align: center;
-  font-size: 1.2rem;
-  font-family: var(--sans);
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 800;
 }
 
 .prod-footer-content {
@@ -463,11 +451,10 @@ footer p {
   }
 
   .prod-card {
-    padding: 0.75rem;
+    padding: .75rem;
   }
 
   .prod-card img {
-  border-radius: 6px;
     height: 180px;
   }
 
@@ -481,35 +468,30 @@ footer p {
   }
 
   .action-button {
-    padding: 0.75rem;
+    padding: .75rem;
   }
 
   .action-button button {
-    padding: 0.75rem;
+    padding: .75rem;
     font-size: 1.15rem;
   }
 }
 
 @media screen and (max-width: 660px) {
   .prod-app-bar {
-    padding: 0.75rem 1.5rem;
+    padding: .75rem 1.5rem;
   }
 
   main.prod-main {
     margin: 2rem 1.5rem;
   }
 
-  footer p {
+  footer {
     font-size: 1rem;
   }
 }
 
-@media screen and (max-width: 600px) {
-  .prod-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  }
-
+@media screen and (max-width: 500px) {
   .prod-app-title {
     font-size: 1.25rem;
   }
@@ -519,153 +501,124 @@ footer p {
     font-size: 1rem;
   }
 
+  main.prod-main {
+    margin: 1.5rem 1rem;
+  }
+
+  .prod-side-form {
+    row-gap: 1rem;
+  }
+
+  .prod-content {
+    row-gap: 1rem;
+  }
+
   .prod-form-container {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    width: 100%;
-    height: 60vh;
-    gap: 10px;
-    padding: 5px;
-    background-color: var(--secondary);
-    border-radius: 12px;
+    gap: 0rem;
+    padding: 1.75rem;
+  }
+
+  .prod-input-form {
+    gap: 1rem;
   }
 
   .prod-form-container h2 {
-    margin-top: 10px;
-    font-size: 14px;
+    margin-bottom: 1.75rem;
+    font-size: 1.15rem;
   }
 
-  .prod-form-container label {
-    font-size: 12px;
-  }
-
-  #searchInput {
-    font-family: var(--sans);
-    font-size: 10px;
-    border: 1px solid var(--secondary);
-    border-radius: 8px;
-    outline: none;
-    text-align: center;
-    height: 20px;
-  }
-
-  #searchButton {
-    display: flex;
-    padding: 10px;
-    width: 70px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: var(--on-secondary);
-    background-color: var(--primary);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+  .prod-form-container form {
+    gap: 1rem;
   }
 
   .prod-form-group {
-    display: flex;
+    gap: .5rem;
     align-items: center;
-    padding: 5px;
   }
 
   .prod-form-group label {
-    width: 100%;
-    margin-top: 5px;
+    width: 50%;
+    font-size: .75rem;
+    margin-bottom: 0;
   }
 
   .prod-form-group input,
   .prod-form-group select,
   .prod-form-group textarea {
-    width: 100%;
-    height: 20px;
-    font-family: var(--sans);
-    font-size: 10px;
-    border: 1px solid var(--secondary);
-    border-radius: 8px;
-    outline: none;
-    text-align: center;
-  }
-
-  .file-input-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 30px;
-    background-color: var(--on-secondary);
-    border: 1px solid var(--secondary);
-    border-radius: 8px;
-    font-size: 12px;
-    color: var(--on-primary);
-    margin-right: 45px;
-  }
-
-  .prod-input-form button {
-    display: flex;
-    width: 70px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: var(--on-secondary);
-    background-color: var(--primary);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    padding: .6rem;
+    font-size: .7rem;
   }
 
   .prod-input-form input[type="file"] {
-    cursor: pointer;
+    width: 88px;
+    height: 88px;
   }
 
+  .file-input-placeholder {
+    width: 88px;
+    height: 88px;
+    font-size: .5rem;
+  }
+
+  .prod-input-form button {
+    margin-top: 8px;
+    padding: .55rem;
+    font-size: .75rem;
+    width: 50%;
+  }
+
+  .search-bar {
+    gap: .5rem;
+    flex-flow: column nowrap;
+  }
+
+  #searchInput {
+    padding: .6rem;
+    font-size: .7rem;
+  }
+
+  #searchButton {
+    align-self: center;
+    width: 50%;
+    padding: .6rem;
+    font-size: .7rem;
+  }
+
+  .prod-list {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: .75rem;
+  }
+  
   .prod-card {
-    display: flex;
-    height: 40vh;
-    width: auto;
-    flex-flow: column;
-    background-color: var(--on-secondary);
-    border-radius: 12px;
-    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    padding: .75rem;
   }
-
-  .prod-name,
-  .prod-price {
-    font-size: 12px;
-    font-family: var(--sans);
-    margin: 0;
-  }
-
+  
   .prod-card img {
-    width: auto;
-    height: 90px;
-    object-fit: fill;
+    height: 96px;
+    padding: 1rem;
   }
-
+  
+  .prod-name {
+    margin-top: .75rem;
+    font-size: .85rem;
+  }
+  
+  .prod-price {
+    font-size: .75rem;
+  }
+  
   .action-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
+    gap: .5rem;
+    margin-top: 1rem;
+    padding: .15rem;
   }
-
+  
   .action-button button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 20px;
-    width: 50px;
-    font-size: 10px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 5px;
+    padding: .5rem .75rem;
+    font-size: .7rem;
   }
 
-  footer p {
-    font-size: 12px;
+  footer {
+    font-size: .75rem;
   }
 }
