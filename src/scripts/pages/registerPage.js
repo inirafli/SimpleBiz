@@ -5,12 +5,27 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import firebaseConfig from '../common/config';
 
-// Initialize Firebase
+// Inisialikasi Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const firestore = getFirestore(firebaseApp);
 
 const renderRegisterPage = (container) => {
+  // Function declarations to hoist the functions
+  function handleSignupSuccess(userCredential) {
+    const { user } = userCredential;
+    redirectToLogin();
+  }
+
+  function handleSignupError(error) {
+    console.error('Pendaftaran gagal dilakukan :', error.message);
+    alert('Pendaftaran gagal. Silakan coba lagi.');
+  }
+
+  function redirectToLogin() {
+    window.location.href = '/login';
+  }
+
   document.body.style.backgroundColor = '#3d5a80';
 
   container.innerHTML = `
@@ -122,6 +137,7 @@ const renderRegisterPage = (container) => {
       // Console log menampilkan error
       errorMessage.style.display = 'block';
       errorMessage.textContent = error.message;
+
       handleSignupError(error);
     }
   });
