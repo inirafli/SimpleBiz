@@ -1,5 +1,5 @@
 // Importing styles for the transaction page
-import '../../styles/transaction.css';
+import "../../styles/transaction.css";
 
 // Importing necessary functions from Firebase for Firestore, Authentication, and App initialization
 import {
@@ -10,14 +10,14 @@ import {
   doc,
   getDocs,
   where,
-} from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+} from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // Importing icons for the application
-import appIcon from '../../public/icons/simplebiz-icons.png';
-import userIcon from '../../public/icons/user.svg';
-import firebaseConfig from '../common/config';
+import appIcon from "../../public/icons/simplebiz-icons.png";
+import userIcon from "../../public/icons/user.svg";
+import firebaseConfig from "../common/config";
 
 // Initializing Firebase App and obtaining Firestore and Auth instances
 const firebaseApp = initializeApp(firebaseConfig);
@@ -27,8 +27,8 @@ const auth = getAuth(firebaseApp);
 // Helper function to fetch transaction data from Firestore
 const fetchTransactionData = async (userId, startDate, endDate) => {
   // Formatting dates for consistency
-  const formattedStartDate = startDate.split('-').reverse().join('-');
-  const formattedEndDate = endDate.split('-').reverse().join('-');
+  const formattedStartDate = startDate.split("-").reverse().join("-");
+  const formattedEndDate = endDate.split("-").reverse().join("-");
 
   // Creating a reference to the 'transactions' collection for a specific user
   const transactionsRef = collection(db, `users/${userId}/transactions`);
@@ -46,7 +46,7 @@ const fetchTransactionData = async (userId, startDate, endDate) => {
     };
   });
 
-  console.log('Fetched transactions:', transactions);
+  console.log("Fetched transactions:", transactions);
   return transactions;
 };
 
@@ -93,15 +93,15 @@ let lastClickedRow = null;
 const handleRowClick = async (row) => {
   // Remove the 'selected' class from the previously clicked row
   if (lastClickedRow) {
-    lastClickedRow.classList.remove('selected');
+    lastClickedRow.classList.remove("selected");
   }
 
   // Add the 'selected' class to the clicked row
-  row.classList.add('selected');
+  row.classList.add("selected");
   lastClickedRow = row;
 
   // Extract transaction data from the clicked row's attributes
-  const transactionData = JSON.parse(row.getAttribute('data-transaction'));
+  const transactionData = JSON.parse(row.getAttribute("data-transaction"));
 
   // Render detailed transaction rows in the detail table
   renderDetailTransactionRows(transactionData.transactionData);
@@ -109,15 +109,15 @@ const handleRowClick = async (row) => {
 
 // Helper function to render detailed transaction rows in the detail table
 const renderDetailTransactionRows = (transactions) => {
-  const detailTbody = document.querySelector('#detailTransacTable tbody');
-  detailTbody.innerHTML = '';
+  const detailTbody = document.querySelector("#detailTransacTable tbody");
+  detailTbody.innerHTML = "";
 
   // Create a map to store aggregated data for each product on a specific date
   const productMap = new Map();
 
   transactions.forEach((data) => {
     data.products.forEach((product) => {
-      const {productName} = product;
+      const productName = product.productName;
       const quantity = product.quantity || 0;
       const price = product.price || 0;
       const totalPrice = product.totalPrice || 0;
@@ -142,7 +142,7 @@ const renderDetailTransactionRows = (transactions) => {
 
   // Iterate through the aggregated data and render the rows
   productMap.forEach((product) => {
-    const detailRow = document.createElement('tr');
+    const detailRow = document.createElement("tr");
     detailRow.innerHTML = `
         <td>${product.productName}</td>
         <td>${product.totalQuantity}</td>
@@ -156,17 +156,18 @@ const renderDetailTransactionRows = (transactions) => {
 
 // Helper function to render transaction rows in the main table
 const renderTransactionRows = (transactions) => {
-  const tbody = document.querySelector('#transacTable tbody');
-  tbody.innerHTML = '';
+  const tbody = document.querySelector("#transacTable tbody");
+  tbody.innerHTML = "";
 
   transactions.forEach((transaction) => {
     if (transaction.transactionData) {
-      const { transactionTotalQuantity, transactionTotalPrice } = calculateTransactionTotal(transaction.transactionData);
+      const { transactionTotalQuantity, transactionTotalPrice } =
+        calculateTransactionTotal(transaction.transactionData);
 
-      const row = document.createElement('tr');
-      row.className = 'clickable-row'; // Adding a class for easy selection
-      row.setAttribute('data-date', transaction.date); // Adding date attribute
-      row.setAttribute('data-transaction', JSON.stringify(transaction)); // Adding transaction data attribute
+      const row = document.createElement("tr");
+      row.className = "clickable-row"; // Adding a class for easy selection
+      row.setAttribute("data-date", transaction.date); // Adding date attribute
+      row.setAttribute("data-transaction", JSON.stringify(transaction)); // Adding transaction data attribute
 
       row.innerHTML = `
               <td>${transaction.date}</td>
@@ -175,7 +176,7 @@ const renderTransactionRows = (transactions) => {
           `;
 
       // Add event listener for each row
-      row.addEventListener('click', () => handleRowClick(row));
+      row.addEventListener("click", () => handleRowClick(row));
 
       tbody.appendChild(row);
     }
@@ -184,12 +185,12 @@ const renderTransactionRows = (transactions) => {
 
 // Helper function to render evaluation report rows in the table
 const renderEvaluationReportRows = (highestSales, lowestSales) => {
-  const highestSalesTbody = document.getElementById('highest-sales');
-  const lowestSalesTbody = document.getElementById('lowest-sales');
+  const highestSalesTbody = document.getElementById("highest-sales");
+  const lowestSalesTbody = document.getElementById("lowest-sales");
 
   // Render highest sales
   highestSales.forEach((product) => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
     row.innerHTML = `
       <td>${product.productName}</td>
       <td>${product.totalQuantity}</td>
@@ -200,7 +201,7 @@ const renderEvaluationReportRows = (highestSales, lowestSales) => {
 
   // Render lowest sales
   lowestSales.forEach((product) => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
     row.innerHTML = `
       <td>${product.productName}</td>
       <td>${product.totalQuantity}</td>
@@ -213,7 +214,7 @@ const renderEvaluationReportRows = (highestSales, lowestSales) => {
 // Function to render the entire transaction page
 const renderTransactionPage = (container) => {
   // Setting the background color of the body
-  document.body.style.backgroundColor = '#F1F1FF';
+  document.body.style.backgroundColor = "#F1F1FF";
 
   // Set up an Auth state listener
   const authStateListener = onAuthStateChanged(auth, (user) => {
@@ -221,12 +222,12 @@ const renderTransactionPage = (container) => {
       // If the user is authenticated, fetch and update user data
       initializePage(user.uid);
     } else {
-      console.warn('User is not authenticated.');
+      console.warn("User is not authenticated.");
     }
   });
 
   // Call initializePage when the page loads
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     authStateListener(); // Trigger the listener when the page loads
   });
 
@@ -234,13 +235,13 @@ const renderTransactionPage = (container) => {
   const initializePage = async (userId) => {
     try {
       // Fetching user profile data to get UMKM name
-      const userDoc = await getDoc(doc(db, 'users', userId));
+      const userDoc = await getDoc(doc(db, "users", userId));
       const umkmName = userDoc.data().umkm;
 
       // Update the user profile name in the UI
       updateUserName(umkmName);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
     }
   };
 
@@ -249,15 +250,15 @@ const renderTransactionPage = (container) => {
 
   // Helper function to update the user name in the UI
   const updateUserName = (umkmName) => {
-    console.log('Updating user name:', umkmName);
-    const userNameElement = document.querySelector('.user-button span');
+    console.log("Updating user name:", umkmName);
+    const userNameElement = document.querySelector(".user-button span");
     userNameElement.textContent = umkmName;
   };
 
   // Event handler for the "Terapkan" (Apply) button
   const handleApplyButtonClick = async () => {
-    const startDate = document.getElementById('start').value;
-    const endDate = document.getElementById('end').value;
+    const startDate = document.getElementById("start").value;
+    const endDate = document.getElementById("end").value;
 
     if (startDate && endDate) {
       const userId = auth.currentUser.uid;
@@ -267,7 +268,7 @@ const renderTransactionPage = (container) => {
         const transactions = await fetchTransactionData(
           userId,
           startDate,
-          endDate,
+          endDate
         );
 
         // Calculating total quantity and total price from the fetched transactions
@@ -284,7 +285,7 @@ const renderTransactionPage = (container) => {
         renderEvaluationReportRows(highestSales, lowestSales);
       } catch (error) {
         // Handling errors that may occur during the fetch operation
-        console.error('Error handling apply button click:', error);
+        console.error("Error handling apply button click:", error);
       }
     }
   };
@@ -292,14 +293,16 @@ const renderTransactionPage = (container) => {
   // Helper function to calculate highest sales
   const calculateHighestSales = (transactions) => {
     // Flatten the array of transactions and products
-    const allProducts = transactions.flatMap((transaction) => transaction.transactionData.flatMap((data) => data.products));
+    const allProducts = transactions.flatMap((transaction) =>
+      transaction.transactionData.flatMap((data) => data.products)
+    );
 
     // Create a map to store aggregated data for each product
     const productMap = new Map();
 
     // Iterate through each product and update the aggregated data
     allProducts.forEach((product) => {
-      const {productName} = product;
+      const productName = product.productName;
       const quantity = product.quantity || 0;
       const totalPrice = product.totalPrice || 0;
 
@@ -317,12 +320,12 @@ const renderTransactionPage = (container) => {
         productName,
         totalQuantity: data.totalQuantity,
         totalPrice: data.totalPrice,
-      }),
+      })
     );
 
     // Sort the products by totalQuantity in descending order
     const sortedProducts = highestSales.sort(
-      (a, b) => b.totalQuantity - a.totalQuantity,
+      (a, b) => b.totalQuantity - a.totalQuantity
     );
 
     return sortedProducts;
@@ -331,12 +334,14 @@ const renderTransactionPage = (container) => {
   // Helper function to calculate lowest sales
   const calculateLowestSales = (transactions) => {
     // Use the same approach as calculateHighestSales but sort in ascending order
-    const allProducts = transactions.flatMap((transaction) => transaction.transactionData.flatMap((data) => data.products));
+    const allProducts = transactions.flatMap((transaction) =>
+      transaction.transactionData.flatMap((data) => data.products)
+    );
 
     const productMap = new Map();
 
     allProducts.forEach((product) => {
-      const {productName} = product;
+      const productName = product.productName;
       const quantity = product.quantity || 0;
       const totalPrice = product.totalPrice || 0;
 
@@ -354,12 +359,12 @@ const renderTransactionPage = (container) => {
         productName,
         totalQuantity: data.totalQuantity,
         totalPrice: data.totalPrice,
-      }),
+      })
     );
 
     // Sort the products by totalQuantity in ascending order
     const sortedProducts = lowestSales.sort(
-      (a, b) => a.totalQuantity - b.totalQuantity,
+      (a, b) => a.totalQuantity - b.totalQuantity
     );
 
     return sortedProducts;
@@ -486,31 +491,31 @@ const renderTransactionPage = (container) => {
     `;
 
   // Event listeners and interactions for navigation and button clicks
-  const menuIcon = container.querySelector('.main-menu-icon');
-  const navList = container.querySelector('.main-nav-list');
-  const mainContent = container.querySelector('.transac-main');
-  const detailTransacTable = document.getElementById('detailTransaction');
+  const menuIcon = container.querySelector(".main-menu-icon");
+  const navList = container.querySelector(".main-nav-list");
+  const mainContent = container.querySelector(".transac-main");
+  const detailTransacTable = document.getElementById("detailTransaction");
 
-  const lastClickedRow = null;
+  let lastClickedRow = null;
 
-  const navItems = container.querySelectorAll('.nav-item a');
+  const navItems = container.querySelectorAll(".nav-item a");
 
-  mainContent.addEventListener('click', () => {
-    navList.classList.remove('active');
+  mainContent.addEventListener("click", () => {
+    navList.classList.remove("active");
   });
 
   navItems.forEach((navItem) => {
-    navItem.addEventListener('click', () => {
-      navList.classList.remove('active');
+    navItem.addEventListener("click", () => {
+      navList.classList.remove("active");
     });
   });
 
-  menuIcon.addEventListener('click', () => {
-    navList.classList.toggle('active');
+  menuIcon.addEventListener("click", () => {
+    navList.classList.toggle("active");
   });
 
-  const applyButton = document.getElementById('apply-button');
-  applyButton.addEventListener('click', handleApplyButtonClick);
+  const applyButton = document.getElementById("apply-button");
+  applyButton.addEventListener("click", handleApplyButtonClick);
 };
 
 // Exporting the function as the default export for the module
