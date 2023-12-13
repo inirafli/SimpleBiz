@@ -18,7 +18,16 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Import gambar
 import appIcon from "../../public/icons/simplebiz-icons.png";
 import userIcon from "../../public/icons/user.svg";
-import firebaseConfig from "../common/config";
+
+// Konfigurasi Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E",
+  authDomain: "simple-biz-app.firebaseapp.com",
+  projectId: "simple-biz-app",
+  storageBucket: "simple-biz-app.appspot.com",
+  messagingSenderId: "168574264567",
+  appId: "1:168574264567:web:c3d1105732948875dd5ff2",
+};
 
 // Inisialisasi Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -191,6 +200,7 @@ const handleAddButtonClick = async () => {
 
     // Mengambil dan merender produk yang diperbarui
     const updatedProducts = await fetchUserProducts(user.uid);
+    const prodList = document.querySelector("#prodlist");
     // Render produk yang diperbarui
     renderProducts(updatedProducts, prodList);
   } catch (error) {
@@ -329,6 +339,7 @@ const renderProducts = (products, container) => {
 
     // Menangkap informasi pengguna dan menentukan prodList sebelum digunakan
     const user = auth.currentUser;
+    const prodList = document.querySelector("#prodlist");
 
     // Event Listener untuk tombol hapus
     deleteButton.addEventListener("click", async () => {
@@ -365,7 +376,7 @@ const renderProducts = (products, container) => {
 
 // Fungsi untuk merender halaman produk
 const renderProductPage = async (container, user) => {
-  // document.body.style.backgroundColor = "#F1F1F1";
+  document.body.style.backgroundColor = "#F1F1F1";
 
   // Menunggu proses autentikasi selesai
   const authenticatedUser = await waitForAuthentication();
@@ -470,9 +481,9 @@ const renderProductPage = async (container, user) => {
   // Elemen-elemen DOM yang diperlukan dari halaman
   const prodList = document.querySelector("#prodlist");
   const addForm = document.querySelector("#addForm");
-  const addButton = document.querySelector("#addButton");
+  const addButton = addForm.querySelector("#addButton");
   const updateForm = document.querySelector("#updateForm");
-  const updateButton = document.querySelector("#updateButton");
+  const updateButton = updateForm.querySelector("#updateButton");
   const searchInput = document.querySelector("#searchInput");
   const searchButton = document.querySelector("#searchButton");
 
