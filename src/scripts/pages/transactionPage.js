@@ -17,16 +17,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 // Importing icons for the application
 import appIcon from "../../public/icons/simplebiz-icons.png";
 import userIcon from "../../public/icons/user.svg";
-
-// Configuration object for Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E",
-  authDomain: "simple-biz-app.firebaseapp.com",
-  projectId: "simple-biz-app",
-  storageBucket: "simple-biz-app.appspot.com",
-  messagingSenderId: "168574264567",
-  appId: "1:168574264567:web:c3d1105732948875dd5ff2",
-};
+import firebaseConfig from "../common/config";
 
 // Initializing Firebase App and obtaining Firestore and Auth instances
 const firebaseApp = initializeApp(firebaseConfig);

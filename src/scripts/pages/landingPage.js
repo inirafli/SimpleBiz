@@ -1,7 +1,7 @@
-import "../../styles/landing.css";
+import '../../styles/landing.css';
 
-import appIcon from "../../public/icons/simplebiz-icons.png";
-import landingImage from "../../public/images/landing-page-image.png";
+import appIcon from '../../public/icons/simplebiz-icons.png';
+import landingImage from '../../public/images/landing-page-image.png';
 
 const renderLandingPage = (container) => {
   container.innerHTML = `
@@ -31,6 +31,7 @@ const renderLandingPage = (container) => {
                 <h1 class="hero-title">Pencatatan Digital untuk UMKM Indonesia</h1>
                 <p class="hero-desc">Sederhana. Cepat. Akurat. SimpleBiz adalah solusi pencatatan digital yang mendukung
                     UMKM di Indonesia.</p>
+                <button class="start-note" id="startNoteBtn">Mulai Mencatat</button>
             </div>
             <div class="hero-image">
                 <img src=${landingImage} alt="Hero Image">
@@ -96,24 +97,29 @@ const renderLandingPage = (container) => {
     </footer>
     `;
 
-  const menuIcon = container.querySelector(".menu-icon");
-  const navList = container.querySelector(".nav-list");
-  const mainContent = container.querySelector("main");
+  const menuIcon = container.querySelector('.menu-icon');
+  const navList = container.querySelector('.nav-list');
+  const mainContent = container.querySelector('main');
+  const startNoteBtn = container.querySelector('#startNoteBtn');
 
-  const navItems = container.querySelectorAll(".nav-item a");
+  const navItems = container.querySelectorAll('.nav-item a');
 
-  mainContent.addEventListener("click", () => {
-    navList.classList.remove("active");
+  mainContent.addEventListener('click', () => {
+    navList.classList.remove('active');
   });
 
   navItems.forEach((navItem) => {
-    navItem.addEventListener("click", () => {
-      navList.classList.remove("active");
+    navItem.addEventListener('click', () => {
+      navList.classList.remove('active');
     });
   });
 
-  menuIcon.addEventListener("click", () => {
-    navList.classList.toggle("active");
+  menuIcon.addEventListener('click', () => {
+    navList.classList.toggle('active');
+  });
+
+  startNoteBtn.addEventListener('click', () => {
+    window.location.href = '/login';
   });
 };
 

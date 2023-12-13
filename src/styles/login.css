@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans&family=Ubuntu&display=swap");
-
 :root {
   /* Colors */
   --primary: #3d5a80;
@@ -7,8 +5,6 @@
   --secondary: #98c1d9;
   --on-primary: #000000;
   --on-secondary: #ffffff;
-  --ubuntu: "Ubuntu", sans-serif;
-  --sans: "Open Sans", sans-serif;
 }
 
 * {
@@ -18,16 +14,11 @@
 }
 
 body {
-  background-color: var(--on-secondary) !important;
-  font-family: var(--sans);
+  font-family: 'Open Sans', sans-serif;
 }
 
-h2,
-h3,
-h4,
-a,
-button {
-  font-family: var(--ubuntu);
+h1, h2, h3, h4, a, button {
+  font-family: 'Ubuntu', sans-serif;
 }
 
 #login-page {
@@ -44,18 +35,21 @@ button {
   align-self: flex-start;
 }
 
-
 .back-button {
   border: none;
   background: transparent;
   cursor: pointer;
 }
 
+.back-button svg {
+  color: var(--on-secondary);
+}
+
 .login-container {
   display: flex;
   width: 100%;
   flex-flow: column nowrap;
-  background-color: var(--primary);
+  background-color: var(--on-secondary);
   max-width: 660px;
   height: fit-content;
   padding: 4rem 3rem;
@@ -67,7 +61,6 @@ button {
   align-self: center;
   font-size: 1.75rem;
   font-weight: 800;
-  color: var(--on-secondary);
 }
 
 #login-form {
@@ -80,14 +73,13 @@ button {
 .form-group {
   display: flex;
   flex-flow: column nowrap;
-  gap: 0.25rem;
+  gap: .25rem;
 }
 
 label {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--on-secondary);
 }
 
 input {
@@ -107,12 +99,11 @@ input:focus {
 }
 
 .input-container label {
-    color: var(--on-secondary);
-    font-weight: 400;
+  font-weight: 400;
 }
 
 input[type="checkbox"] {
-  margin: 0 0.75rem 0 0.25rem;
+  margin: 0 .75rem 0 .25rem;
   transform: scale(1.75);
 }
 
@@ -121,17 +112,12 @@ input[type="checkbox"] {
   margin-top: 1rem;
   padding: 1rem 2rem;
   font-size: 1.25rem;
-  background-color: var(--on-secondary);
-  color: var(--primary);
+  background-color: var(--primary);
+  color: var(--on-secondary);
   border: 2px solid var(--primary);
-  border-radius: 0.5rem;
+  border-radius: .5rem;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-}
-
-.login-button:active {
-  transform: scale(0.9);
-  transition: transform 300ms;
+  transition: all .3s ease-in-out;
 }
 
 .login-container p {
@@ -140,17 +126,17 @@ input[type="checkbox"] {
 }
 
 .login-container p a {
-  color: var(--on-secondary);
+  color: var(--primary);
 }
 
 .login-headline h1 {
-  color: var(--primary);
+  color: var(--on-secondary);
   font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
 .login-headline p {
-  color: var(--primary);
+  color: var(--on-secondary);
   font-weight: 500;
   font-size: 1.5rem;
 }
@@ -158,150 +144,108 @@ input[type="checkbox"] {
 .error-message {
   display: none;
   font-size: 1.15rem;
-  padding: 0.5rem 1rem;
+  padding: .5rem 1rem;
   border: 1.25px solid red;
-  border-radius: 0.5rem;
+  border-radius: .5rem;
   color: red;
   font-weight: 800;
 }
 
 @media screen and (max-width: 1440px) {
   .login-container {
-    gap: 1rem;
+      gap: 1rem;
   }
 }
 
 @media screen and (max-width: 1340px) {
   #login-page {
-    display: flex;
-    flex-flow: column nowrap;
-    gap: 3rem 0;
+      display: flex;
+      flex-flow: column nowrap;
+      gap: 3rem 0;
   }
 
   .back-button {
-    order: 1;
+      order: 1;
   }
 
   .login-container {
-    order: 3;
-    margin: 0 auto;
+      order: 3;
+      margin: 0 auto;
   }
 
   .login-headline {
-    order: 2;
-    width: 100%;
-    grid-column: span 2;
-    text-align: center;
+      order: 2;
+      width: 100%;
+      grid-column: span 2;
+      text-align: center;
   }
 
   .login-headline h1 {
-    font-size: 1.75rem;
+      font-size: 1.75rem;
   }
 
   .login-headline p {
-    font-size: 1.25rem;
+      font-size: 1.25rem;
   }
 }
 
 @media screen and (max-width: 660px) {
   #login-page {
-    margin: 2rem;
-    gap: 2.25rem 0;
+      margin: 2rem;
+      gap: 2.25rem 0;
   }
 
   .back-button svg {
-    width: 44px;
+      width: 44px;
   }
 
   .login-container {
-    padding: 2rem;
-    border-radius: 1rem;
+      padding: 2rem;
+      border-radius: 1rem;
   }
 
   .login-container h2 {
-    font-size: 1.25rem;
+      font-size: 1.25rem;
   }
 
   #login-form {
-    gap: 1.25rem;
+      gap: 1.25rem;
   }
 
   label {
-    color: var(--on-secondary);
-    font-size: 0.85rem;
+      font-size: .85rem;
   }
 
   input {
-    font-size: 0.75rem;
+      font-size: .75rem;
   }
 
   .input-container {
-    margin: 0.75rem 0 0.5rem -3px;
+      margin: .75rem 0 .5rem -3px;
   }
 
   input[type="checkbox"] {
-    margin-right: 0.5rem;
-    transform: scale(1.25);
+      margin-right: .5rem;
+      transform: scale(1.25);
   }
 
   .login-button {
-    margin: 0;
-    padding: 0.75rem;
-    font-size: 1rem;
+      margin: 0;
+      padding: .75rem;
+      font-size: 1rem;
   }
 }
 
 @media screen and (max-width: 440px) {
-
-  .back-button svg {
-    width: 30px;
-  }
-
-  .login-container h2 {
-    font-size: 14px;
-    margin: 0;
-  }
-
   .login-container p {
-    font-size: 12px;
-    margin: 0;
+      font-size: .85rem;
   }
 
   .login-headline h1 {
-    font-size: 14px;
+      font-size: 1.5rem;
   }
 
   .login-headline p {
-    font-size: 12px;
-  }
-
-  label {
-    font-size: 12px;
-    font-weight: 600;
-    margin-bottom: 4px;
-    color: var(--on-secondary);
-  }
-
-  input {
-    padding: 10px;
-    font-size: 12px;
-  }
-
-  input:focus {
-    outline: none;
-    border-color: var(--primary);
-  }
-
-  .login-button {
-    width: 50%;
-    padding: 10px 20px;
-    font-size: 12px;
-    margin: auto;
-    background-color: var(--on-secondary);
-    color: var(--primary);
-    border: 2px solid var(--primary);
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
+      font-size: 1rem;
   }
 }

@@ -18,16 +18,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 // Import gambar
 import appIcon from "../../public/icons/simplebiz-icons.png";
 import userIcon from "../../public/icons/user.svg";
-
-// Konfigurasi Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyB1FI87qdJUDyHRP8sZTuSbOpfD9Fv8G_E",
-  authDomain: "simple-biz-app.firebaseapp.com",
-  projectId: "simple-biz-app",
-  storageBucket: "simple-biz-app.appspot.com",
-  messagingSenderId: "168574264567",
-  appId: "1:168574264567:web:c3d1105732948875dd5ff2",
-};
+import firebaseConfig from "../common/config";
 
 // Inisialisasi Firebase
 const firebaseApp = initializeApp(firebaseConfig);
@@ -374,7 +365,7 @@ const renderProducts = (products, container) => {
 
 // Fungsi untuk merender halaman produk
 const renderProductPage = async (container, user) => {
-  document.body.style.backgroundColor = "#F1F1F1";
+  // document.body.style.backgroundColor = "#F1F1F1";
 
   // Menunggu proses autentikasi selesai
   const authenticatedUser = await waitForAuthentication();
