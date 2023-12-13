@@ -579,6 +579,11 @@ const renderDashboardPage = async (container, userProducts) => {
   showCartButton.addEventListener("click", openCart);
   closeCartButton.addEventListener("click", hideCart);
 
+  showCartButton.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent the default behavior of the anchor tag
+    openCart();
+  });
+
   const mainContent = container.querySelector(".dash-main");
   const navList = container.querySelector(".dash-nav-list");
 
