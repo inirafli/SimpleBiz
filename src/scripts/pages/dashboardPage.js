@@ -4,22 +4,14 @@ import {
   doc,
   setDoc,
   getDocs,
-  deleteDoc,
-  updateDoc,
   getDoc,
   collection,
   query,
-  addDoc,
-  serverTimestamp,
 } from 'firebase/firestore';
 import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {
-  getStorage, ref, uploadBytes, getDownloadURL,
-} from 'firebase/storage';
 import appIcon from '../../public/icons/simplebiz-icons.png';
 import userIcon from '../../public/icons/user.svg';
-import productImage from '../../public/images/produk.jpg';
 import closeIcon from '../../public/icons/close.svg';
 import firebaseConfig from '../common/config';
 
@@ -471,12 +463,18 @@ const renderDashboardPage = async (container, userProducts) => {
       } else {
         // Display a message based on the conditions
         if (cartItems.length === 0) {
-          console.log('Error: Cart is empty. Add products to the cart before proceeding.');
+          console.log(
+            'Error: Cart is empty. Add products to the cart before proceeding.',
+          );
         } else if (totalCashValue < totalPrice) {
-          console.log('Error: Insufficient Payment Amount! Please provide sufficient cash.');
+          console.log(
+            'Error: Insufficient Payment Amount! Please provide sufficient cash.',
+          );
         } else {
           // Handle other conditions if needed
-          console.log('Error: Payment could not be processed. Check the cart and payment amount.');
+          console.log(
+            'Error: Payment could not be processed. Check the cart and payment amount.',
+          );
         }
       }
     }, 100); // You can adjust the delay as needed
