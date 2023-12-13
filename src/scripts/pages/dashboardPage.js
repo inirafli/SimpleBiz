@@ -530,6 +530,9 @@ const renderDashboardPage = async (container, userProducts) => {
   // Add an event listener to call the checkoutCart function on button click
   checkoutCartButton.addEventListener("click", checkoutCart);
 
+  // Sort the userProducts array alphabetically based on the product name
+  userProducts.sort((a, b) => a.name.localeCompare(b.name));
+
   renderDashboardProducts(userProducts);
 
   // Fungsionalitas Keranjang
@@ -576,21 +579,27 @@ const renderDashboardPage = async (container, userProducts) => {
   showCartButton.addEventListener("click", openCart);
   closeCartButton.addEventListener("click", hideCart);
 
-  const menuIcon = container.querySelector(".dash-menu-icon");
-  const navList = container.querySelector(".dash-nav-list");
-  const mainContent = container.querySelector(".dash-main");
+  showCartButton.addEventListener("click", (event) => {
+    event.preventDefault(); // Prevent the default behavior of the anchor tag
+    openCart();
+  });
 
-  const navItems = container.querySelectorAll(".dash-nav-item a");
+  const mainContent = container.querySelector(".dash-main");
+  const navList = container.querySelector(".dash-nav-list");
 
   mainContent.addEventListener("click", () => {
     navList.classList.remove("active");
   });
+
+  const navItems = container.querySelectorAll(".nav-item a");
 
   navItems.forEach((navItem) => {
     navItem.addEventListener("click", () => {
       navList.classList.remove("active");
     });
   });
+
+  const menuIcon = container.querySelector(".dash-menu-icon");
 
   menuIcon.addEventListener("click", () => {
     navList.classList.toggle("active");
