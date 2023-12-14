@@ -318,7 +318,7 @@ main.prod-main {
 }
 
 .prod-price {
-  margin-top: .5rem;
+  margin-top: 1rem;
   font-size: 1.25rem;
   font-weight: 600;
   white-space: nowrap;
@@ -469,6 +469,7 @@ footer {
   }
 
   .prod-price {
+    margin-top: .75rem;
     font-size: 1.15rem;
   }
 
@@ -609,6 +610,7 @@ footer {
   }
   
   .prod-price {
+    margin-top: .5rem;
     font-size: .75rem;
   }
   

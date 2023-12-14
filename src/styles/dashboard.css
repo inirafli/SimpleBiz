@@ -133,7 +133,9 @@ button {
 }
 
 .dash-main {
-  gap: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1rem;
 }
 
 .resourceSection {
@@ -142,8 +144,9 @@ button {
   background-color: var(--primary);
   margin: 20px;
   height: 15vh;
+  justify-content: center;
+  align-items: center;
   border-radius: 10px;
-  justify-content: space-evenly;
 }
 
 .subInput {
@@ -155,27 +158,23 @@ button {
 
 .subInput p {
   color: var(--on-secondary);
-  margin: 10px;
-  font-family: var(--ubuntu);
-  font-weight: lighter;
-  font-size: 15px;
+  margin-right: 1rem;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 1.25rem;
 }
 
-.inputForm {
+.resourceSection .inputForm {
   width: 35vh;
-  height: 4vh;
-  padding: 5px;
+  padding: 1rem;
   margin: 5px;
   border: 1px solid var(--on-fourth);
   border-radius: 10px;
   border: 0.5px solid var(--primary);
   background-color: var(--on-secondary);
-  font-family: var(--ubuntu);
-  font-weight: light;
-  font-size: 13px;
-  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  font-size: .86rem;
   color: var(--on-third);
-  transition: background-color 0.3s; /* Add transition for a smooth effect */
+  transition: background-color 0.3s;
 }
 
 .inputForm:focus {
@@ -201,7 +200,6 @@ button {
   border: 0.5px solid var(--primary);
   background: var(--on-secondary);
   color: var(--primary);
-  font-family: var(--ubuntu);
   font-weight: bold;
   font-size: 15px;
   position: relative;
@@ -221,83 +219,104 @@ button {
   color: var(--on-secondary);
 }
 
-
-#removeProduct:hover,
-#resetCart:hover,
-#resetResource:hover {
-  background-color: #e5383b;
-  color: var(--on-secondary);
-  border: none;
-}
-
 .mainSearch {
   display: flex;
-  align-items: center;
   gap: 1rem;
   justify-content: center;
+  align-items: center;
 }
 
 .productSection {
   display: flex;
+  margin: 0 3rem;
+  flex-flow: column nowrap;
   justify-content: center;
 }
 
 .mainProduct {
-  width: 80%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto;
-  grid-column-gap: 20px;
-  grid-row-gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.mainSearch .inputForm {
+  width: 100%;
+  max-width: 420px;
+  padding: .85rem;
+  border-radius: 10px;
+  margin: 5px;
+  border: 1px solid var(--on-fourth);
+  border-radius: 10px;
+  border: 0.5px solid var(--primary);
+  background-color: var(--on-secondary);
+}
+
+.mainSearch #searchProduct {
+  align-self: center;
+  width: 100%;
+  max-width: 120px;
+  padding: .75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .subProduct {
   display: flex;
-  flex-direction: column;
-  width: auto;
-  height: auto;
-  gap: 15px;
-  justify-content: center;
+  flex-flow: column nowrap;
   background-color: var(--on-secondary);
-  border-radius: 15px;
-  padding: 15px;
-  margin: 10px;
-  box-shadow: 0.5px 0.5px 5px var(--on-primary);
-}
-
-.productImage {
-  display: flex;
-  justify-content: center;
+  border-radius: 12px;
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  text-align: center;
 }
 
 .productImage img {
-  width: 25vh;
-  height: 25vh;
-  object-fit: fill;
-  border-radius: 10px;
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  padding: 1rem;
 }
 
 .productDescription h1 {
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  font-family: var(--ubuntu);
-  color: var(--primary);
+  margin-top: 1.25rem;
+  font-size: 1.75rem;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .productDescription h2 {
-  text-align: center;
-  font-size: 12px;
-  font-family: var(--sans);
-  color: var(--on-third);
-  margin: 5px;
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .buttonProduct {
   display: flex;
+  gap: 1rem;
+  margin-top: 1.25rem;
   justify-content: center;
-  align-items: center;
-  gap: 10px;
+  padding: 1rem;
+}
+
+.buttonProduct button {
+  flex: 1;
+  padding: .75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+#removeProduct {
+  color: var(--primary);
+  border: 1px solid var(--primary);
 }
 
 .dash-cartSection {
@@ -388,13 +407,6 @@ button {
   width: 50%;
 }
 
-#productPrice {
-  font-size: 12px;
-  font-family: var(--sans);
-  font-weight: bold;
-  color: var(--on-third);
-}
-
 .quantityItem {
   display: flex;
   justify-content: center;
@@ -449,6 +461,11 @@ button {
   justify-content: space-around;
   align-items: center;
   padding: 10px;
+}
+
+#dash-closeCart {
+  width: 44px;
+  height: 44px;
 }
 
 @media screen and (max-width: 1080px) {
@@ -511,22 +528,11 @@ button {
   }
 
   .dash-main {
-    margin: 4rem 2rem;
+    margin: 1rem;
   }
 
   .dash-cartSection {
     width: 70%;
-  }
-
-  .mainProduct {
-    width: 100%;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0;
-  }
-
-  .subProduct {
-    width: 80%;
-    gap: 5px;
   }
 
   .inputForm {
@@ -541,18 +547,23 @@ button {
     width: 90%;
     height: 90%;
   }
-
-  #searchProduct {
-    width: auto;
-    height: auto;
-  }
-
 }
 
 @media screen and (max-width: 980px) {
   .resourceSection {
+    padding: 1rem 0;
     display: flex;
     flex-direction: column;
+  }
+
+  .subInput p {
+    margin-right: 0;
+  }
+
+  .mainProduct {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
   }
 
   .buttonResource {
@@ -598,10 +609,6 @@ button {
     height: 4vh;
   }
 
-  .mainProduct {
-    grid-template-columns: 1fr;
-  }
-
   .dash-cartSection {
     width: 98%;
   }
@@ -613,22 +620,81 @@ button {
     padding: 0.75rem 1.5rem;
   }
 
-  .dash-main {
-    margin: 2rem 1rem;
+  .mainSearch {
+    width: 100%;
+    flex-flow: column nowrap;
+    gap: .5rem;
+  }
+
+  #transactionDate {
+    max-width: 240px;
+  }
+
+  .mainSearch .inputForm {
+    max-width: 240px;
+  }
+
+  .productSection {
+    margin: 0 .5rem;
   }
 
   .mainProduct {
-    place-items: center;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+  }
+
+  .subProduct {
+    padding: .75rem;
+  }
+  
+  .productImage img {
+    width: 100%;
+    height: 96px;
+  }
+  
+  .productDescription h1 {
+    margin-top: .75rem;
+    font-size: .85rem;
+  }
+  
+  .productDescription h2 {
+    margin-top: .45rem;
+    font-size: .75rem;
+  }
+  
+  .buttonProduct {
+    gap: .5rem;
+    margin-top: 1rem;
+    padding: .15rem;
+  }
+  
+  .buttonProduct button {
+    padding: .5rem .75rem;
+    font-size: .7rem;
   }
 
   .subInput input[type="date"] {
     padding: 0.75rem;
+    font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     width: 100%;
   }
 
   .mainSearch {
     align-content: center;
+  }
+
+  #dash-closeCart {
+    width: 34px;
+    height: 34px;
+  }
+
+  .subInput p {
+    font-size: .96rem;
+  }
+
+  #transactionDate {
+    font-size: .75rem;
   }
 
   footer {
@@ -639,6 +705,15 @@ button {
 @media screen and (max-width: 480px) {
   .dash-app-title {
     font-size: 1.25rem;
+  }
+
+  .mainProduct {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: .75rem;
+  }
+
+  .dash-main {
+    margin: 1rem .5rem;
   }
 
   .dash-nav a,
@@ -652,14 +727,24 @@ button {
 
   .subInput input[type="date"] {
     padding: 0.75rem;
+    font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     width: 100%;
+  }
+
+  .resourceSection .subInput {
+    gap: .75rem;
   }
 
   .buttonResource {
     padding: 0.85rem;
     width: 100%;
     font-size: 1rem;
+  }
+
+  #checkoutCart, #resetCart {
+    width: 20vh;
+    padding: 0 1rem;
   }
 
   footer {

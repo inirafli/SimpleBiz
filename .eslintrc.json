@@ -21,6 +21,12 @@
         "require-jsdoc" : 0,
         "no-param-reassign": 0,
         "no-use-before-define": 0,
-        "max-len": "off"
+        "max-len": "off",
+        "no-shadow": 0,
+        "no-unused-vars": 0,
+        "implicit-arrow-linebreak": 0,
+        "no-lonely-if": 0,
+        "no-redeclare": 0,
+        "no-alert": 0
     }
 }

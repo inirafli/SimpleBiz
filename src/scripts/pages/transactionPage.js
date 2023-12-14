@@ -1,41 +1,31 @@
-// Import style untuk halaman transaksi
-import "../../styles/transaction.css";
-
-// Import fungsi-fungsi penting dari Firebase untuk Firestore, Authentication, dan inisialisasi aplikasi
+import '../../styles/transaction.css';
 import {
   getFirestore,
   collection,
   getDoc,
   doc,
   getDocs,
-} from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+} from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-// Import ikon-ikon untuk aplikasi
-import appIcon from "../../public/icons/simplebiz-icons.png";
-import userIcon from "../../public/icons/user.svg";
-import firebaseConfig from "../common/config";
+import appIcon from '../../public/icons/simplebiz-icons.png';
+import userIcon from '../../public/icons/user.svg';
+import firebaseConfig from '../common/config';
 
-// Inisialisasi Firebase App dan mendapatkan instances Firestore dan Auth
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
-// Fungsi bantuan untuk mengambil data transaksi dari Firestore
 const fetchTransactionData = async (userId, startDate, endDate) => {
-  // Memformat tanggal agar konsisten
-  const formattedStartDate = startDate.split("-").reverse().join("-");
-  const formattedEndDate = endDate.split("-").reverse().join("-");
+  const formattedStartDate = startDate.split('-').reverse().join('-');
+  const formattedEndDate = endDate.split('-').reverse().join('-');
 
-  // Membuat referensi ke koleksi 'transactions' untuk pengguna tertentu
   const transactionsRef = collection(db, `users/${userId}/transactions`);
-  // Melakukan query ke database Firestore untuk mendapatkan dokumen transaksi
   const querySnapshot = await getDocs(transactionsRef);
 
-  // Mapping data dokumen ke format yang lebih mudah digunakan
   const transactions = querySnapshot.docs.map((doc) => {
-    const date = doc.id; // tanggal merupakan ID dokumen
+    const date = doc.id;
     const transactionData = doc.data().transactions;
 
     return {
@@ -44,17 +34,13 @@ const fetchTransactionData = async (userId, startDate, endDate) => {
     };
   });
 
-  console.log("Fetched transactions:", transactions);
   return transactions;
 };
 
-// Fungsi bantuan untuk menghitung total harga dari transaksi
 const calculateTotalPrice = (transactions) => {
-  // Inisialisasi variabel untuk total kuantitas dan total harga
   let totalQuantity = 0;
   let totalPrice = 0;
 
-  // Iterasi melalui setiap transaksi dan memperbarui total
   transactions.forEach((transaction) => {
     if (transaction.transactionData) {
       const {
@@ -69,12 +55,10 @@ const calculateTotalPrice = (transactions) => {
   return { totalQuantity, totalPrice };
 };
 
-// Fungsi bantuan untuk menghitung total kuantitas dan total harga dari data transaksi
 const calculateTransactionTotal = (transactionData) => {
   let transactionTotalQuantity = 0;
   let transactionTotalPrice = 0;
 
-  // Iterasi melalui setiap produk dalam transaksi dan memperbarui total
   transactionData.forEach((data) => {
     data.products.forEach((product) => {
       transactionTotalQuantity += product.quantity || 0;
@@ -85,42 +69,34 @@ const calculateTransactionTotal = (transactionData) => {
   return { transactionTotalQuantity, transactionTotalPrice };
 };
 
-// Event listener untuk setiap baris dalam tabel transaksi utama
 let lastClickedRow = null;
 
 const handleRowClick = async (row) => {
-  // Hapus kelas 'selected' dari baris yang diklik sebelumnya
   if (lastClickedRow) {
-    lastClickedRow.classList.remove("selected");
+    lastClickedRow.classList.remove('selected');
   }
 
-  // Tambahkan kelas 'selected' ke baris yang diklik
-  row.classList.add("selected");
+  row.classList.add('selected');
   lastClickedRow = row;
 
-  // Ekstrak data transaksi dari atribut baris yang diklik
-  const transactionData = JSON.parse(row.getAttribute("data-transaction"));
+  const transactionData = JSON.parse(row.getAttribute('data-transaction'));
 
-  // Render baris transaksi terperinci di tabel detail
   renderDetailTransactionRows(transactionData.transactionData);
 };
 
-// Fungsi bantuan untuk merender baris transaksi terperinci di tabel detail
 const renderDetailTransactionRows = (transactions) => {
-  const detailTbody = document.querySelector("#detailTransacTable tbody");
-  detailTbody.innerHTML = "";
+  const detailTbody = document.querySelector('#detailTransacTable tbody');
+  detailTbody.innerHTML = '';
 
-  // Membuat map untuk menyimpan data teragregasi untuk setiap produk pada tanggal tertentu
   const productMap = new Map();
 
   transactions.forEach((data) => {
     data.products.forEach((product) => {
-      const productName = product.productName;
+      const {productName} = product;
       const quantity = product.quantity || 0;
       const price = product.price || 0;
       const totalPrice = product.totalPrice || 0;
 
-      // Membuat kunci unik untuk setiap produk pada tanggal tertentu
       const key = `${data.date}-${productName}`;
 
       if (!productMap.has(key)) {
@@ -131,16 +107,14 @@ const renderDetailTransactionRows = (transactions) => {
           price,
         });
       } else {
-        // Jika produk pada tanggal yang sama sudah ada, perbarui kuantitas dan harga
         productMap.get(key).totalQuantity += quantity;
         productMap.get(key).totalPrice += totalPrice;
       }
     });
   });
 
-  // Iterasi melalui data teragregasi dan merender baris
   productMap.forEach((product) => {
-    const detailRow = document.createElement("tr");
+    const detailRow = document.createElement('tr');
     detailRow.innerHTML = `
         <td>${product.productName}</td>
         <td>${product.totalQuantity}</td>
@@ -152,54 +126,48 @@ const renderDetailTransactionRows = (transactions) => {
   });
 };
 
-// Fungsi bantuan untuk memformat tanggal
 const formatDate = (inputDate) => {
   const date = new Date(inputDate);
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Bulan dimulai dari nol
-  const year = date.getFullYear().toString().slice(-2); // Ambil dua digit terakhir tahun
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString().slice(-2);
 
   return `${day}-${month}-${year}`;
 };
 
-// Fungsi bantuan untuk merender baris transaksi di tabel utama
 const renderTransactionRows = (transactions) => {
-  const tbody = document.querySelector("#transacTable tbody");
-  tbody.innerHTML = "";
+  const tbody = document.querySelector('#transacTable tbody');
+  tbody.innerHTML = '';
 
   transactions.forEach((transaction) => {
     if (transaction.transactionData) {
-      const { transactionTotalQuantity, transactionTotalPrice } =
-        calculateTransactionTotal(transaction.transactionData);
+      const { transactionTotalQuantity, transactionTotalPrice } = calculateTransactionTotal(transaction.transactionData);
 
-      const row = document.createElement("tr");
-      row.className = "clickable-row";
-      row.setAttribute("data-date", transaction.date);
-      row.setAttribute("data-transaction", JSON.stringify(transaction));
+      const row = document.createElement('tr');
+      row.className = 'clickable-row';
+      row.setAttribute('data-date', transaction.date);
+      row.setAttribute('data-transaction', JSON.stringify(transaction));
 
-      const formattedDate = formatDate(transaction.date); // Format tanggal
+      const formattedDate = formatDate(transaction.date);
       row.innerHTML = `
               <td>${formattedDate}</td>
               <td>${transactionTotalQuantity}</td>
               <td>${transactionTotalPrice.toLocaleString()}</td>
           `;
 
-      // Tambahkan event listener untuk setiap baris
-      row.addEventListener("click", () => handleRowClick(row));
+      row.addEventListener('click', () => handleRowClick(row));
 
       tbody.appendChild(row);
     }
   });
 };
 
-// Fungsi bantuan untuk merender baris laporan evaluasi di tabel
 const renderEvaluationReportRows = (highestSales, lowestSales) => {
-  const highestSalesTbody = document.getElementById("highest-sales");
-  const lowestSalesTbody = document.getElementById("lowest-sales");
+  const highestSalesTbody = document.getElementById('highest-sales');
+  const lowestSalesTbody = document.getElementById('lowest-sales');
 
-  // Render penjualan tertinggi
   highestSales.forEach((product) => {
-    const row = document.createElement("tr");
+    const row = document.createElement('tr');
     row.innerHTML = `
       <td>${product.productName}</td>
       <td>${product.totalQuantity}</td>
@@ -208,9 +176,8 @@ const renderEvaluationReportRows = (highestSales, lowestSales) => {
     highestSalesTbody.appendChild(row);
   });
 
-  // Render penjualan terendah
   lowestSales.forEach((product) => {
-    const row = document.createElement("tr");
+    const row = document.createElement('tr');
     row.innerHTML = `
       <td>${product.productName}</td>
       <td>${product.totalQuantity}</td>
@@ -220,124 +187,97 @@ const renderEvaluationReportRows = (highestSales, lowestSales) => {
   });
 };
 
-// Fungsi untuk merender seluruh halaman transaksi
 const renderTransactionPage = (container) => {
-  // Mengatur warna latar belakang body
-  document.body.style.backgroundColor = "#F1F1FF";
+  document.body.style.backgroundColor = '#F1F1FF';
 
-  // Menyiapkan pendengar status Autentikasi
   const authStateListener = onAuthStateChanged(auth, (user) => {
     if (user) {
-      // Jika pengguna terautentikasi, ambil dan perbarui data pengguna
       initializePage(user.uid);
     } else {
-      console.warn("User is not authenticated.");
+      console.warn('User is not authenticated.');
     }
   });
 
-  // Panggil initializePage saat halaman dimuat
-  document.addEventListener("DOMContentLoaded", () => {
-    authStateListener(); // Picu pendengar ketika halaman dimuat
+  document.addEventListener('DOMContentLoaded', () => {
+    authStateListener();
   });
 
-  // Fungsi bantuan untuk mengambil data pengguna dan memperbarui antarmuka pengguna
   const initializePage = async (userId) => {
     try {
-      // Mengambil data profil pengguna untuk mendapatkan nama UMKM
-      const userDoc = await getDoc(doc(db, "users", userId));
+      const userDoc = await getDoc(doc(db, 'users', userId));
       const umkmName = userDoc.data().umkm;
 
-      // Perbarui nama profil pengguna di antarmuka pengguna
       updateUserName(umkmName);
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.error('Error fetching user data:', error);
     }
   };
 
-  // Panggil initializePage saat halaman dimuat
   initializePage();
 
-  // Fungsi bantuan untuk memperbarui nama pengguna di antarmuka pengguna
   const updateUserName = (umkmName) => {
-    console.log("Updating user name:", umkmName);
-    const userNameElement = document.querySelector(".user-button span");
+    const userNameElement = document.querySelector('.user-button span');
     userNameElement.textContent = umkmName;
   };
 
-  // Penangan acara untuk tombol "Terapkan"
   const handleApplyButtonClick = async () => {
-    const startDate = document.getElementById("start").value;
-    const endDate = document.getElementById("end").value;
+    const startDate = document.getElementById('start').value;
+    const endDate = document.getElementById('end').value;
 
     if (startDate && endDate) {
       const userId = auth.currentUser.uid;
 
       try {
-        // Mengambil data transaksi berdasarkan ID pengguna dan rentang tanggal
         const transactions = await fetchTransactionData(
           userId,
           startDate,
-          endDate
+          endDate,
         );
 
-        // Menghitung total kuantitas dan total harga dari transaksi yang diambil
         const { totalQuantity, totalPrice } = calculateTotalPrice(transactions);
 
-        // Merender baris transaksi di tabel
         renderTransactionRows(transactions);
 
-        // Menghitung penjualan tertinggi dan terendah
         const highestSales = calculateHighestSales(transactions);
         const lowestSales = calculateLowestSales(transactions);
 
-        // Merender baris laporan evaluasi
         renderEvaluationReportRows(highestSales, lowestSales);
       } catch (error) {
-        // Menangani kesalahan yang mungkin terjadi selama operasi pengambilan
-        console.error("Error handling apply button click:", error);
+        console.error('Error handling apply button click:', error);
       }
     }
   };
 
-  // Event listener untuk tombol "Reset"
   const handleResetButtonClick = () => {
-    // Hapus kelas 'selected' dari baris yang diklik sebelumnya
     if (lastClickedRow) {
-      lastClickedRow.classList.remove("selected");
+      lastClickedRow.classList.remove('selected');
       lastClickedRow = null;
     }
 
-    // Reset nilai input tanggal
-    document.getElementById("start").value = "";
-    document.getElementById("end").value = "";
+    document.getElementById('start').value = '';
+    document.getElementById('end').value = '';
 
-    // Hapus isi dari tabel dan laporan evaluasi
-    const transacTableBody = document.querySelector("#transacTable tbody");
+    const transacTableBody = document.querySelector('#transacTable tbody');
     const detailTransacTableBody = document.querySelector(
-      "#detailTransacTable tbody"
+      '#detailTransacTable tbody',
     );
-    const highestSalesTbody = document.getElementById("highest-sales");
-    const lowestSalesTbody = document.getElementById("lowest-sales");
+    const highestSalesTbody = document.getElementById('highest-sales');
+    const lowestSalesTbody = document.getElementById('lowest-sales');
 
-    transacTableBody.innerHTML = "";
-    detailTransacTableBody.innerHTML = "";
-    highestSalesTbody.innerHTML = "";
-    lowestSalesTbody.innerHTML = "";
+    transacTableBody.innerHTML = '';
+    detailTransacTableBody.innerHTML = '';
+    highestSalesTbody.innerHTML = '';
+    lowestSalesTbody.innerHTML = '';
   };
 
-  // Fungsi bantuan untuk menghitung penjualan tertinggi
   const calculateHighestSales = (transactions) => {
-    // Meratakan array transaksi dan produk
     const allProducts = transactions.flatMap((transaction) =>
-      transaction.transactionData.flatMap((data) => data.products)
-    );
+      transaction.transactionData.flatMap((data) => data.products));
 
-    // Membuat map untuk menyimpan data teragregasi untuk setiap produk
     const productMap = new Map();
 
-    // Iterasi melalui setiap produk dan memperbarui data teragregasi
     allProducts.forEach((product) => {
-      const productName = product.productName;
+      const {productName} = product;
       const quantity = product.quantity || 0;
       const totalPrice = product.totalPrice || 0;
 
@@ -349,34 +289,29 @@ const renderTransactionPage = (container) => {
       productMap.get(productName).totalPrice += totalPrice;
     });
 
-    // Mengonversi nilai map ke array untuk merender
     const highestSales = Array.from(productMap.entries()).map(
       ([productName, data]) => ({
         productName,
         totalQuantity: data.totalQuantity,
         totalPrice: data.totalPrice,
-      })
+      }),
     );
 
-    // Mengurutkan produk berdasarkan totalQuantity secara menurun
     const sortedProducts = highestSales.sort(
-      (a, b) => b.totalQuantity - a.totalQuantity
+      (a, b) => b.totalQuantity - a.totalQuantity,
     );
 
     return sortedProducts;
   };
 
-  // Fungsi bantuan untuk menghitung penjualan terendah
   const calculateLowestSales = (transactions) => {
-    // Menggunakan pendekatan yang sama dengan calculateHighestSales tetapi diurutkan secara menaik
     const allProducts = transactions.flatMap((transaction) =>
-      transaction.transactionData.flatMap((data) => data.products)
-    );
+      transaction.transactionData.flatMap((data) => data.products));
 
     const productMap = new Map();
 
     allProducts.forEach((product) => {
-      const productName = product.productName;
+      const {productName} = product;
       const quantity = product.quantity || 0;
       const totalPrice = product.totalPrice || 0;
 
@@ -388,24 +323,21 @@ const renderTransactionPage = (container) => {
       productMap.get(productName).totalPrice += totalPrice;
     });
 
-    // Mengonversi nilai map ke array untuk merender
     const lowestSales = Array.from(productMap.entries()).map(
       ([productName, data]) => ({
         productName,
         totalQuantity: data.totalQuantity,
         totalPrice: data.totalPrice,
-      })
+      }),
     );
 
-    // Mengurutkan produk berdasarkan totalQuantity secara menaik
     const sortedProducts = lowestSales.sort(
-      (a, b) => a.totalQuantity - b.totalQuantity
+      (a, b) => a.totalQuantity - b.totalQuantity,
     );
 
     return sortedProducts;
   };
 
-  // Mengisi kontainer dengan konten HTML
   container.innerHTML = `
   <!-- Bagian header dari aplikasi -->
   <header id="mainHeader">
@@ -526,36 +458,34 @@ const renderTransactionPage = (container) => {
   </footer>
   `;
 
-  // Pendengar acara dan interaksi untuk navigasi dan klik tombol
-  const menuIcon = container.querySelector(".main-menu-icon");
-  const navList = container.querySelector(".main-nav-list");
-  const mainContent = container.querySelector(".transac-main");
-  const detailTransacTable = document.getElementById("detailTransaction");
+  const menuIcon = container.querySelector('.main-menu-icon');
+  const navList = container.querySelector('.main-nav-list');
+  const mainContent = container.querySelector('.transac-main');
+  const detailTransacTable = document.getElementById('detailTransaction');
 
   let lastClickedRow = null;
 
-  const navItems = container.querySelectorAll(".nav-item a");
+  const navItems = container.querySelectorAll('.nav-item a');
 
-  mainContent.addEventListener("click", () => {
-    navList.classList.remove("active");
+  mainContent.addEventListener('click', () => {
+    navList.classList.remove('active');
   });
 
   navItems.forEach((navItem) => {
-    navItem.addEventListener("click", () => {
-      navList.classList.remove("active");
+    navItem.addEventListener('click', () => {
+      navList.classList.remove('active');
     });
   });
 
-  menuIcon.addEventListener("click", () => {
-    navList.classList.toggle("active");
+  menuIcon.addEventListener('click', () => {
+    navList.classList.toggle('active');
   });
 
-  const applyButton = document.getElementById("apply-button");
-  applyButton.addEventListener("click", handleApplyButtonClick);
+  const applyButton = document.getElementById('apply-button');
+  applyButton.addEventListener('click', handleApplyButtonClick);
 
-  const resetButton = document.getElementById("reset-button");
-  resetButton.addEventListener("click", handleResetButtonClick);
+  const resetButton = document.getElementById('reset-button');
+  resetButton.addEventListener('click', handleResetButtonClick);
 };
 
-// Mengekspor fungsi sebagai ekspor default untuk modul
 export default renderTransactionPage;
