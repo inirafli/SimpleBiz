@@ -257,10 +257,6 @@ main.prod-main {
   cursor: pointer;
 }
 
-/* #updateForm {
-    display: none;
-} */
-
 .search-bar {
   display: flex;
   gap: 1rem;
@@ -312,7 +308,7 @@ main.prod-main {
 .prod-name {
   margin-top: 1.25rem;
   font-size: 1.75rem;
-  -webkit-line-clamp: 1;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
