@@ -31,6 +31,6 @@ SimpleBiz menyediakan sejumlah fitur yang dirancang untuk memenuhi kebutuhan pel
 ![Tampilan Mobile](screenshot/simplebiz_mobile.png)
 #
 ## Deployed App
-
+📋 [Visit SimpleBiz](https://simplebiz.netlify.app/)
 
 
