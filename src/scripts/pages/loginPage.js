@@ -1,7 +1,33 @@
-import '../../styles/login.css'
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import '../../styles/login.css';
+import firebaseConfig from '../common/config';
+
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+
+const handleLoginSuccess = (userCredential) => {
+  const { user } = userCredential;
+  redirectToDashboard();
+};
+
+const handleLoginError = (error) => {
+  console.error('Login gagal :', error.message);
+  const errorMessage = document.querySelector('.error-message');
+  errorMessage.textContent = error.message;
+};
+
+const redirectToDashboard = () => {
+  const user = auth.currentUser;
+  if (user) {
+    window.location.href = '/dashboard';
+  } else {
+    console.error('User not authenticated');
+  }
+};
 
 const renderLoginPage = (container) => {
-  document.body.style.backgroundColor = '#3d5a80'
+  document.body.style.backgroundColor = '#3d5a80';
 
   container.innerHTML = `
     <main id="login-page">
@@ -41,21 +67,49 @@ const renderLoginPage = (container) => {
                 efisien.</p>
         </div>
     </main>
-    `
+    `;
 
-  const backButton = document.querySelector('#back')
-  const passwordInput = document.querySelector('#password')
-  const showPasswordCheck = document.querySelector('#showPassword')
+  const backButton = document.querySelector('#back');
+  const passwordInput = document.querySelector('#password');
+  const showPasswordCheck = document.querySelector('#showPassword');
 
   showPasswordCheck.addEventListener('change', () => {
-    const type = showPasswordCheck.checked ? 'text' : 'password'
-    passwordInput.setAttribute('type', type)
-  })
+    const type = showPasswordCheck.checked ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+  });
 
   backButton.addEventListener('click', () => {
-    window.history.pushState(null, null, '/')
-    window.location.href = '/'
-  })
-}
+    window.history.pushState(null, null, '/');
+    window.location.href = '/';
+  });
 
-export default renderLoginPage
+  const loginForm = document.querySelector('#login-form');
+
+  loginForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+
+      console.log('Login berhasil dilakukan:', userCredential);
+
+      handleLoginSuccess(userCredential);
+    } catch (error) {
+      console.error('Login gagal:', error.message);
+
+      const errorMessage = document.querySelector('.error-message');
+      errorMessage.textContent = error.message;
+
+      handleLoginError(error);
+    }
+  });
+};
+
+export default renderLoginPage;

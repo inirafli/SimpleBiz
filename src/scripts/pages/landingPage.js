@@ -1,11 +1,11 @@
-import '../../styles/landing.css'
+import '../../styles/landing.css';
 
-import appIcon from '../../public/icons/simplebiz-icons.png'
-import landingImage from '../../public/images/landing-page-image.png'
+import appIcon from '../../public/icons/simplebiz-icons.png';
+import landingImage from '../../public/images/landing-page-image.png';
 
 const renderLandingPage = (container) => {
   container.innerHTML = `
-    <header>
+    <header class="landing-header">
         <div class="app-bar">
             <div class="app-bar__title">
                 <img src=${appIcon} alt="SimpleBiz Icons">
@@ -25,13 +25,13 @@ const renderLandingPage = (container) => {
             </nav>
         </div>
     </header>
-    <main>
+    <main class="landing-main">
         <div class="hero">
             <div class="hero-content">
                 <h1 class="hero-title">Pencatatan Digital untuk UMKM Indonesia</h1>
                 <p class="hero-desc">Sederhana. Cepat. Akurat. SimpleBiz adalah solusi pencatatan digital yang mendukung
                     UMKM di Indonesia.</p>
-                <button class="start-note">Mulai Mencatat</button>
+                <button class="start-note" id="startNoteBtn">Mulai Mencatat</button>
             </div>
             <div class="hero-image">
                 <img src=${landingImage} alt="Hero Image">
@@ -95,27 +95,32 @@ const renderLandingPage = (container) => {
             <p>&copy; 2023 Capstone C523-PS036's SimpleBiz Application. All rights reserved.</p>
         </div>
     </footer>
-    `
+    `;
 
-  const menuIcon = container.querySelector('.menu-icon')
-  const navList = container.querySelector('.nav-list')
-  const mainContent = container.querySelector('main')
+  const menuIcon = container.querySelector('.menu-icon');
+  const navList = container.querySelector('.nav-list');
+  const mainContent = container.querySelector('main');
+  const startNoteBtn = container.querySelector('#startNoteBtn');
 
-  const navItems = container.querySelectorAll('.nav-item a')
+  const navItems = container.querySelectorAll('.nav-item a');
 
   mainContent.addEventListener('click', () => {
-    navList.classList.remove('active')
-  })
+    navList.classList.remove('active');
+  });
 
   navItems.forEach((navItem) => {
     navItem.addEventListener('click', () => {
-      navList.classList.remove('active')
-    })
-  })
+      navList.classList.remove('active');
+    });
+  });
 
   menuIcon.addEventListener('click', () => {
     navList.classList.toggle('active');
-  })
-}
+  });
 
-export default renderLandingPage
+  startNoteBtn.addEventListener('click', () => {
+    window.location.href = '/login';
+  });
+};
+
+export default renderLandingPage;

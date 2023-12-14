@@ -20,6 +20,13 @@
         "object-curly-spacing": 0,
         "require-jsdoc" : 0,
         "no-param-reassign": 0,
-        "max-len": "off"
+        "no-use-before-define": 0,
+        "max-len": "off",
+        "no-shadow": 0,
+        "no-unused-vars": 0,
+        "implicit-arrow-linebreak": 0,
+        "no-lonely-if": 0,
+        "no-redeclare": 0,
+        "no-alert": 0
     }
 }
