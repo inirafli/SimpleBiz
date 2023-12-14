@@ -36,7 +36,7 @@ SimpleBiz menyediakan sejumlah fitur yang dirancang untuk memenuhi kebutuhan pel
 - Netlify (Deployment)
 #
 
-## Screenshots
+## Tampilan Halaman Website SimpleBiz
 ### 1. Halaman Landing dan Auth
 ![Halaman Landing dan Auth](screenshot/simplebiz_land_auth.png)
 
@@ -46,6 +46,30 @@ SimpleBiz menyediakan sejumlah fitur yang dirancang untuk memenuhi kebutuhan pel
 ### 3. Tampilan Mobile
 ![Tampilan Mobile](screenshot/simplebiz_mobile.png)
 #
+
+## Tampilan Console Firebase
+### 1. Authentication
+![Akun Pengguna](screenshot/AuthenticationAccount.png)
+
+### 2. Firestore (Account/User)
+![User in Firestore](screenshot/FirestoreAccount.png)
+
+### 3. Firestore (Products)
+![Products in Firestore](screenshot/FirestoreProducts.png)
+
+### 4. Firestore (Transactions)
+![Transactions in Firestore](screenshot/FirestoreTransactions.png)
+
+### 5. Firestore (Rules)
+![Rules in Firestore](screenshot/FirestoreRules.png)
+
+### 6. Storage
+![Image in Storage](screenshot/StorageImage.png)
+
+### 7. Storage (Rules)
+![Rules in Storage](screenshot/StorageRules.png)
+#
+
 ## Deployed App
 📋 [Visit SimpleBiz](https://simplebiz.netlify.app/)
 
