@@ -1,25 +1,25 @@
-import '../../styles/transaction.css';
+import "../../styles/transaction.css";
 import {
   getFirestore,
   collection,
   getDoc,
   doc,
   getDocs,
-} from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+} from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-import appIcon from '../../public/icons/simplebiz-icons.png';
-import userIcon from '../../public/icons/user.svg';
-import firebaseConfig from '../common/config';
+import appIcon from "../../public/icons/simplebiz-icons.png";
+import userIcon from "../../public/icons/user.svg";
+import firebaseConfig from "../common/config";
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 
 const fetchTransactionData = async (userId, startDate, endDate) => {
-  const formattedStartDate = startDate.split('-').reverse().join('-');
-  const formattedEndDate = endDate.split('-').reverse().join('-');
+  const formattedStartDate = startDate.split("-").reverse().join("-");
+  const formattedEndDate = endDate.split("-").reverse().join("-");
 
   const transactionsRef = collection(db, `users/${userId}/transactions`);
   const querySnapshot = await getDocs(transactionsRef);
@@ -73,26 +73,26 @@ let lastClickedRow = null;
 
 const handleRowClick = async (row) => {
   if (lastClickedRow) {
-    lastClickedRow.classList.remove('selected');
+    lastClickedRow.classList.remove("selected");
   }
 
-  row.classList.add('selected');
+  row.classList.add("selected");
   lastClickedRow = row;
 
-  const transactionData = JSON.parse(row.getAttribute('data-transaction'));
+  const transactionData = JSON.parse(row.getAttribute("data-transaction"));
 
   renderDetailTransactionRows(transactionData.transactionData);
 };
 
 const renderDetailTransactionRows = (transactions) => {
-  const detailTbody = document.querySelector('#detailTransacTable tbody');
-  detailTbody.innerHTML = '';
+  const detailTbody = document.querySelector("#detailTransacTable tbody");
+  detailTbody.innerHTML = "";
 
   const productMap = new Map();
 
   transactions.forEach((data) => {
     data.products.forEach((product) => {
-      const {productName} = product;
+      const { productName } = product;
       const quantity = product.quantity || 0;
       const price = product.price || 0;
       const totalPrice = product.totalPrice || 0;
@@ -114,7 +114,7 @@ const renderDetailTransactionRows = (transactions) => {
   });
 
   productMap.forEach((product) => {
-    const detailRow = document.createElement('tr');
+    const detailRow = document.createElement("tr");
     detailRow.innerHTML = `
         <td>${product.productName}</td>
         <td>${product.totalQuantity}</td>
@@ -128,25 +128,25 @@ const renderDetailTransactionRows = (transactions) => {
 
 const formatDate = (inputDate) => {
   const date = new Date(inputDate);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
   const year = date.getFullYear().toString().slice(-2);
 
   return `${day}-${month}-${year}`;
 };
 
 const renderTransactionRows = (transactions) => {
-  const tbody = document.querySelector('#transacTable tbody');
-  tbody.innerHTML = '';
+  const tbody = document.querySelector("#transacTable tbody");
+  tbody.innerHTML = "";
 
   transactions.forEach((transaction) => {
     if (transaction.transactionData) {
       const { transactionTotalQuantity, transactionTotalPrice } = calculateTransactionTotal(transaction.transactionData);
 
-      const row = document.createElement('tr');
-      row.className = 'clickable-row';
-      row.setAttribute('data-date', transaction.date);
-      row.setAttribute('data-transaction', JSON.stringify(transaction));
+      const row = document.createElement("tr");
+      row.className = "clickable-row";
+      row.setAttribute("data-date", transaction.date);
+      row.setAttribute("data-transaction", JSON.stringify(transaction));
 
       const formattedDate = formatDate(transaction.date);
       row.innerHTML = `
@@ -155,7 +155,7 @@ const renderTransactionRows = (transactions) => {
               <td>${transactionTotalPrice.toLocaleString()}</td>
           `;
 
-      row.addEventListener('click', () => handleRowClick(row));
+      row.addEventListener("click", () => handleRowClick(row));
 
       tbody.appendChild(row);
     }
@@ -163,11 +163,11 @@ const renderTransactionRows = (transactions) => {
 };
 
 const renderEvaluationReportRows = (highestSales, lowestSales) => {
-  const highestSalesTbody = document.getElementById('highest-sales');
-  const lowestSalesTbody = document.getElementById('lowest-sales');
+  const highestSalesTbody = document.getElementById("highest-sales");
+  const lowestSalesTbody = document.getElementById("lowest-sales");
 
   highestSales.forEach((product) => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
     row.innerHTML = `
       <td>${product.productName}</td>
       <td>${product.totalQuantity}</td>
@@ -177,7 +177,7 @@ const renderEvaluationReportRows = (highestSales, lowestSales) => {
   });
 
   lowestSales.forEach((product) => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
     row.innerHTML = `
       <td>${product.productName}</td>
       <td>${product.totalQuantity}</td>
@@ -188,86 +188,114 @@ const renderEvaluationReportRows = (highestSales, lowestSales) => {
 };
 
 const renderTransactionPage = (container) => {
-  document.body.style.backgroundColor = '#F1F1FF';
+  document.body.style.backgroundColor = "#F1F1FF";
 
   const authStateListener = onAuthStateChanged(auth, (user) => {
     if (user) {
       initializePage(user.uid);
     } else {
-      console.warn('User is not authenticated.');
+      console.warn("User is not authenticated.");
     }
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     authStateListener();
   });
 
   const initializePage = async (userId) => {
     try {
-      const userDoc = await getDoc(doc(db, 'users', userId));
+      const userDoc = await getDoc(doc(db, "users", userId));
       const umkmName = userDoc.data().umkm;
 
       updateUserName(umkmName);
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error("Error fetching user data:", error);
     }
   };
 
   initializePage();
 
   const updateUserName = (umkmName) => {
-    const userNameElement = document.querySelector('.user-button span');
+    const userNameElement = document.querySelector(".user-button span");
     userNameElement.textContent = umkmName;
   };
 
   const handleApplyButtonClick = async () => {
-    const startDate = document.getElementById('start').value;
-    const endDate = document.getElementById('end').value;
+    const startDate = document.getElementById("start").value;
+    const endDate = document.getElementById("end").value;
 
     if (startDate && endDate) {
       const userId = auth.currentUser.uid;
 
       try {
-        const transactions = await fetchTransactionData(
-          userId,
-          startDate,
-          endDate,
-        );
+        // Convert start and end date strings to Date objects
+        const startDateObj = new Date(startDate);
+        const endDateObj = new Date(endDate);
 
-        const { totalQuantity, totalPrice } = calculateTotalPrice(transactions);
+        // Validate that endDate is greater than or equal to startDate
+        if (startDateObj > endDateObj) {
+          console.error(
+            "End date should be greater than or equal to start date.",
+          );
+          return;
+        }
 
-        renderTransactionRows(transactions);
+        const transactionsRef = collection(db, `users/${userId}/transactions`);
+        const querySnapshot = await getDocs(transactionsRef);
 
-        const highestSales = calculateHighestSales(transactions);
-        const lowestSales = calculateLowestSales(transactions);
+        const transactions = querySnapshot.docs.map((doc) => {
+          const date = doc.id;
+          const transactionData = doc.data().transactions;
+
+          return {
+            date,
+            transactionData,
+          };
+        });
+
+        // Filter transactions based on the selected date range
+        const filteredTransactions = transactions.filter((transaction) => {
+          const transactionDateObj = new Date(transaction.date);
+          return (
+            transactionDateObj >= startDateObj
+            && transactionDateObj <= endDateObj
+          );
+        });
+
+        const { totalQuantity, totalPrice } = calculateTotalPrice(filteredTransactions);
+
+        renderTransactionRows(filteredTransactions);
+
+        const highestSales = calculateHighestSales(filteredTransactions);
+        const lowestSales = calculateLowestSales(filteredTransactions);
 
         renderEvaluationReportRows(highestSales, lowestSales);
       } catch (error) {
-        console.error('Error handling apply button click:', error);
+        console.error("Error handling apply button click:", error);
       }
     }
   };
 
   const handleResetButtonClick = () => {
     if (lastClickedRow) {
-      lastClickedRow.classList.remove('selected');
+      lastClickedRow.classList.remove("selected");
       lastClickedRow = null;
     }
 
-    document.getElementById('start').value = '';
-    document.getElementById('end').value = '';
+    document.getElementById("start").value = "";
+    document.getElementById("end").value = "";
 
-    const transacTableBody = document.querySelector('#transacTable tbody');
+    const transacTableBody = document.querySelector("#transacTable tbody");
     const detailTransacTableBody = document.querySelector(
-      '#detailTransacTable tbody',
+      "#detailTransacTable tbody",
     );
-    const highestSalesTbody = document.getElementById('highest-sales');
-    const lowestSalesTbody = document.getElementById('lowest-sales');
+    const highestSalesTbody = document.getElementById("highest-sales");
+    const lowestSalesTbody = document.getElementById("lowest-sales");
 
-    transacTableBody.innerHTML = '';
-    detailTransacTableBody.innerHTML = '';
-    highestSalesTbody.innerHTML = '';
-    lowestSalesTbody.innerHTML = '';
+    transacTableBody.innerHTML = "";
+    detailTransacTableBody.innerHTML = "";
+    highestSalesTbody.innerHTML = "";
+    lowestSalesTbody.innerHTML = "";
   };
 
   const calculateHighestSales = (transactions) => {
@@ -277,7 +305,7 @@ const renderTransactionPage = (container) => {
     const productMap = new Map();
 
     allProducts.forEach((product) => {
-      const {productName} = product;
+      const { productName } = product;
       const quantity = product.quantity || 0;
       const totalPrice = product.totalPrice || 0;
 
@@ -311,7 +339,7 @@ const renderTransactionPage = (container) => {
     const productMap = new Map();
 
     allProducts.forEach((product) => {
-      const {productName} = product;
+      const { productName } = product;
       const quantity = product.quantity || 0;
       const totalPrice = product.totalPrice || 0;
 
@@ -458,34 +486,34 @@ const renderTransactionPage = (container) => {
   </footer>
   `;
 
-  const menuIcon = container.querySelector('.main-menu-icon');
-  const navList = container.querySelector('.main-nav-list');
-  const mainContent = container.querySelector('.transac-main');
-  const detailTransacTable = document.getElementById('detailTransaction');
+  const menuIcon = container.querySelector(".main-menu-icon");
+  const navList = container.querySelector(".main-nav-list");
+  const mainContent = container.querySelector(".transac-main");
+  const detailTransacTable = document.getElementById("detailTransaction");
 
   let lastClickedRow = null;
 
-  const navItems = container.querySelectorAll('.nav-item a');
+  const navItems = container.querySelectorAll(".nav-item a");
 
-  mainContent.addEventListener('click', () => {
-    navList.classList.remove('active');
+  mainContent.addEventListener("click", () => {
+    navList.classList.remove("active");
   });
 
   navItems.forEach((navItem) => {
-    navItem.addEventListener('click', () => {
-      navList.classList.remove('active');
+    navItem.addEventListener("click", () => {
+      navList.classList.remove("active");
     });
   });
 
-  menuIcon.addEventListener('click', () => {
-    navList.classList.toggle('active');
+  menuIcon.addEventListener("click", () => {
+    navList.classList.toggle("active");
   });
 
-  const applyButton = document.getElementById('apply-button');
-  applyButton.addEventListener('click', handleApplyButtonClick);
+  const applyButton = document.getElementById("apply-button");
+  applyButton.addEventListener("click", handleApplyButtonClick);
 
-  const resetButton = document.getElementById('reset-button');
-  resetButton.addEventListener('click', handleResetButtonClick);
+  const resetButton = document.getElementById("reset-button");
+  resetButton.addEventListener("click", handleResetButtonClick);
 };
 
 export default renderTransactionPage;
