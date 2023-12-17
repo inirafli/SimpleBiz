@@ -18,7 +18,7 @@ body,
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 h1,
@@ -27,7 +27,7 @@ h3,
 h4,
 a,
 button {
-  font-family: 'Ubuntu', sans-serif;
+  font-family: "Ubuntu", sans-serif;
 }
 
 #mainHeader {
@@ -167,14 +167,13 @@ button {
   font-size: 1.45rem;
   color: var(--on-secondary);
   font-weight: 600;
-
 }
 
 .filter-container input[type="date"] {
   padding: 11px;
   border: 1px solid var(--on-primary);
   border-radius: 6px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   background-color: var(--on-secondary);
   font-size: 1.15rem;
   width: 260px;
@@ -189,7 +188,7 @@ button {
 
 .apply-button {
   align-self: center;
-  padding: .85rem 1.25rem;
+  padding: 0.85rem 1.25rem;
   background-color: var(--on-secondary);
   color: var(--primary);
   border: none;
@@ -253,7 +252,7 @@ button {
 .transac-table th {
   background-color: var(--sub-primary);
   padding: 1.25rem;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 600;
   font-size: 1.35rem;
 }
@@ -270,7 +269,7 @@ button {
 }
 
 .transac-table .special-row td {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 600;
 }
 
@@ -279,7 +278,7 @@ button {
 }
 
 .transac-table .summary td {
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 footer {
@@ -441,12 +440,17 @@ footer {
     padding: 1rem 0.25rem;
   }
 
-  .transac-table .special-row td {
-    font-size: 0.75rem;
+  .special-row {
+    background-color: var(--secondary);
+    text-align: center;
+    color: var(--primary);
   }
 
   .special-row td {
-    padding: 1rem;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    padding: 0.75rem;
+    font-size: 0.85rem;
   }
 
   footer {
