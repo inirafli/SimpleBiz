@@ -141,8 +141,7 @@ const renderTransactionRows = (transactions) => {
 
   transactions.forEach((transaction) => {
     if (transaction.transactionData) {
-      const { transactionTotalQuantity, transactionTotalPrice } =
-        calculateTransactionTotal(transaction.transactionData);
+      const { transactionTotalQuantity, transactionTotalPrice } = calculateTransactionTotal(transaction.transactionData);
 
       const row = document.createElement("tr");
       row.className = "clickable-row";
@@ -236,7 +235,7 @@ const renderTransactionPage = (container) => {
         // Validate that endDate is greater than or equal to startDate
         if (startDateObj > endDateObj) {
           console.error(
-            "End date should be greater than or equal to start date."
+            "End date should be greater than or equal to start date.",
           );
           return;
         }
@@ -258,13 +257,12 @@ const renderTransactionPage = (container) => {
         const filteredTransactions = transactions.filter((transaction) => {
           const transactionDateObj = new Date(transaction.date);
           return (
-            transactionDateObj >= startDateObj &&
-            transactionDateObj <= endDateObj
+            transactionDateObj >= startDateObj
+            && transactionDateObj <= endDateObj
           );
         });
 
-        const { totalQuantity, totalPrice } =
-          calculateTotalPrice(filteredTransactions);
+        const { totalQuantity, totalPrice } = calculateTotalPrice(filteredTransactions);
 
         renderTransactionRows(filteredTransactions);
 
@@ -289,7 +287,7 @@ const renderTransactionPage = (container) => {
 
     const transacTableBody = document.querySelector("#transacTable tbody");
     const detailTransacTableBody = document.querySelector(
-      "#detailTransacTable tbody"
+      "#detailTransacTable tbody",
     );
 
     clearTableRows(transacTableBody);
@@ -311,8 +309,7 @@ const renderTransactionPage = (container) => {
 
   const calculateHighestSales = (transactions) => {
     const allProducts = transactions.flatMap((transaction) =>
-      transaction.transactionData.flatMap((data) => data.products)
-    );
+      transaction.transactionData.flatMap((data) => data.products));
 
     const productMap = new Map();
 
@@ -334,11 +331,11 @@ const renderTransactionPage = (container) => {
         productName,
         totalQuantity: data.totalQuantity,
         totalPrice: data.totalPrice,
-      })
+      }),
     );
 
     const sortedProducts = highestSales.sort(
-      (a, b) => b.totalQuantity - a.totalQuantity
+      (a, b) => b.totalQuantity - a.totalQuantity,
     );
 
     return sortedProducts;
@@ -346,8 +343,7 @@ const renderTransactionPage = (container) => {
 
   const calculateLowestSales = (transactions) => {
     const allProducts = transactions.flatMap((transaction) =>
-      transaction.transactionData.flatMap((data) => data.products)
-    );
+      transaction.transactionData.flatMap((data) => data.products));
 
     const productMap = new Map();
 
@@ -369,11 +365,11 @@ const renderTransactionPage = (container) => {
         productName,
         totalQuantity: data.totalQuantity,
         totalPrice: data.totalPrice,
-      })
+      }),
     );
 
     const sortedProducts = lowestSales.sort(
-      (a, b) => a.totalQuantity - b.totalQuantity
+      (a, b) => a.totalQuantity - b.totalQuantity,
     );
 
     return sortedProducts;
