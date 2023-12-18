@@ -289,13 +289,22 @@ const renderTransactionPage = (container) => {
     const detailTransacTableBody = document.querySelector(
       "#detailTransacTable tbody",
     );
+
+    clearTableRows(transacTableBody);
+    clearTableRows(detailTransacTableBody);
+
     const highestSalesTbody = document.getElementById("highest-sales");
     const lowestSalesTbody = document.getElementById("lowest-sales");
 
-    transacTableBody.innerHTML = "";
-    detailTransacTableBody.innerHTML = "";
-    highestSalesTbody.innerHTML = "";
-    lowestSalesTbody.innerHTML = "";
+    clearTableRows(highestSalesTbody);
+    clearTableRows(lowestSalesTbody);
+  };
+
+  const clearTableRows = (tbody) => {
+    const rows = tbody.querySelectorAll("tr:not(.special-row)");
+    rows.forEach((row) => {
+      tbody.removeChild(row);
+    });
   };
 
   const calculateHighestSales = (transactions) => {
